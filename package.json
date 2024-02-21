@@ -1,0 +1,51 @@
+{
+  "name": "gopeed-browser-extension",
+  "displayName": "Gopeed",
+  "version": "0.0.1",
+  "description": "Gopeed browser extension",
+  "homepage": "https://gopeed.com",
+  "author": "Levi",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package"
+  },
+  "dependencies": {
+    "@emotion/cache": "11.11.0",
+    "@emotion/react": "11.11.1",
+    "@emotion/styled": "11.11.0",
+    "@gopeed/rest": "^1.3.7",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/lab": "5.0.0-alpha.165",
+    "@mui/material": "5.15.10",
+    "@mui/x-date-pickers": "^6.19.4",
+    "@plasmohq/messaging": "^0.6.1",
+    "@plasmohq/storage": "^1.9.0",
+    "plasmo": "0.84.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-file-icon": "^1.4.0",
+    "react-hook-form": "^7.50.1",
+    "react-hook-form-mui": "7.0.0-beta.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.23.3",
+    "@gopeed/types": "^1.3.7",
+    "@ianvs/prettier-plugin-sort-imports": "4.1.1",
+    "@types/chrome": "0.0.251",
+    "@types/node": "20.9.0",
+    "@types/react": "18.2.37",
+    "@types/react-dom": "18.2.15",
+    "prettier": "3.0.3",
+    "typescript": "5.2.2"
+  },
+  "manifest": {
+    "host_permissions": [
+      "https://*/*"
+    ],
+    "permissions": [
+      "system.display",
+      "downloads"
+    ]
+  }
+}

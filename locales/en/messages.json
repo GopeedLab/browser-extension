@@ -1,0 +1,35 @@
+{
+  "download": {
+    "message": "DOWNLOAD"
+  },
+  "cancel": {
+    "message": "CANCEL"
+  },
+  "server": {
+    "message": "SERVER"
+  },
+  "create": {
+    "message": "CREATE"
+  },
+  "title": {
+    "message": "Title"
+  },
+  "scheme": {
+    "message": "Scheme"
+  },
+  "host": {
+    "message": "Host"
+  },
+  "port": {
+    "message": "Port"
+  },
+  "token": {
+    "message": "Token"
+  },
+  "deleteTip": {
+    "message": "Are you sure to delete this configuration?"
+  },
+  "delete": {
+    "message": "DELETE"
+  }
+}

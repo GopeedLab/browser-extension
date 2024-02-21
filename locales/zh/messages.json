@@ -1,0 +1,35 @@
+{
+  "download": {
+    "message": "下载"
+  },
+  "cancel": {
+    "message": "取消"
+  },
+  "server": {
+    "message": "服务器"
+  },
+  "create": {
+    "message": "创建"
+  },
+  "title": {
+    "message": "标题"
+  },
+  "scheme": {
+    "message": "协议"
+  },
+  "host": {
+    "message": "服务器"
+  },
+  "port": {
+    "message": "端口"
+  },
+  "token": {
+    "message": "接口令牌"
+  },
+  "deleteTip": {
+    "message": "确定要删除此配置吗？"
+  },
+  "delete": {
+    "message": "删除"
+  }
+}
