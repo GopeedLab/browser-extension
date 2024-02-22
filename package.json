@@ -40,12 +40,12 @@
     "typescript": "5.2.2"
   },
   "manifest": {
-    "host_permissions": [
-      "https://*/*"
-    ],
     "permissions": [
       "system.display",
-      "downloads"
+      "downloads",
+      "contextMenus",
+      "activeTab",
+      "scripting"
     ]
   }
 }

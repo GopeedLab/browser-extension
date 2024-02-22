@@ -1,3 +1,5 @@
+import sniffer from "url:~/pages/sniffer.tsx"
+
 import { Storage } from "@plasmohq/storage"
 
 import { STORAGE_SERVER_STATUS, STORAGE_SERVERS } from "~constants"
@@ -14,7 +16,26 @@ async function checkServer(server: Server) {
   }
 }
 
+/* function initContextMenus() {
+  chrome.contextMenus.create({
+    id: "sniff",
+    title: "Download All Resource",
+    contexts: ["page", "selection", "link", "action"]
+  })
+
+  chrome.contextMenus.onClicked.addListener((info, tab) => {
+    console.log(info, tab)
+    const filePath = sniffer.split("/").pop().split("?")[0]
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: [filePath]
+    })
+  })
+} */
+
 ;(async function () {
+  // initContextMenus()
+
   const storage = new Storage()
 
   async function checkAllServers() {
