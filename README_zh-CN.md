@@ -6,25 +6,25 @@
 
 [English](/README.md) | [中文](/README_zh-CN.md)
 
-## Install
+## 安装
 
 [![Chrome](/_docs/img/store/chrome-web-store.png)](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd)
 
-## Features
+## 功能
 
-- 🔽 Instead of browser download manager
-- 🔍 Sniff web resources
-- ⚙️ Support multiple downloader configurations
+- 🔽 接管浏览器下载
+- 🔍 嗅探网页资源
+- ⚙️ 支持多个下载器配置
 - 📦 More..
 
-## Usage
+## 使用说明
 
-1. First, you need to enable the downloader interface according to the [document](https://docs.gopeed.com/dev-api.html).
-2. Add server configuration in the extension, as shown in the figure:
+1. 首先需要根据[文档](https://docs.gopeed.com/zh/dev-api.html)指引启用下载器接口。
+2. 在扩展中添加服务器配置，如图所示：
    ![](/_docs/img/guide/server-config.jpg)
-3. When the configured server is displayed in green, the configuration is successful, and the browser download can be taken over.
+3. 当配置好的服务器显示绿色时，表示配置成功，即可接管浏览器下载。
 
-## Build
+## 构建
 
 ```bash
 pnpm install

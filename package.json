@@ -42,10 +42,7 @@
   "manifest": {
     "permissions": [
       "system.display",
-      "downloads",
-      "contextMenus",
-      "activeTab",
-      "scripting"
+      "downloads"
     ]
   }
 }
