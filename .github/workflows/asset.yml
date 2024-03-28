@@ -1,10 +1,24 @@
-name: "Submit to Web Store"
+name: "Upload Release Asset"
 on:
   workflow_dispatch:
+  release:
+    types: [created, edited]
 
 jobs:
-  publish:
+  get-release:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-release.outputs.version }}
+      upload_url: ${{ steps.get-release.outputs.upload_url }}
+
+    steps:
+      - uses: monkeyWie/get-latest-release@v2.1
+        id: get-release
+        with:
+          myToken: ${{ github.token }}
+  asset:
+    runs-on: ubuntu-latest
+    needs: [get-release]
     steps:
       - uses: actions/checkout@v3
       - name: Cache pnpm modules
@@ -27,8 +41,9 @@ jobs:
         run: |
           pnpm build --target=chrome-mv3
           pnpm build --target=firefox-mv2
-      - name: Browser Platform Publish
-        uses: PlasmoHQ/bpp@v3
+      - name: Upload
+        uses: softprops/action-gh-release@v2
         with:
-          keys: ${{ secrets.BPP_KEYS  }}
-          artifact: build/chrome-mv3-prod.zip
+          files: |
+            build/chrome-mv3-prod.zip
+            build/firefox-mv2-prod.zip
