@@ -7,12 +7,23 @@ import { getSelectedServer } from "~util"
 
 export {}
 
-async function checkServer(server: Server) {
+export type CheckResult = "success" | "network_error" | "token_error"
+
+export async function checkServer(server: Server): Promise<CheckResult> {
   try {
-    await fetch(server.url)
-    return true
+    const resp = await fetch(`${server.url}/api/v1/tasks/0`, {
+      headers: {
+        "X-Api-Token": server.token
+      }
+    })
+    const json = await resp.json()
+    // When the server is available, it should return 2001 (task not found)
+    if (json.code !== 2001) {
+      return "token_error"
+    }
+    return "success"
   } catch (e) {
-    return false
+    return "network_error"
   }
 }
 
@@ -49,7 +60,7 @@ async function checkServer(server: Server) {
         )
         await storage.set(STORAGE_SERVER_STATUS, {
           ...prev,
-          [server.url]: status
+          [server.url]: status === "success"
         })
       })
     )
