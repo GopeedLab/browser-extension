@@ -42,6 +42,8 @@ jobs:
         run: |
           pnpm build --target=chrome-mv3
           pnpm build --target=firefox-mv2
+          mkdir -p build/zip
+          mv build/*.zip build/zip
       - uses: monkeyWie/get-latest-release@v2.1
         id: get-release
         with:
@@ -50,5 +52,5 @@ jobs:
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ steps.get-release.outputs.upload_url }}
-          asset_path: build/*.zip
+          asset_path: build/zip/*
           overwrite: true
