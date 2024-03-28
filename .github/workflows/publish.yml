@@ -25,8 +25,8 @@ jobs:
           cache: "pnpm"
       - name: Build the extension
         run: |
-          pnpm build --target=chrome-mv3
-          pnpm build --target=firefox-mv2
+          pnpm build --target=chrome-mv3 --zip
+          pnpm build --target=firefox-mv2 --zip
       - name: Browser Platform Publish
         uses: PlasmoHQ/bpp@v3
         with:
