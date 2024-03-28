@@ -5,26 +5,34 @@ import { Storage } from "@plasmohq/storage"
 import { STORAGE_SERVER_STATUS, STORAGE_SERVERS } from "~constants"
 import { getSelectedServer } from "~util"
 
-export {}
+export { }
 
 export type CheckResult = "success" | "network_error" | "token_error"
 
 export async function checkServer(server: Server): Promise<CheckResult> {
-  try {
-    const resp = await fetch(`${server.url}/api/v1/tasks/0`, {
-      headers: {
-        "X-Api-Token": server.token
+  return new Promise(async (resolve) => {
+    setTimeout(() => {
+      resolve("network_error")
+    }, 5000)
+    try {
+      console.log(server.url)
+      const resp = await fetch(`${server.url}/api/v1/tasks/0`, {
+        headers: {
+          "X-Api-Token": server.token
+        }
+      })
+      const json = await resp.json()
+      // When the server is available, it should return 2001 (task not found)
+      if (json.code !== 2001) {
+        resolve("token_error")
+        return
       }
-    })
-    const json = await resp.json()
-    // When the server is available, it should return 2001 (task not found)
-    if (json.code !== 2001) {
-      return "token_error"
+      resolve("success")
+    } catch (e) {
+      resolve("network_error")
     }
-    return "success"
-  } catch (e) {
-    return "network_error"
-  }
+  })
+
 }
 
 /* function initContextMenus() {
@@ -44,7 +52,7 @@ export async function checkServer(server: Server): Promise<CheckResult> {
   })
 } */
 
-;(async function () {
+; (async function () {
   // initContextMenus()
 
   const storage = new Storage()

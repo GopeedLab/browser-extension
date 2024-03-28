@@ -36,7 +36,6 @@ import { STORAGE_SERVER_SELECTED, STORAGE_SERVERS } from "~constants"
 const ERROR_TIPS: Record<CheckResult, string> = {
   success: "",
   network_error: chrome.i18n.getMessage("tip_create_network_error"),
-  token_required: chrome.i18n.getMessage("tip_create_token_required"),
   token_error: chrome.i18n.getMessage("tip_create_token_error")
 }
 
@@ -124,9 +123,9 @@ function CreateServer(props: { onClose: () => void }) {
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={() => setError(null)}>
-            Cancel
+            {chrome.i18n.getMessage("cancel")}
           </Button>
-          <Button onClick={doSave}>Confirm</Button>
+          <Button onClick={doSave}>{chrome.i18n.getMessage("confirm")}</Button>
         </DialogActions>
       </Dialog>
       <AppBar position="static">

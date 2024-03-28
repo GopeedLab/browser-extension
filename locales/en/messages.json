@@ -5,6 +5,9 @@
   "cancel": {
     "message": "CANCEL"
   },
+  "confirm": {
+    "message": "CONFIRM"
+  },
   "server": {
     "message": "SERVER"
   },
@@ -34,5 +37,17 @@
   },
   "check": {
     "message": "CHECK"
+  },
+  "tip_create_error": {
+    "message": "Configuration error"
+  },
+  "tip_create_still_save": {
+    "message": "，do you still want to save?"
+  },
+  "tip_create_network_error": {
+    "message": "Server connection failed"
+  },
+  "tip_create_token_error": {
+    "message": "Api token error or server not configured correctly"
   }
 }
