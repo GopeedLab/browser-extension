@@ -1,13 +1,25 @@
-import { ArrowBack, Save } from "@mui/icons-material"
+import { ArrowBack, Save, Speed } from "@mui/icons-material"
+import { LoadingButton } from "@mui/lab"
 import {
+  Alert,
   AppBar,
+  Backdrop,
   Box,
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
+  Snackbar,
   Stack,
   Toolbar,
   Typography
 } from "@mui/material"
 import { useTheme } from "@mui/material/styles"
+import { useState } from "react"
 import {
   FormContainer,
   SelectElement,
@@ -15,9 +27,17 @@ import {
   useForm
 } from "react-hook-form-mui"
 
+import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
 
+import type { CheckResult } from "~background"
 import { STORAGE_SERVER_SELECTED, STORAGE_SERVERS } from "~constants"
+
+const ERROR_TIPS: Record<CheckResult, string> = {
+  success: "",
+  network_error: chrome.i18n.getMessage("tip_create_network_error"),
+  token_error: chrome.i18n.getMessage("tip_create_token_error")
+}
 
 function CreateServer(props: { onClose: () => void }) {
   const theme = useTheme()
@@ -32,17 +52,46 @@ function CreateServer(props: { onClose: () => void }) {
       token: ""
     }
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<CheckResult | null>(null)
 
-  function handleSave() {
+  function buildServer() {
     const server = formContext.getValues()
     server.url = `${server.scheme}://${server.host}:${server.port}`
-    // Check if the server is already in the list
-    const exists = servers.some((s) => s.url === server.url)
-    if (exists) {
-      props.onClose()
-      return
-    }
+    return server
+  }
 
+  async function handleSave() {
+    setLoading(true)
+
+    try {
+      const server = buildServer()
+      // Check if the server is already in the list
+      const exists = servers.some((s) => s.url === server.url)
+      if (exists) {
+        props.onClose()
+        return
+      }
+
+      // Check if the server is available
+      const result = await sendToBackground<Server, CheckResult>({
+        name: "api/check",
+        body: server
+      })
+      if (result !== "success") {
+        setError(result)
+        return
+      }
+
+      doSave()
+    } catch (e) {
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function doSave() {
+    const server = buildServer()
     if (servers.length === 0) {
       setSelected(server.url)
     }
@@ -53,10 +102,36 @@ function CreateServer(props: { onClose: () => void }) {
   return (
     <Box
       sx={{ backgroundColor: theme.palette.background.paper, height: "100%" }}>
+      <Backdrop
+        open={loading}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Dialog
+        open={!!error}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">
+          {chrome.i18n.getMessage("tip_create_error")}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {`${ERROR_TIPS[error]}${chrome.i18n.getMessage(
+              "tip_create_still_save"
+            )}`}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={() => setError(null)}>
+            {chrome.i18n.getMessage("cancel")}
+          </Button>
+          <Button onClick={doSave}>{chrome.i18n.getMessage("confirm")}</Button>
+        </DialogActions>
+      </Dialog>
       <AppBar position="static">
         <Toolbar>
           <IconButton
-            aria-label="save"
+            aria-label="back"
             size="large"
             edge="start"
             onClick={props.onClose}>

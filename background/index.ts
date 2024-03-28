@@ -5,15 +5,34 @@ import { Storage } from "@plasmohq/storage"
 import { STORAGE_SERVER_STATUS, STORAGE_SERVERS } from "~constants"
 import { getSelectedServer } from "~util"
 
-export {}
+export { }
 
-async function checkServer(server: Server) {
-  try {
-    await fetch(server.url)
-    return true
-  } catch (e) {
-    return false
-  }
+export type CheckResult = "success" | "network_error" | "token_error"
+
+export async function checkServer(server: Server): Promise<CheckResult> {
+  return new Promise(async (resolve) => {
+    setTimeout(() => {
+      resolve("network_error")
+    }, 5000)
+    try {
+      console.log(server.url)
+      const resp = await fetch(`${server.url}/api/v1/tasks/0`, {
+        headers: {
+          "X-Api-Token": server.token
+        }
+      })
+      const json = await resp.json()
+      // When the server is available, it should return 2001 (task not found)
+      if (json.code !== 2001) {
+        resolve("token_error")
+        return
+      }
+      resolve("success")
+    } catch (e) {
+      resolve("network_error")
+    }
+  })
+
 }
 
 /* function initContextMenus() {
@@ -33,7 +52,7 @@ async function checkServer(server: Server) {
   })
 } */
 
-;(async function () {
+; (async function () {
   // initContextMenus()
 
   const storage = new Storage()
@@ -49,7 +68,7 @@ async function checkServer(server: Server) {
         )
         await storage.set(STORAGE_SERVER_STATUS, {
           ...prev,
-          [server.url]: status
+          [server.url]: status === "success"
         })
       })
     )

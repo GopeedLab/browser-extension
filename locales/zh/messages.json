@@ -5,6 +5,9 @@
   "cancel": {
     "message": "取消"
   },
+  "confirm": {
+    "message": "确认"
+  },
   "server": {
     "message": "服务器"
   },
@@ -31,5 +34,17 @@
   },
   "delete": {
     "message": "删除"
+  },
+  "tip_create_error": {
+    "message": "配置有误"
+  },
+  "tip_create_still_save": {
+    "message": "，是否仍要保存？"
+  },
+  "tip_create_network_error": {
+    "message": "服务器无法连接"
+  },
+  "tip_create_token_error": {
+    "message": "接口令牌不正确或服务器未正确配置"
   }
 }

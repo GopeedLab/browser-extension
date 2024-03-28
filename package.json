@@ -1,7 +1,7 @@
 {
   "name": "gopeed-browser-extension",
   "displayName": "Gopeed",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Gopeed browser extension",
   "homepage": "https://gopeed.com",
   "author": "Levi",
