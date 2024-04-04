@@ -101,7 +101,6 @@ downloadEvent.addListener(async function (item) {
     const height = 600
     const left = Math.round((currentWindow.width - width) * 0.5 + currentWindow.left)
     const top = Math.round((currentWindow.height - height) * 0.5 + currentWindow.top)
-    console.log("onCreated 222", currentWindow, width, height, left, top)
     chrome.windows.create({
       url: `tabs/create.html?asset=${encodeURIComponent(
         JSON.stringify(asset)
