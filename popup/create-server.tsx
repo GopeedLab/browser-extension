@@ -85,6 +85,7 @@ function CreateServer(props: { onClose: () => void }) {
 
       doSave()
     } catch (e) {
+      console.error(e)
     } finally {
       setLoading(false)
     }

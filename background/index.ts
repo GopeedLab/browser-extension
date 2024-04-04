@@ -2,6 +2,8 @@ import sniffer from "url:~/pages/sniffer.tsx"
 
 import { Storage } from "@plasmohq/storage"
 
+import path from "path"
+
 import { STORAGE_SERVER_STATUS, STORAGE_SERVERS } from "~constants"
 import { getSelectedServer } from "~util"
 
@@ -77,7 +79,10 @@ export async function checkServer(server: Server): Promise<CheckResult> {
   setInterval(checkAllServers, 3000)
 })()
 
-chrome.downloads.onDeterminingFilename.addListener(async function (item) {
+// chrome.downloads.onDeterminingFilename only available in Chrome
+const downloadEvent = chrome.downloads.onDeterminingFilename || chrome.downloads.onCreated
+
+downloadEvent.addListener(async function (item) {
   const server = await getSelectedServer()
   if (!server) return
 
@@ -86,28 +91,26 @@ chrome.downloads.onDeterminingFilename.addListener(async function (item) {
     await chrome.downloads.removeFile(item.id)
   }
 
-  chrome.system.display.getInfo({ singleUnified: true }, (info) => {
-    const wDimension = info[0].workArea
-    const { top, left, height, width } = wDimension
-    const w = 480
-    const h = 600
-    const l = width / 2 - w / 2 + left
-    const t = height / 2 - h / 2 + top
-    const asset = <Asset>{
-      filename: item.filename,
-      filesize: item.fileSize,
-      finalUrl: item.finalUrl
-    }
-
+  const asset = <Asset>{
+    filename: path.basename(item.filename.replaceAll("\\", "/")),
+    filesize: item.fileSize,
+    finalUrl: item.finalUrl || item.url
+  }
+  chrome.windows.getCurrent((currentWindow) => {
+    const width = 480
+    const height = 600
+    const left = Math.round((currentWindow.width - width) * 0.5 + currentWindow.left)
+    const top = Math.round((currentWindow.height - height) * 0.5 + currentWindow.top)
+    console.log("onCreated 222", currentWindow, width, height, left, top)
     chrome.windows.create({
       url: `tabs/create.html?asset=${encodeURIComponent(
         JSON.stringify(asset)
       )}`,
       type: "popup",
-      width: w,
-      height: h,
-      left: Math.round(l),
-      top: Math.round(t)
+      width,
+      height,
+      left,
+      top
     })
   })
 })
