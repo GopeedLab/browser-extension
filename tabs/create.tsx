@@ -93,6 +93,16 @@ function fmtSize(size: number) {
   return `${size.toFixed(2)} ${units[unit]}`
 }
 
+function getCookie(url: string) {
+  return new Promise<string>((resolve) => {
+    chrome.cookies.getAll({ url }, (cookies) => {
+      resolve(
+        cookies.map((cookie) => `${cookie.name}=${cookie.value}`).join("; ")
+      )
+    })
+  })
+}
+
 function Create() {
   const query = new URLSearchParams(window.location.search)
   const asset = JSON.parse(query.get("asset")) as Asset
@@ -103,12 +113,18 @@ function Create() {
 
   const handleDownload = async () => {
     setLoading(true)
+    const cookie = await getCookie(asset.finalUrl)
     try {
       await sendToBackground<CreateTaskWithRequest>({
         name: "api/create",
         body: {
           req: {
-            url: asset.finalUrl
+            url: asset.finalUrl,
+            extra: {
+              header: {
+                Cookie: cookie ? cookie : undefined
+              }
+            }
           },
           opt: {
             name,

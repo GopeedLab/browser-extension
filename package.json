@@ -7,8 +7,9 @@
   "author": "Levi",
   "scripts": {
     "dev": "plasmo dev",
-    "build": "plasmo build",
-    "package": "plasmo package"
+    "dev:firefox": "plasmo dev --target=firefox-mv2",
+    "build": "plasmo build --zip",
+    "build:firefox": "plasmo build --target=firefox-mv2 --zip"
   },
   "dependencies": {
     "@emotion/cache": "11.11.0",
@@ -40,8 +41,13 @@
     "typescript": "5.2.2"
   },
   "manifest": {
+    "host_permissions": [
+      "http://*/*",
+      "https://*/*"
+    ],
     "permissions": [
-      "downloads"
+      "downloads",
+      "cookies"
     ],
     "browser_specific_settings": {
       "gecko": {

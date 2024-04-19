@@ -1,10 +1,6 @@
-import sniffer from "url:~/pages/sniffer.tsx"
-
 import { Storage } from "@plasmohq/storage"
-
 import path from "path"
-
-import { STORAGE_SERVER_STATUS, STORAGE_SERVERS } from "~constants"
+import { STORAGE_SERVER_SELECTED, STORAGE_SERVER_STATUS, STORAGE_SERVERS } from "~constants"
 import { getSelectedServer } from "~util"
 
 export { }
@@ -17,7 +13,6 @@ export async function checkServer(server: Server): Promise<CheckResult> {
       resolve("network_error")
     }, 5000)
     try {
-      console.log(server.url)
       const resp = await fetch(`${server.url}/api/v1/tasks/0`, {
         headers: {
           "X-Api-Token": server.token
@@ -53,45 +48,50 @@ export async function checkServer(server: Server): Promise<CheckResult> {
     })
   })
 } */
+const storage = new Storage()
+let capture = false
 
-; (async function () {
-  // initContextMenus()
+  ; (async function () {
+    // initContextMenus()
 
-  const storage = new Storage()
+    async function updateCapture() {
+      capture = !!(await getSelectedServer())
+    }
+    updateCapture()
+    storage.watch({
+      [STORAGE_SERVER_SELECTED]: updateCapture,
+    })
 
-  async function checkAllServers() {
-    const servers = await storage.get<Server[]>(STORAGE_SERVERS)
-    if (!servers || servers.length === 0) return
-    await Promise.all(
-      servers.map(async (server) => {
-        const status = await checkServer(server)
-        const prev = await storage.get<Record<string, boolean>>(
-          STORAGE_SERVER_STATUS
-        )
-        await storage.set(STORAGE_SERVER_STATUS, {
-          ...prev,
-          [server.url]: status === "success"
+    async function checkAllServers() {
+      const servers = await storage.get<Server[]>(STORAGE_SERVERS)
+      if (!servers || servers.length === 0) return
+      await Promise.all(
+        servers.map(async (server) => {
+          const status = await checkServer(server)
+          const prev = await storage.get<Record<string, boolean>>(
+            STORAGE_SERVER_STATUS
+          )
+          await storage.set(STORAGE_SERVER_STATUS, {
+            ...prev,
+            [server.url]: status === "success"
+          })
         })
-      })
-    )
-  }
-  checkAllServers()
-  setInterval(checkAllServers, 3000)
-})()
+      )
+    }
+    checkAllServers()
+    setInterval(checkAllServers, 3000)
+  })()
 
 // chrome.downloads.onDeterminingFilename only available in Chrome
 const downloadEvent = chrome.downloads.onDeterminingFilename || chrome.downloads.onCreated
 
 downloadEvent.addListener(async function (item) {
-  const server = await getSelectedServer()
-  if (!server) return
-
-  await chrome.downloads.cancel(item.id)
-  if (item.state === "complete") {
-    await chrome.downloads.removeFile(item.id)
+  if (!capture) {
+    return
   }
+  await chrome.downloads.cancel(item.id)
 
-  const asset = <Asset>{
+  const asset: Asset = {
     filename: path.basename(item.filename.replaceAll("\\", "/")),
     filesize: item.fileSize,
     finalUrl: item.finalUrl || item.url
