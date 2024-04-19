@@ -83,6 +83,9 @@ export async function checkServer(server: Server): Promise<CheckResult> {
 const downloadEvent = chrome.downloads.onDeterminingFilename || chrome.downloads.onCreated
 
 downloadEvent.addListener(async function (item) {
+  const finalUrl = item.finalUrl || item.url
+  if (finalUrl.startsWith("blob:") || finalUrl.startsWith("data:")) return
+
   const server = await getSelectedServer()
   if (!server) return
 
@@ -94,7 +97,7 @@ downloadEvent.addListener(async function (item) {
   const asset = <Asset>{
     filename: path.basename(item.filename.replaceAll("\\", "/")),
     filesize: item.fileSize,
-    finalUrl: item.finalUrl || item.url
+    finalUrl
   }
   chrome.windows.getCurrent((currentWindow) => {
     const width = 480
