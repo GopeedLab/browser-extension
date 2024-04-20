@@ -3,7 +3,7 @@ import type { CreateTaskWithRequest } from "@gopeed/types"
 
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 
-import { getSelectedServer } from "~util"
+import { getSelectedServer } from "~service/server"
 
 const handler: PlasmoMessaging.MessageHandler<
   CreateTaskWithRequest,
