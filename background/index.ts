@@ -1,5 +1,5 @@
-import path from "path"
 import contentDisposition from "content-disposition"
+import path from "path"
 
 import { Storage } from "@plasmohq/storage"
 
@@ -10,7 +10,7 @@ import {
 } from "~constants"
 import { getSelectedServer } from "~service/server"
 
-export {}
+export { }
 
 export type CheckResult = "success" | "network_error" | "token_error"
 
@@ -59,38 +59,38 @@ const checkIntervalTime = 1500
 const storage = new Storage()
 let capture = false
 
-;(async function () {
-  // initContextMenus()
+  ; (async function () {
+    // initContextMenus()
 
-  async function updateCapture() {
-    // Sleep for a while to wait for the server check
-    await new Promise((resolve) => setTimeout(resolve, checkIntervalTime + 1))
-    capture = !!(await getSelectedServer())
-  }
-  updateCapture()
-  storage.watch({
-    [STORAGE_SERVER_SELECTED]: updateCapture
-  })
+    async function updateCapture() {
+      // Sleep for a while to wait for the server check
+      await new Promise((resolve) => setTimeout(resolve, checkIntervalTime + 1))
+      capture = !!(await getSelectedServer())
+    }
+    updateCapture()
+    storage.watch({
+      [STORAGE_SERVER_SELECTED]: updateCapture
+    })
 
-  async function checkAllServers() {
-    const servers = await storage.get<Server[]>(STORAGE_SERVERS)
-    if (!servers || servers.length === 0) return
-    await Promise.all(
-      servers.map(async (server) => {
-        const status = await checkServer(server)
-        const prev = await storage.get<Record<string, boolean>>(
-          STORAGE_SERVER_STATUS
-        )
-        await storage.set(STORAGE_SERVER_STATUS, {
-          ...prev,
-          [server.url]: status === "success"
+    async function checkAllServers() {
+      const servers = await storage.get<Server[]>(STORAGE_SERVERS)
+      if (!servers || servers.length === 0) return
+      await Promise.all(
+        servers.map(async (server) => {
+          const status = await checkServer(server)
+          const prev = await storage.get<Record<string, boolean>>(
+            STORAGE_SERVER_STATUS
+          )
+          await storage.set(STORAGE_SERVER_STATUS, {
+            ...prev,
+            [server.url]: status === "success"
+          })
         })
-      })
-    )
-  }
-  checkAllServers()
-  setInterval(checkAllServers, checkIntervalTime)
-})()
+      )
+    }
+    checkAllServers()
+    setInterval(checkAllServers, checkIntervalTime)
+  })()
 
 // chrome.downloads.onDeterminingFilename only available in Chrome
 const downloadEvent =
@@ -104,9 +104,6 @@ downloadEvent.addListener(async function (item) {
   if (finalUrl.startsWith("blob:") || finalUrl.startsWith("data:")) {
     return
   }
-
-  const server = await getSelectedServer()
-  if (!server) return
 
   await chrome.downloads.cancel(item.id)
   if (chrome.runtime.lastError) {
@@ -125,16 +122,6 @@ downloadEvent.addListener(async function (item) {
   })
 })
 
-function checkOctetStream(
-  res: chrome.webRequest.WebResponseHeadersDetails
-): string {
-  return res.responseHeaders.find(
-    (header) =>
-      header.name.toLowerCase() === "content-type" &&
-      header.value.toLowerCase().startsWith("application/octet-stream")
-  )?.value
-}
-
 function checkContentDisposition(
   res: chrome.webRequest.WebResponseHeadersDetails
 ): string {
@@ -151,9 +138,8 @@ if (isFirefox) {
       if (res.statusCode !== 200) {
         return
       }
-      const octetStreamValue = checkOctetStream(res)
       const contentDispositionValue = checkContentDisposition(res)
-      if (!octetStreamValue && !contentDispositionValue) {
+      if (!contentDispositionValue) {
         return
       }
 
@@ -178,14 +164,13 @@ if (isFirefox) {
         filename,
         filesize,
         finalUrl: res.url,
-        referer: res.initiator ?? "",
+        referer: (res as any).originUrl,
         cookieStoreId: (res as any).cookieStoreId
       })
       return { cancel: true }
     },
     { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] },
-    // ["blocking", "requestHeaders", "responseHeaders"]
-    ["responseHeaders"]
+    ["blocking", "responseHeaders"]
   )
 }
 

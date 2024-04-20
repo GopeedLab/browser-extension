@@ -49,7 +49,9 @@
     ],
     "permissions": [
       "downloads",
-      "cookies"
+      "cookies",
+      "webRequest",
+      "webRequestBlocking"
     ],
     "browser_specific_settings": {
       "gecko": {

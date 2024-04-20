@@ -3,7 +3,7 @@ interface Asset {
   filesize: number
   finalUrl: string
   referer: string
-  cookieStoreId?: string
+  cookieStoreId: string
 }
 
 interface Server {
