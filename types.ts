@@ -2,6 +2,8 @@ interface Asset {
   filename: string
   filesize: number
   finalUrl: string
+  referer: string
+  cookieStoreId?: string
 }
 
 interface Server {

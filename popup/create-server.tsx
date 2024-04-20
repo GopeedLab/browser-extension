@@ -1,7 +1,5 @@
-import { ArrowBack, Save, Speed } from "@mui/icons-material"
-import { LoadingButton } from "@mui/lab"
+import { ArrowBack, Save } from "@mui/icons-material"
 import {
-  Alert,
   AppBar,
   Backdrop,
   Box,
@@ -13,7 +11,6 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
-  Snackbar,
   Stack,
   Toolbar,
   Typography
@@ -83,7 +80,7 @@ function CreateServer(props: { onClose: () => void }) {
         return
       }
 
-      doSave()
+      await doSave()
     } catch (e) {
       console.error(e)
     } finally {
@@ -91,12 +88,13 @@ function CreateServer(props: { onClose: () => void }) {
     }
   }
 
-  function doSave() {
+  async function doSave() {
     const server = buildServer()
-    if (servers.length === 0) {
-      setSelected(server.url)
+    const currentServerCount = servers.length
+    await setServers([...servers, server])
+    if (currentServerCount === 0) {
+      await setSelected(server.url)
     }
-    setServers([...servers, server])
     props.onClose()
   }
 

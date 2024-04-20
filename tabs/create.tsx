@@ -122,7 +122,9 @@ function Create() {
             url: asset.finalUrl,
             extra: {
               header: {
-                Cookie: cookie ? cookie : undefined
+                "User-Agent": navigator.userAgent,
+                Cookie: cookie ? cookie : undefined,
+                Referer: asset.referer ? asset.referer : undefined
               }
             }
           },
