@@ -100,6 +100,13 @@ downloadEvent.addListener(async function (item) {
   if (!capture) {
     return
   }
+  const finalUrl = item.finalUrl || item.url
+  if (finalUrl.startsWith("blob:") || finalUrl.startsWith("data:")) {
+    return
+  }
+
+  const server = await getSelectedServer()
+  if (!server) return
 
   await chrome.downloads.cancel(item.id)
   if (chrome.runtime.lastError) {
@@ -109,13 +116,13 @@ downloadEvent.addListener(async function (item) {
     await chrome.downloads.erase({ id: item.id })
   }
 
-  const asset: Asset = {
+  downloadConfirm({
     filename: path.basename(item.filename.replaceAll("\\", "/")),
     filesize: item.fileSize,
-    finalUrl: item.finalUrl || item.url,
+    finalUrl,
     referer: item.referrer,
     cookieStoreId: (item as any).cookieStoreId
-  }
+  })
 })
 
 function checkOctetStream(
