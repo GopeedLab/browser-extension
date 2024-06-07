@@ -1,16 +1,12 @@
-import contentDisposition from "content-disposition"
 import path from "path"
+import contentDisposition from "content-disposition"
 
 import { Storage } from "@plasmohq/storage"
 
-import {
-  STORAGE_SERVER_SELECTED,
-  STORAGE_SERVER_STATUS,
-  STORAGE_SERVERS
-} from "~constants"
+import { STORAGE_SERVER_STATUS, STORAGE_SERVERS } from "~constants"
 import { getSelectedServer } from "~service/server"
 
-export { }
+export {}
 
 export type CheckResult = "success" | "network_error" | "token_error"
 
@@ -59,38 +55,58 @@ const checkIntervalTime = 1500
 const storage = new Storage()
 let capture = false
 
-  ; (async function () {
-    // initContextMenus()
+;(async function () {
+  // initContextMenus()
 
-    async function updateCapture() {
-      // Sleep for a while to wait for the server check
-      await new Promise((resolve) => setTimeout(resolve, checkIntervalTime + 1))
-      capture = !!(await getSelectedServer())
+  async function checkServerIsAvailable(server: Server): Promise<boolean> {
+    const status = await checkServer(server)
+    return status === "success"
+  }
+
+  async function checkAllServers() {
+    const servers = await storage.get<Server[]>(STORAGE_SERVERS)
+    if (!servers || servers.length === 0) return
+
+    const serverStatusList = await Promise.all(
+      servers.map(checkServerIsAvailable)
+    )
+    // Check if any server status has changed, this is avoid MAX_WRITE_OPERATIONS_PER_HOUR quota.
+    let hasChanged = false
+    const prev = await storage.get<Record<string, boolean>>(
+      STORAGE_SERVER_STATUS
+    )
+    if (!prev) {
+      hasChanged = true
+    } else {
+      for (const [index, server] of servers.entries()) {
+        const currentStatus = serverStatusList[index]
+        if (prev[server.url] !== currentStatus) {
+          hasChanged = true
+          break
+        }
+      }
     }
-    updateCapture()
-    storage.watch({
-      [STORAGE_SERVER_SELECTED]: updateCapture
-    })
 
-    async function checkAllServers() {
-      const servers = await storage.get<Server[]>(STORAGE_SERVERS)
-      if (!servers || servers.length === 0) return
-      await Promise.all(
-        servers.map(async (server) => {
-          const status = await checkServer(server)
-          const prev = await storage.get<Record<string, boolean>>(
-            STORAGE_SERVER_STATUS
-          )
-          await storage.set(STORAGE_SERVER_STATUS, {
-            ...prev,
-            [server.url]: status === "success"
-          })
-        })
+    if (!hasChanged) {
+      return
+    }
+
+    await storage.set(STORAGE_SERVER_STATUS, {
+      ...prev,
+      ...Object.fromEntries(
+        servers.map((server, index) => [server.url, serverStatusList[index]])
       )
-    }
-    checkAllServers()
-    setInterval(checkAllServers, checkIntervalTime)
-  })()
+    })
+  }
+
+  async function checkAndRefreshCapture() {
+    await checkAllServers()
+    capture = !!(await getSelectedServer())
+  }
+
+  checkAndRefreshCapture()
+  setInterval(checkAndRefreshCapture, checkIntervalTime)
+})()
 
 // chrome.downloads.onDeterminingFilename only available in Chrome
 const downloadEvent =
