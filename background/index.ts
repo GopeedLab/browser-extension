@@ -55,6 +55,11 @@ const checkIntervalTime = 1500
 const storage = new Storage()
 let capture = false
 
+// Try to avoid the issue of the extension inactive after the browser is restarted.
+// https://stackoverflow.com/a/76344225/8129004
+chrome.runtime.onStartup.addListener(function () {
+  console.log("onStartup")
+})
 ;(async function () {
   // initContextMenus()
 
