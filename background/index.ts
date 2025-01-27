@@ -55,6 +55,19 @@ const checkIntervalTime = 1500
 const storage = new Storage()
 let capture = false
 
+console.log("background script loaded")
+var port = chrome.runtime.connectNative("com.gopeed.gopeed")
+port.onMessage.addListener(function (msg) {
+  console.log("Received" + JSON.stringify(msg))
+})
+port.onDisconnect.addListener(function () {
+  console.log("Disconnected")
+})
+setInterval(() => {
+  console.log("Sending: ping")
+  port.postMessage({ method: "ping" })
+}, 1000)
+
 // Try to avoid the issue of the extension inactive after the browser is restarted.
 // https://stackoverflow.com/a/76344225/8129004
 chrome.runtime.onStartup &&
