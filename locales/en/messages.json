@@ -11,47 +11,11 @@
   "confirm": {
     "message": "CONFIRM"
   },
-  "server": {
-    "message": "SERVER"
-  },
-  "create": {
-    "message": "CREATE"
-  },
-  "title": {
-    "message": "Title"
-  },
-  "scheme": {
-    "message": "Scheme"
-  },
-  "host": {
-    "message": "Host"
-  },
-  "port": {
-    "message": "Port"
-  },
-  "token": {
-    "message": "Token"
-  },
   "deleteTip": {
     "message": "Are you sure to delete this configuration?"
   },
   "delete": {
     "message": "DELETE"
-  },
-  "check": {
-    "message": "CHECK"
-  },
-  "tip_create_error": {
-    "message": "Configuration error"
-  },
-  "tip_create_still_save": {
-    "message": "，do you still want to save?"
-  },
-  "tip_create_network_error": {
-    "message": "Server connection failed"
-  },
-  "tip_create_token_error": {
-    "message": "Api token error or server not configured correctly"
   },
   "enabled": {
     "message": "Enabled"
@@ -87,7 +51,7 @@
     "message": "Set file types that do not need to be captured"
   },
   "file_type_filter_placeholder": {
-    "message": "Enter one file extension per line, e.g.: jpg"
+    "message": "Enter one file extension per line, e.g.: .jpg"
   },
   "min_file_size_filter": {
     "message": "Small File Filter"
@@ -131,17 +95,14 @@
   "enable_remote_download_desc": {
     "message": "Send download tasks directly to remote server"
   },
-  "add_server": {
-    "message": "Add Server"
-  },
-  "edit_server": {
-    "message": "Edit Server"
-  },
   "protocol": {
     "message": "Protocol"
   },
   "server_url": {
     "message": "Server URL"
+  },
+  "token": {
+    "message": "Token"
   },
   "save": {
     "message": "Save"
@@ -161,13 +122,34 @@
   "download_notification_desc": {
     "message": "Show browser notification when sending download tasks"
   },
+  "add": {
+    "message": "Add"
+  },
+  "download_servers": {
+    "message": "Download Servers"
+  },
   "test_server": {
     "message": "Test"
   },
   "test_success": {
     "message": "Connection successful"
   },
-  "test_failed": {
-    "message": "Connection failed"
+  "test_network_error": {
+    "message": "Server connection failed"
+  },
+  "test_token_error": {
+    "message": "Api token error or server not configured correctly"
+  },
+  "notification_create_success": {
+    "message": "Create Success"
+  },
+  "notification_create_success_message": {
+    "message": "Task has been successfully added to download server"
+  },
+  "notification_create_error": {
+    "message": "Create Failed"
+  },
+  "notification_create_error_message": {
+    "message": "Task add failed, please check if download server is working properly"
   }
 }

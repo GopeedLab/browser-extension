@@ -1,8 +1,3 @@
-export interface RemoteServer {
-  protocol: "http" | "https"
-  url: string
-}
-
 export interface Settings {
   enabled: boolean
   autoWakeup: boolean
@@ -22,7 +17,7 @@ export interface Settings {
   remote: {
     enabled: boolean
     selectedServer: string
-    servers: RemoteServer[]
+    servers: Server[]
     notification: boolean
   }
 }

@@ -26,20 +26,22 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 
+import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
 
+import type { CheckResult } from "~background/messages/api/check"
 import { STORAGE_SETTINGS } from "~constants"
 
-import { defaultSettings, type RemoteServer, type Settings } from "../types"
+import { defaultSettings, type Settings } from "../types"
 import SavedTip, { useTip } from "./SavedTip"
 
-interface ServerFormData {
-  protocol: "http" | "https"
-  url: string
+interface ServerFormData extends Server {
   error?: string
   testing?: boolean
-  testResult?: "success" | "error"
 }
+
+export const getFullUrl = (server: Server) =>
+  `${server.protocol}://${server.url}`
 
 export default function RemoteSettings() {
   const [settings, setSettings] = useStorage<Settings>(
@@ -51,12 +53,10 @@ export default function RemoteSettings() {
   const [editingServerUrl, setEditingServerUrl] = useState<string | null>(null)
   const [formData, setFormData] = useState<ServerFormData>({
     protocol: "http",
-    url: ""
+    url: "",
+    token: ""
   })
-  const [deleteConfirm, setDeleteConfirm] = useState<RemoteServer | null>(null)
-
-  const getFullUrl = (server: RemoteServer) =>
-    `${server.protocol}://${server.url}`
+  const [deleteConfirm, setDeleteConfirm] = useState<Server | null>(null)
 
   const handleToggleEnabled = (checked: boolean) => {
     if (checked && settings.remote.servers.length === 0) {
@@ -80,17 +80,21 @@ export default function RemoteSettings() {
 
   const handleAddServer = () => {
     setEditingServerUrl(null)
-    setFormData({ protocol: "http", url: "" })
+    setFormData({ protocol: "http", url: "", token: "" })
     setOpen(true)
   }
 
-  const handleEditServer = (server: RemoteServer) => {
+  const handleEditServer = (server: Server) => {
     setEditingServerUrl(getFullUrl(server))
-    setFormData({ protocol: server.protocol, url: server.url })
+    setFormData({
+      protocol: server.protocol,
+      url: server.url,
+      token: server.token
+    })
     setOpen(true)
   }
 
-  const handleDeleteConfirm = (server: RemoteServer) => {
+  const handleDeleteConfirm = (server: Server) => {
     setDeleteConfirm(server)
   }
 
@@ -100,18 +104,24 @@ export default function RemoteSettings() {
     const newServers = settings.remote.servers.filter(
       (s) => getFullUrl(s) !== fullUrl
     )
+
+    // When deleting the last server, clear selection and disable remote download
+    const isLastServer = newServers.length === 0
     setSettings({
       ...settings,
       remote: {
         ...settings.remote,
         servers: newServers,
-        selectedServer:
-          settings.remote.selectedServer === fullUrl
-            ? ""
-            : settings.remote.selectedServer
+        selectedServer: isLastServer
+          ? ""
+          : settings.remote.selectedServer === fullUrl
+          ? ""
+          : settings.remote.selectedServer,
+        enabled: isLastServer ? false : settings.remote.enabled
       }
     })
     setDeleteConfirm(null)
+    showTip()
   }
 
   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,10 +139,11 @@ export default function RemoteSettings() {
 
     const newServer = {
       protocol: formData.protocol,
-      url: formData.url
+      url: formData.url,
+      token: formData.token
     }
 
-    let newServers
+    let newServers: Server[]
     if (editingServerUrl) {
       newServers = settings.remote.servers.map((s) =>
         getFullUrl(s) === editingServerUrl ? newServer : s
@@ -141,34 +152,46 @@ export default function RemoteSettings() {
       newServers = [...settings.remote.servers, newServer]
     }
 
+    // When adding the first server, automatically select it but don't enable remote download
+    const isFirstServer = settings.remote.servers.length === 0
     setSettings({
       ...settings,
-      remote: { ...settings.remote, servers: newServers }
+      remote: {
+        ...settings.remote,
+        servers: newServers,
+        selectedServer: isFirstServer
+          ? getFullUrl(newServer)
+          : settings.remote.selectedServer
+      }
     })
     showTip()
     setOpen(false)
   }
 
   const handleTestServer = async () => {
-    setFormData((prev) => ({ ...prev, testing: true, testResult: undefined }))
+    setFormData((prev) => ({ ...prev, testing: true }))
 
     try {
-      // TODO: Add actual server testing logic here
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      const success = true // This should be the actual test result
-
-      setFormData((prev) => ({
-        ...prev,
-        testing: false,
-        testResult: success ? "success" : "error"
-      }))
-      showTip(
-        success ? "test_success" : "test_failed",
-        success ? "success" : "error"
-      )
+      // Check if the server is available
+      const result = await sendToBackground<Server, CheckResult>({
+        name: "api/check",
+        body: formData
+      })
+      switch (result) {
+        case "success":
+          showTip("test_success")
+          break
+        case "network_error":
+          showTip("test_network_error", "error")
+          break
+        case "token_error":
+          showTip("test_token_error", "error")
+          break
+      }
     } catch (error) {
-      setFormData((prev) => ({ ...prev, testing: false, testResult: "error" }))
-      showTip("test_failed", "error")
+      console.error(error)
+    } finally {
+      setFormData((prev) => ({ ...prev, testing: false }))
     }
   }
 
@@ -219,40 +242,60 @@ export default function RemoteSettings() {
         />
       </Box>
 
-      <Box sx={{ mt: 2 }}>
-        <Button variant="contained" onClick={handleAddServer}>
-          {chrome.i18n.getMessage("add_server")}
+      <Box sx={{ display: "flex", alignItems: "center", px: 1 }}>
+        <Typography sx={{ flex: 1 }}>
+          {chrome.i18n.getMessage("download_servers")}
+        </Typography>
+        <Button variant="contained" size="small" onClick={handleAddServer}>
+          {chrome.i18n.getMessage("add")}
         </Button>
-
-        <List>
-          {settings.remote.servers.map((server) => {
-            const fullUrl = getFullUrl(server)
-            return (
-              <ListItem key={fullUrl}>
-                <Radio
-                  checked={settings.remote.selectedServer === fullUrl}
-                  onChange={() => handleServerSelect(fullUrl)}
-                  disabled={!settings.remote.enabled}
-                />
-                <ListItemText primary={fullUrl} />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    edge="end"
-                    onClick={() => handleEditServer(server)}
-                    sx={{ mr: 1 }}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    edge="end"
-                    onClick={() => handleDeleteConfirm(server)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            )
-          })}
-        </List>
       </Box>
+
+      {settings.remote.servers.length > 0 && (
+        <Box
+          sx={{
+            bgcolor: "action.hover",
+            borderRadius: 1
+          }}>
+          <List disablePadding>
+            {settings.remote.servers.map((server, index) => {
+              const fullUrl = getFullUrl(server)
+              return (
+                <ListItem
+                  key={fullUrl}
+                  sx={{
+                    borderBottom:
+                      index === settings.remote.servers.length - 1 ? 0 : 1,
+                    borderColor: "divider",
+                    "&:hover": {
+                      bgcolor: "action.selected"
+                    }
+                  }}>
+                  <Radio
+                    checked={settings.remote.selectedServer === fullUrl}
+                    onChange={() => handleServerSelect(fullUrl)}
+                    disabled={!settings.remote.enabled}
+                  />
+                  <ListItemText primary={fullUrl} />
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      edge="end"
+                      onClick={() => handleEditServer(server)}
+                      sx={{ mr: 1 }}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      onClick={() => handleDeleteConfirm(server)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              )
+            })}
+          </List>
+        </Box>
+      )}
 
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>
@@ -269,7 +312,7 @@ export default function RemoteSettings() {
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  protocol: e.target.value as "http" | "https"
+                  protocol: e.target.value as any
                 })
               }>
               <MenuItem value="http">HTTP</MenuItem>
@@ -285,6 +328,16 @@ export default function RemoteSettings() {
             onChange={handleUrlChange}
             error={Boolean(formData.error)}
             helperText={formData.error}
+          />
+          <TextField
+            margin="dense"
+            type="password"
+            label={chrome.i18n.getMessage("token")}
+            fullWidth
+            value={formData.token}
+            onChange={(e) =>
+              setFormData({ ...formData, token: e.target.value })
+            }
           />
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>

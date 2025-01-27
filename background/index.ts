@@ -1,38 +1,16 @@
 import path from "path"
+import Client from "@gopeed/rest"
+import { type Request } from "@gopeed/types"
 import contentDisposition from "content-disposition"
+import icon from "data-base64:~assets/icon.png"
 
 import { Storage } from "@plasmohq/storage"
 
-import { STORAGE_SERVER_STATUS, STORAGE_SERVERS } from "~constants"
-import { getSelectedServer } from "~service/server"
+import { STORAGE_SETTINGS } from "~constants"
+import { getFullUrl } from "~options/components/RemoteSettings"
+import { defaultSettings, type Settings } from "~options/types"
 
 export {}
-
-export type CheckResult = "success" | "network_error" | "token_error"
-
-export async function checkServer(server: Server): Promise<CheckResult> {
-  return new Promise(async (resolve) => {
-    setTimeout(() => {
-      resolve("network_error")
-    }, 5000)
-    try {
-      const resp = await fetch(`${server.url}/api/v1/tasks/0`, {
-        headers: {
-          "X-Api-Token": server.token
-        }
-      })
-      const json = await resp.json()
-      // When the server is available, it should return 2001 (task not found)
-      if (json.code !== 2001) {
-        resolve("token_error")
-        return
-      }
-      resolve("success")
-    } catch (e) {
-      resolve("network_error")
-    }
-  })
-}
 
 /* function initContextMenus() {
   chrome.contextMenus.create({
@@ -50,93 +28,93 @@ export async function checkServer(server: Server): Promise<CheckResult> {
     })
   })
 } */
-const isFirefox = process.env.PLASMO_BROWSER === "firefox"
-const checkIntervalTime = 1500
-const storage = new Storage()
-let capture = false
 
-console.log("background script loaded")
-var port = chrome.runtime.connectNative("com.gopeed.gopeed")
-port.onMessage.addListener(function (msg) {
-  console.log("Received" + JSON.stringify(msg))
-})
-port.onDisconnect.addListener(function () {
-  console.log("Disconnected")
-})
-setInterval(() => {
-  console.log("Sending: ping")
-  port.postMessage({ method: "ping" })
-}, 1000)
+let connectNativePort: chrome.runtime.Port | null = null
 
-// Try to avoid the issue of the extension inactive after the browser is restarted.
-// https://stackoverflow.com/a/76344225/8129004
-chrome.runtime.onStartup &&
-  chrome.runtime.onStartup.addListener(function () {
-    console.log("onStartup")
-  })
-;(async function () {
-  // initContextMenus()
-
-  async function checkServerIsAvailable(server: Server): Promise<boolean> {
-    const status = await checkServer(server)
-    return status === "success"
+function connectNative(): boolean {
+  if (connectNativePort) {
+    return true
   }
+  try {
+    connectNativePort = chrome.runtime.connectNative("com.gopeed.gopeed")
+    connectNativePort.onDisconnect.addListener(() => {
+      connectNativePort = null
+    })
+    return true
+  } catch (e) {
+    console.error(e)
+    return false
+  }
+}
 
-  async function checkAllServers() {
-    const servers = await storage.get<Server[]>(STORAGE_SERVERS)
-    if (!servers || servers.length === 0) return
-
-    const serverStatusList = await Promise.all(
-      servers.map(checkServerIsAvailable)
-    )
-    // Check if any server status has changed, this is avoid MAX_WRITE_OPERATIONS_PER_HOUR quota.
-    let hasChanged = false
-    const prev = await storage.get<Record<string, boolean>>(
-      STORAGE_SERVER_STATUS
-    )
-    if (!prev) {
-      hasChanged = true
-    } else {
-      for (const [index, server] of servers.entries()) {
-        const currentStatus = serverStatusList[index]
-        if (prev[server.url] !== currentStatus) {
-          hasChanged = true
-          break
-        }
+async function connectNativeAndPost<T>(
+  message: HostRequest<any>
+): Promise<HostResponse<T>> {
+  if (connectNative()) {
+    return new Promise((resolve, reject) => {
+      const cb = (response: any) => {
+        connectNativePort.onMessage.removeListener(cb)
+        resolve(response)
       }
-    }
-
-    if (!hasChanged) {
-      return
-    }
-
-    await storage.set(STORAGE_SERVER_STATUS, {
-      ...prev,
-      ...Object.fromEntries(
-        servers.map((server, index) => [server.url, serverStatusList[index]])
-      )
+      try {
+        connectNativePort.onMessage.addListener(cb)
+        connectNativePort.postMessage(message)
+      } catch (e) {
+        reject(e)
+      }
     })
   }
+}
 
-  async function checkAndRefreshCapture() {
-    await checkAllServers()
-    capture = !!(await getSelectedServer())
-  }
+connectNative()
 
-  checkAndRefreshCapture()
-  setInterval(checkAndRefreshCapture, checkIntervalTime)
-})()
+const isFirefox = process.env.PLASMO_BROWSER === "firefox"
+const storage = new Storage()
 
 // chrome.downloads.onDeterminingFilename only available in Chrome
 const downloadEvent =
   chrome.downloads.onDeterminingFilename || chrome.downloads.onCreated
 
 downloadEvent.addListener(async function (item) {
-  if (!capture) {
-    return
-  }
   const finalUrl = item.finalUrl || item.url
   if (finalUrl.startsWith("blob:") || finalUrl.startsWith("data:")) {
+    return
+  }
+
+  const settings =
+    (await storage.get<Settings>(STORAGE_SETTINGS)) || defaultSettings
+  if (settings.enabled === false) {
+    return
+  }
+  if (settings.excludeDomains.enabled) {
+    const excludes = settings.excludeDomains.list.split("\n")
+    const host = new URL(item.url).host
+    if (excludes.includes(host)) {
+      return
+    }
+  }
+  if (settings.excludeFileTypes.enabled && item.filename) {
+    const excludes = settings.excludeFileTypes.list
+      .split("\n")
+      .map((ext) => ext.trim().toLowerCase())
+    const ext = path.extname(item.filename).toLowerCase()
+    if (excludes.includes(ext)) {
+      return
+    }
+  }
+  if (settings.minFileSize.enabled && item.fileSize) {
+    if (item.fileSize < settings.minFileSize.value) {
+      return
+    }
+  }
+
+  let handler: Function | undefined
+  if (settings.remote.enabled === true) {
+    handler = await handleRemoteDownload(item, settings)
+  } else {
+    handler = await handleNativeDownload(item, settings)
+  }
+  if (!handler) {
     return
   }
 
@@ -148,13 +126,7 @@ downloadEvent.addListener(async function (item) {
     await chrome.downloads.erase({ id: item.id })
   }
 
-  downloadConfirm({
-    filename: path.basename(item.filename.replaceAll("\\", "/")),
-    filesize: item.fileSize,
-    finalUrl,
-    referer: item.referrer,
-    cookieStoreId: (item as any).cookieStoreId
-  })
+  handler()
 })
 
 function checkContentDisposition(
@@ -195,13 +167,6 @@ if (isFirefox) {
         filesize = parseInt(contentLength)
       }
 
-      downloadConfirm({
-        filename,
-        filesize,
-        finalUrl: res.url,
-        referer: (res as any).originUrl,
-        cookieStoreId: (res as any).cookieStoreId
-      })
       return { cancel: true }
     },
     { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] },
@@ -209,25 +174,120 @@ if (isFirefox) {
   )
 }
 
-function downloadConfirm(asset: Asset) {
-  chrome.windows.getCurrent((currentWindow) => {
-    const width = 480
-    const height = 600
-    const left = Math.round(
-      (currentWindow.width - width) * 0.5 + currentWindow.left
-    )
-    const top = Math.round(
-      (currentWindow.height - height) * 0.5 + currentWindow.top
-    )
-    chrome.windows.create({
-      url: `tabs/create.html?asset=${encodeURIComponent(
-        JSON.stringify(asset)
-      )}`,
-      type: "popup",
-      width,
-      height,
-      left,
-      top
+async function handleRemoteDownload(
+  item: chrome.downloads.DownloadItem,
+  settings: Settings
+): Promise<Function | undefined> {
+  const server = settings.remote.servers.find(
+    (server) => getFullUrl(server) === settings.remote.selectedServer
+  )
+  if (!server) {
+    return
+  }
+
+  return async () => {
+    const client = new Client({
+      host: getFullUrl(server),
+      token: server.token
+    })
+    let notificationTitle: string
+    let notificationMessage: string
+    try {
+      await client.createTask({
+        req: await toCreateRequest(item)
+      })
+      notificationTitle = chrome.i18n.getMessage("notification_create_success")
+      notificationMessage = chrome.i18n.getMessage(
+        "notification_create_success_message"
+      )
+    } catch (e) {
+      console.error("createTask error", e)
+      console.error(e)
+      notificationTitle = chrome.i18n.getMessage("notification_create_error")
+      notificationMessage = chrome.i18n.getMessage(
+        "notification_create_error_message"
+      )
+    }
+    if (settings.remote.notification) {
+      chrome.notifications.create({
+        type: "basic",
+        iconUrl: icon,
+        title: notificationTitle,
+        message: notificationMessage
+      })
+    }
+  }
+}
+
+interface HostRequest<T> {
+  method: string
+  params?: T
+}
+
+interface HostResponse<T> {
+  code: number
+  data?: T
+  message?: string
+}
+
+async function handleNativeDownload(
+  item: chrome.downloads.DownloadItem,
+  settings: Settings
+): Promise<Function | undefined> {
+  if (!settings.autoWakeup) {
+    try {
+      const resp = await connectNativeAndPost({
+        method: "ping"
+      })
+      const isRunning = resp?.data || false
+      if (!isRunning) {
+        return
+      }
+    } catch (e) {
+      console.error(e)
+      return
+    }
+  }
+
+  return async () => {
+    const req = await toCreateRequest(item)
+    try {
+      await connectNativeAndPost<string>({
+        method: "create",
+        params: btoa(
+          JSON.stringify({
+            req
+          })
+        )
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+}
+
+function getCookie(url: string, storeId?: string) {
+  return new Promise<string>((resolve) => {
+    chrome.cookies.getAll({ url, storeId }, (cookies) => {
+      resolve(
+        cookies.map((cookie) => `${cookie.name}=${cookie.value}`).join("; ")
+      )
     })
   })
+}
+
+async function toCreateRequest(
+  item: chrome.downloads.DownloadItem
+): Promise<Request> {
+  const cookie = await getCookie(item.finalUrl, (item as any).cookieStoreId)
+  return {
+    url: item.finalUrl,
+    extra: {
+      header: {
+        "User-Agent": navigator.userAgent,
+        Cookie: cookie ? cookie : undefined,
+        Referer: item.referrer ? item.referrer : undefined
+      }
+    }
+  }
 }

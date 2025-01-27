@@ -50,11 +50,24 @@
     "permissions": [
       "downloads",
       "cookies",
-      "nativeMessaging"
+      "nativeMessaging",
+      "notifications"
     ],
-    "browser_specific_settings": {
-      "gecko": {
-        "id": "{c5d69a8f-2ed0-46a7-afa4-b3a00dc58088}"
+    "overrides": {
+      "firefox": {
+        "permissions": [
+          "downloads",
+          "cookies",
+          "webRequest",
+          "webRequestBlocking",
+          "nativeMessaging",
+          "notifications"
+        ],
+        "browser_specific_settings": {
+          "gecko": {
+            "id": "{c5d69a8f-2ed0-46a7-afa4-b3a00dc58088}"
+          }
+        }
       }
     }
   }
