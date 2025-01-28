@@ -75,25 +75,37 @@ const Options = () => {
                 display: "flex",
                 alignItems: "center"
               }}>
-              <img
-                src={icon}
-                alt="Gopeed"
-                style={{ width: 32, height: 32 }} // Increased from 24 to 32
-              />
-              <Box
-                sx={{
+              <a
+                href="https://gopeed.com"
+                target="_blank"
+                style={{
                   display: "flex",
-                  flexDirection: "column",
-                  ml: 1.5, // Increased from ml: 1
-                  justifyContent: "center"
+                  alignItems: "center",
+                  textDecoration: "none",
+                  color: "inherit"
                 }}>
-                <Typography variant="h6" component="div" sx={{ lineHeight: 1 }}>
-                  Gopeed
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  v{manifest.version}
-                </Typography>
-              </Box>
+                <img
+                  src={icon}
+                  alt="Gopeed"
+                  style={{ width: 32, height: 32 }}
+                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    ml: 1.5
+                  }}>
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ lineHeight: 1 }}>
+                    Gopeed
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    v{manifest.version}
+                  </Typography>
+                </Box>
+              </a>
             </Box>
             <Box sx={{ flex: 1 }} />
             <IconButton

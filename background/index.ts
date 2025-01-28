@@ -2,8 +2,8 @@ import path from "path"
 import Client from "@gopeed/rest"
 import { type Request } from "@gopeed/types"
 import contentDisposition from "content-disposition"
-import icon from "data-base64:~assets/icon.png"
 
+import { getPort } from "@plasmohq/messaging/background"
 import { Storage } from "@plasmohq/storage"
 
 import { STORAGE_SETTINGS } from "~constants"
@@ -108,6 +108,8 @@ downloadEvent.addListener(async function (item) {
     }
   }
 
+  await chrome.downloads.pause(item.id)
+
   let handler: Function | undefined
   if (settings.remote.enabled === true) {
     handler = await handleRemoteDownload(item, settings)
@@ -115,6 +117,7 @@ downloadEvent.addListener(async function (item) {
     handler = await handleNativeDownload(item, settings)
   }
   if (!handler) {
+    await chrome.downloads.resume(item.id)
     return
   }
 
@@ -190,6 +193,7 @@ async function handleRemoteDownload(
       host: getFullUrl(server),
       token: server.token
     })
+    let notificationType: string
     let notificationTitle: string
     let notificationMessage: string
     try {
@@ -201,17 +205,17 @@ async function handleRemoteDownload(
         "notification_create_success_message"
       )
     } catch (e) {
-      console.error("createTask error", e)
       console.error(e)
+      notificationType = "error"
       notificationTitle = chrome.i18n.getMessage("notification_create_error")
       notificationMessage = chrome.i18n.getMessage(
         "notification_create_error_message"
       )
     }
     if (settings.remote.notification) {
-      chrome.notifications.create({
-        type: "basic",
-        iconUrl: icon,
+      const port = getPort("notify")
+      port.postMessage({
+        type: notificationType,
         title: notificationTitle,
         message: notificationMessage
       })

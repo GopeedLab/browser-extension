@@ -11,7 +11,6 @@ const Theme = ({ children }: PropsWithChildren) => {
   const [settings] = useStorage<Settings>(STORAGE_SETTINGS, defaultSettings)
 
   const theme = useMemo(() => {
-    // 判断是否跟随系统
     const prefersDarkMode =
       settings.theme === "system"
         ? window.matchMedia("(prefers-color-scheme: dark)").matches
