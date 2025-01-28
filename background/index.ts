@@ -71,51 +71,122 @@ connectNative()
 const isFirefox = process.env.PLASMO_BROWSER === "firefox"
 const storage = new Storage()
 
+let settingsCache = defaultSettings
+let isRunningCache = false
+async function refreshSettings(): Promise<Settings> {
+  const settings =
+    (await storage.get<Settings>(STORAGE_SETTINGS)) || defaultSettings
+  settingsCache = settings
+  return settings
+}
+async function refreshIsRunning(): Promise<boolean> {
+  try {
+    const resp = await connectNativeAndPost({
+      method: "ping"
+    })
+    isRunningCache = (resp?.data || false) === true
+  } catch (e) {
+    console.warn(e)
+    isRunningCache = false
+  }
+  return isRunningCache
+}
+
+// Try to avoid the issue of the extension inactive after the browser is restarted.
+// https://stackoverflow.com/a/76344225/8129004
+chrome.runtime.onStartup &&
+  chrome.runtime.onStartup.addListener(function () {
+    console.log("onStartup")
+  })
+;(async function () {
+  await refreshSettings()
+  await refreshIsRunning()
+  setInterval(async () => {
+    await refreshSettings()
+    await refreshIsRunning()
+  }, 3000)
+})()
+
+interface DownloadInfo {
+  url: string
+  filename: string
+  filesize: number
+  ua?: string
+  referrer?: string
+  cookieStoreId?: string
+}
+
+async function downloadFilter(
+  info: DownloadInfo,
+  settings: Settings
+): Promise<boolean> {
+  if (info.url.startsWith("blob:") || info.url.startsWith("data:")) {
+    return false
+  }
+
+  if (settings.enabled === false) {
+    return false
+  }
+  if (settings.excludeDomains.enabled) {
+    const excludes = settings.excludeDomains.list.split("\n")
+    const host = new URL(info.url).host
+    if (excludes.includes(host)) {
+      return false
+    }
+  }
+  if (settings.excludeFileTypes.enabled && info.filename) {
+    const excludes = settings.excludeFileTypes.list
+      .split("\n")
+      .map((ext) => ext.trim().toLowerCase())
+    const ext = path.extname(info.filename).toLowerCase()
+    if (excludes.includes(ext)) {
+      return false
+    }
+  }
+  if (settings.minFileSize.enabled && info.filesize) {
+    if (info.filesize < settings.minFileSize.value) {
+      return false
+    }
+  }
+
+  return true
+}
+
+function downloadHandler(
+  info: DownloadInfo,
+  settings: Settings,
+  isRunning: boolean = isRunningCache
+): Function {
+  let handler: Function | undefined
+  if (settings.remote.enabled === true) {
+    handler = handleRemoteDownload(info, settings)
+  } else {
+    handler = handleNativeDownload(info, settings, isRunning)
+  }
+  return handler
+}
+
 // chrome.downloads.onDeterminingFilename only available in Chrome
 const downloadEvent =
   chrome.downloads.onDeterminingFilename || chrome.downloads.onCreated
 
 downloadEvent.addListener(async function (item) {
-  const finalUrl = item.finalUrl || item.url
-  if (finalUrl.startsWith("blob:") || finalUrl.startsWith("data:")) {
-    return
+  const info: DownloadInfo = {
+    url: item.finalUrl || item.url,
+    filename: item.filename,
+    filesize: item.fileSize,
+    ua: navigator.userAgent,
+    referrer: item.referrer,
+    cookieStoreId: (item as any).cookieStoreId
   }
 
-  const settings =
-    (await storage.get<Settings>(STORAGE_SETTINGS)) || defaultSettings
-  if (settings.enabled === false) {
+  if (!downloadFilter(info, settingsCache)) {
     return
-  }
-  if (settings.excludeDomains.enabled) {
-    const excludes = settings.excludeDomains.list.split("\n")
-    const host = new URL(item.url).host
-    if (excludes.includes(host)) {
-      return
-    }
-  }
-  if (settings.excludeFileTypes.enabled && item.filename) {
-    const excludes = settings.excludeFileTypes.list
-      .split("\n")
-      .map((ext) => ext.trim().toLowerCase())
-    const ext = path.extname(item.filename).toLowerCase()
-    if (excludes.includes(ext)) {
-      return
-    }
-  }
-  if (settings.minFileSize.enabled && item.fileSize) {
-    if (item.fileSize < settings.minFileSize.value) {
-      return
-    }
   }
 
   await chrome.downloads.pause(item.id)
 
-  let handler: Function | undefined
-  if (settings.remote.enabled === true) {
-    handler = await handleRemoteDownload(item, settings)
-  } else {
-    handler = await handleNativeDownload(item, settings)
-  }
+  const handler = downloadHandler(info, settingsCache, isRunningCache)
   if (!handler) {
     await chrome.downloads.resume(item.id)
     return
@@ -170,6 +241,25 @@ if (isFirefox) {
         filesize = parseInt(contentLength)
       }
 
+      const info: DownloadInfo = {
+        url: res.url,
+        filename,
+        filesize,
+        ua: navigator.userAgent,
+        referrer: (res as any).originUrl,
+        cookieStoreId: (res as any).cookieStoreId
+      }
+      if (!downloadFilter(info, settingsCache)) {
+        return
+      }
+
+      const handler = downloadHandler(info, settingsCache)
+      if (!handler) {
+        return
+      }
+
+      handler()
+
       return { cancel: true }
     },
     { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] },
@@ -177,10 +267,10 @@ if (isFirefox) {
   )
 }
 
-async function handleRemoteDownload(
-  item: chrome.downloads.DownloadItem,
+function handleRemoteDownload(
+  info: DownloadInfo,
   settings: Settings
-): Promise<Function | undefined> {
+): Function | undefined {
   const server = settings.remote.servers.find(
     (server) => getFullUrl(server) === settings.remote.selectedServer
   )
@@ -198,7 +288,7 @@ async function handleRemoteDownload(
     let notificationMessage: string
     try {
       await client.createTask({
-        req: await toCreateRequest(item)
+        req: await toCreateRequest(info)
       })
       notificationTitle = chrome.i18n.getMessage("notification_create_success")
       notificationMessage = chrome.i18n.getMessage(
@@ -234,27 +324,17 @@ interface HostResponse<T> {
   message?: string
 }
 
-async function handleNativeDownload(
-  item: chrome.downloads.DownloadItem,
-  settings: Settings
-): Promise<Function | undefined> {
-  if (!settings.autoWakeup) {
-    try {
-      const resp = await connectNativeAndPost({
-        method: "ping"
-      })
-      const isRunning = resp?.data || false
-      if (!isRunning) {
-        return
-      }
-    } catch (e) {
-      console.error(e)
-      return
-    }
+function handleNativeDownload(
+  info: DownloadInfo,
+  settings: Settings,
+  isRunning: boolean
+): Function | undefined {
+  if (!settings.autoWakeup && !isRunning) {
+    return
   }
 
   return async () => {
-    const req = await toCreateRequest(item)
+    const req = await toCreateRequest(info)
     try {
       await connectNativeAndPost<string>({
         method: "create",
@@ -280,17 +360,15 @@ function getCookie(url: string, storeId?: string) {
   })
 }
 
-async function toCreateRequest(
-  item: chrome.downloads.DownloadItem
-): Promise<Request> {
-  const cookie = await getCookie(item.finalUrl, (item as any).cookieStoreId)
+async function toCreateRequest(info: DownloadInfo): Promise<Request> {
+  const cookie = await getCookie(info.url, (info as any).cookieStoreId)
   return {
-    url: item.finalUrl,
+    url: info.url,
     extra: {
       header: {
         "User-Agent": navigator.userAgent,
         Cookie: cookie ? cookie : undefined,
-        Referer: item.referrer ? item.referrer : undefined
+        Referer: info.referrer ? info.referrer : undefined
       }
     }
   }
