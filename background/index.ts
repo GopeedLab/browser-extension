@@ -99,12 +99,12 @@ chrome.runtime.onStartup &&
     console.log("onStartup")
   })
 ;(async function () {
-  await refreshSettings()
-  await refreshIsRunning()
   setInterval(async () => {
     await refreshSettings()
     await refreshIsRunning()
   }, 3000)
+  await refreshSettings()
+  await refreshIsRunning()
 })()
 
 interface DownloadInfo {
@@ -116,10 +116,7 @@ interface DownloadInfo {
   cookieStoreId?: string
 }
 
-async function downloadFilter(
-  info: DownloadInfo,
-  settings: Settings
-): Promise<boolean> {
+function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
   if (info.url.startsWith("blob:") || info.url.startsWith("data:")) {
     return false
   }
