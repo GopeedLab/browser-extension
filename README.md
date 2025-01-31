@@ -8,7 +8,9 @@
 
 ## Install
 
-[<img src="/_docs/img/store/chrome-web-store.png" title="Chrome Web Store" width="170" height="48" />](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd) [<img src="/_docs/img/store/microsoft-store.png" title="Edge Store" height="48">](https://microsoftedge.microsoft.com/addons/detail/dkajnckekendchdleoaenoophcobooce) [<img src="/_docs/img/store/firefox-add-ons.png" title="Firefox Add-ons" width="170" height="48" />](https://addons.mozilla.org/zh-CN/firefox/addon/gopeed-extension) 
+[<img src="/_docs/img/store/chrome-web-store.png" title="Chrome Web Store" width="170" height="48" />](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd) [<img src="/_docs/img/store/microsoft-store.png" title="Edge Store" height="48">](https://microsoftedge.microsoft.com/addons/detail/dkajnckekendchdleoaenoophcobooce) [<img src="/_docs/img/store/firefox-add-ons.png" title="Firefox Add-ons" width="170" height="48" />](https://addons.mozilla.org/zh-CN/firefox/addon/gopeed-extension)
+
+> **Note**: Please make sure gopeed version >= 1.6.7
 
 ## Features
 
@@ -16,13 +18,6 @@
 - 🔍 Sniff web resources
 - ⚙️ Support multiple downloader configurations
 - 📦 More..
-
-## Usage
-
-1. First, you need to enable the downloader interface according to the [document](https://docs.gopeed.com/dev-api.html).
-2. Add server configuration in the extension, as shown in the figure:
-   ![](/_docs/img/guide/server-config.jpg)
-3. When the configured server is displayed in green, the configuration is successful, and the browser download can be taken over.
 
 ## Build
 

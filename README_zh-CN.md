@@ -8,7 +8,9 @@
 
 ## 安装
 
-[<img src="/_docs/img/store/chrome-web-store.png" title="Chrome Web Store" width="170" height="48" />](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd) [<img src="/_docs/img/store/microsoft-store.png" title="Edge Store" height="48">](https://microsoftedge.microsoft.com/addons/detail/dkajnckekendchdleoaenoophcobooce) [<img src="/_docs/img/store/firefox-add-ons.png" title="Firefox Add-ons" width="170" height="48" />](https://addons.mozilla.org/zh-CN/firefox/addon/gopeed-extension) 
+[<img src="/_docs/img/store/chrome-web-store.png" title="Chrome Web Store" width="170" height="48" />](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd) [<img src="/_docs/img/store/microsoft-store.png" title="Edge Store" height="48">](https://microsoftedge.microsoft.com/addons/detail/dkajnckekendchdleoaenoophcobooce) [<img src="/_docs/img/store/firefox-add-ons.png" title="Firefox Add-ons" width="170" height="48" />](https://addons.mozilla.org/zh-CN/firefox/addon/gopeed-extension)
+
+> **注意**: 请确保 gopeed 版本 >= 1.6.7
 
 ## 功能
 
@@ -16,13 +18,6 @@
 - 🔍 嗅探网页资源
 - ⚙️ 支持多个下载器配置
 - 📦 More..
-
-## 使用说明
-
-1. 首先需要根据[文档](https://docs.gopeed.com/zh/dev-api.html)指引启用下载器接口。
-2. 在扩展中添加服务器配置，如图所示：
-   ![](/_docs/img/guide/server-config.jpg)
-3. 当配置好的服务器显示绿色时，表示配置成功，即可接管浏览器下载。
 
 ## 构建
 
