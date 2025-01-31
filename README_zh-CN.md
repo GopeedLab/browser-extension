@@ -10,7 +10,7 @@
 
 [<img src="/_docs/img/store/chrome-web-store.png" title="Chrome Web Store" width="170" height="48" />](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd) [<img src="/_docs/img/store/microsoft-store.png" title="Edge Store" height="48">](https://microsoftedge.microsoft.com/addons/detail/dkajnckekendchdleoaenoophcobooce) [<img src="/_docs/img/store/firefox-add-ons.png" title="Firefox Add-ons" width="170" height="48" />](https://addons.mozilla.org/zh-CN/firefox/addon/gopeed-extension)
 
-> **注意**: 请确保 gopeed 版本 >= 1.6.7
+> **注意**: 请确保 gopeed 版本 >= 1.6.8
 
 ## 功能
 
