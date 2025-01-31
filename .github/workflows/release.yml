@@ -42,12 +42,6 @@ jobs:
         run: |
           # Build Chrome version first
           pnpm build --target=chrome-mv3 --zip
-
-          # For Firefox build, merge manifest content
-          cat package.json | jq --slurpfile firefox firefox.manifest.json '.manifest = ($firefox[0] * .manifest)' > temp.json
-          rm -rf package.json
-          mv temp.json package.json
-
           # Build Firefox version
           pnpm build --target=firefox-mv2 --zip
       - uses: monkeyWie/get-latest-release@v2.1
