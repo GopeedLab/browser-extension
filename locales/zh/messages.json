@@ -1,4 +1,7 @@
 {
+  "settings": {
+    "message": "设置"
+  },
   "download": {
     "message": "下载"
   },
@@ -8,43 +11,145 @@
   "confirm": {
     "message": "确认"
   },
-  "server": {
-    "message": "服务器"
-  },
-  "create": {
-    "message": "创建"
-  },
-  "title": {
-    "message": "标题"
-  },
-  "scheme": {
-    "message": "协议"
-  },
-  "host": {
-    "message": "服务器"
-  },
-  "port": {
-    "message": "端口"
-  },
-  "token": {
-    "message": "接口令牌"
-  },
   "deleteTip": {
     "message": "确定要删除此配置吗？"
   },
   "delete": {
     "message": "删除"
   },
-  "tip_create_error": {
-    "message": "配置有误"
+  "enabled": {
+    "message": "已开启"
   },
-  "tip_create_still_save": {
-    "message": "，是否仍要保存？"
+  "disabled": {
+    "message": "已关闭"
   },
-  "tip_create_network_error": {
+  "download_capture_tip": {
+    "message": "开启之后拦截浏览器下载"
+  },
+  "download_settings": {
+    "message": "下载设置"
+  },
+  "auto_wakeup": {
+    "message": "自动唤醒"
+  },
+  "auto_wakeup_desc": {
+    "message": "在下载器未运行时自动打开进行下载"
+  },
+  "domain_filter": {
+    "message": "域名过滤"
+  },
+  "domain_filter_desc": {
+    "message": "设置不需要捕获的域名"
+  },
+  "domain_filter_placeholder": {
+    "message": "每行输入一个域名，例如：example.com"
+  },
+  "file_type_filter": {
+    "message": "文件类型过滤"
+  },
+  "file_type_filter_desc": {
+    "message": "设置不需要捕获的文件类型"
+  },
+  "file_type_filter_placeholder": {
+    "message": "每行输入一个文件后缀名，例如：.jpg"
+  },
+  "min_file_size_filter": {
+    "message": "小文件过滤"
+  },
+  "min_file_size_filter_desc": {
+    "message": "小于设定大小的文件将不会被捕获"
+  },
+  "interface_settings": {
+    "message": "界面设置"
+  },
+  "theme_settings": {
+    "message": "主题设置"
+  },
+  "follow_system": {
+    "message": "跟随系统"
+  },
+  "light_theme": {
+    "message": "明亮主题"
+  },
+  "dark_theme": {
+    "message": "暗黑主题"
+  },
+  "settings_saved": {
+    "message": "设置已保存"
+  },
+  "download_capture": {
+    "message": "下载捕获"
+  },
+  "basic_settings": {
+    "message": "基础设置"
+  },
+  "remote_download": {
+    "message": "远程下载"
+  },
+  "enable_remote_download": {
+    "message": "启用远程下载"
+  },
+  "enable_remote_download_desc": {
+    "message": "开启后下载任务将直接发送到远程服务器"
+  },
+  "protocol": {
+    "message": "协议"
+  },
+  "server_url": {
+    "message": "服务器地址"
+  },
+  "token": {
+    "message": "接口令牌"
+  },
+  "save": {
+    "message": "保存"
+  },
+  "no_server_error": {
+    "message": "请先添加服务器"
+  },
+  "server_url_required": {
+    "message": "请输入服务器地址"
+  },
+  "server_url_invalid": {
+    "message": "请输入正确的服务器地址"
+  },
+  "download_notification": {
+    "message": "下载通知"
+  },
+  "download_notification_desc": {
+    "message": "在推送下载任务时显示浏览器通知"
+  },
+  "add": {
+    "message": "添加"
+  },
+  "test_server": {
+    "message": "测试"
+  },
+  "test_success": {
+    "message": "连接成功"
+  },
+  "test_network_error": {
     "message": "服务器无法连接"
   },
-  "tip_create_token_error": {
+  "test_token_error": {
     "message": "接口令牌不正确或服务器未正确配置"
+  },
+  "notification_create_success": {
+    "message": "创建成功"
+  },
+  "notification_create_success_message": {
+    "message": "任务已成功添加到下载服务器"
+  },
+  "notification_create_error": {
+    "message": "创建失败"
+  },
+  "notification_create_error_message": {
+    "message": "任务添加失败，请检查下载服务器是否正常"
+  },
+  "no_servers_tip": {
+    "message": "暂无服务器，点击上方按钮添加"
+  },
+  "download_servers": {
+    "message": "下载服务器"
   }
 }

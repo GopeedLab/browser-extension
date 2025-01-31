@@ -1,4 +1,7 @@
 {
+  "settings": {
+    "message": "Settings"
+  },
   "download": {
     "message": "DOWNLOAD"
   },
@@ -8,46 +11,145 @@
   "confirm": {
     "message": "CONFIRM"
   },
-  "server": {
-    "message": "SERVER"
-  },
-  "create": {
-    "message": "CREATE"
-  },
-  "title": {
-    "message": "Title"
-  },
-  "scheme": {
-    "message": "Scheme"
-  },
-  "host": {
-    "message": "Host"
-  },
-  "port": {
-    "message": "Port"
-  },
-  "token": {
-    "message": "Token"
-  },
   "deleteTip": {
     "message": "Are you sure to delete this configuration?"
   },
   "delete": {
     "message": "DELETE"
   },
-  "check": {
-    "message": "CHECK"
+  "enabled": {
+    "message": "Enabled"
   },
-  "tip_create_error": {
-    "message": "Configuration error"
+  "disabled": {
+    "message": "Disabled"
   },
-  "tip_create_still_save": {
-    "message": "，do you still want to save?"
+  "download_capture_tip": {
+    "message": "Intercept browser downloads when enabled"
   },
-  "tip_create_network_error": {
+  "download_settings": {
+    "message": "Download Settings"
+  },
+  "auto_wakeup": {
+    "message": "Auto Wakeup"
+  },
+  "auto_wakeup_desc": {
+    "message": "Automatically open and download when downloader is not running"
+  },
+  "domain_filter": {
+    "message": "Domain Filter"
+  },
+  "domain_filter_desc": {
+    "message": "Set domains that do not need to be captured"
+  },
+  "domain_filter_placeholder": {
+    "message": "Enter one domain per line, e.g.: example.com"
+  },
+  "file_type_filter": {
+    "message": "File Type Filter"
+  },
+  "file_type_filter_desc": {
+    "message": "Set file types that do not need to be captured"
+  },
+  "file_type_filter_placeholder": {
+    "message": "Enter one file extension per line, e.g.: .jpg"
+  },
+  "min_file_size_filter": {
+    "message": "Small File Filter"
+  },
+  "min_file_size_filter_desc": {
+    "message": "Files smaller than the set size will not be captured"
+  },
+  "interface_settings": {
+    "message": "Interface Settings"
+  },
+  "theme_settings": {
+    "message": "Theme Settings"
+  },
+  "follow_system": {
+    "message": "Follow System"
+  },
+  "theme_settings_desc": {
+    "message": "Choose interface theme"
+  },
+  "light_theme": {
+    "message": "Light Theme"
+  },
+  "dark_theme": {
+    "message": "Dark Theme"
+  },
+  "settings_saved": {
+    "message": "Settings saved"
+  },
+  "download_capture": {
+    "message": "Download Capture"
+  },
+  "basic_settings": {
+    "message": "Basic Settings"
+  },
+  "remote_download": {
+    "message": "Remote Download"
+  },
+  "enable_remote_download": {
+    "message": "Enable Remote Download"
+  },
+  "enable_remote_download_desc": {
+    "message": "Send download tasks directly to remote server"
+  },
+  "protocol": {
+    "message": "Protocol"
+  },
+  "server_url": {
+    "message": "Server URL"
+  },
+  "token": {
+    "message": "Token"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "no_server_error": {
+    "message": "Please add a remote server first"
+  },
+  "server_url_required": {
+    "message": "Server URL is required"
+  },
+  "server_url_invalid": {
+    "message": "Please enter a valid server URL"
+  },
+  "download_notification": {
+    "message": "Download Notification"
+  },
+  "download_notification_desc": {
+    "message": "Show browser notification when sending download tasks"
+  },
+  "add": {
+    "message": "Add"
+  },
+  "download_servers": {
+    "message": "Download Servers"
+  },
+  "test_server": {
+    "message": "Test"
+  },
+  "test_success": {
+    "message": "Connection successful"
+  },
+  "test_network_error": {
     "message": "Server connection failed"
   },
-  "tip_create_token_error": {
+  "test_token_error": {
     "message": "Api token error or server not configured correctly"
+  },
+  "notification_create_success": {
+    "message": "Create Success"
+  },
+  "notification_create_success_message": {
+    "message": "Task has been successfully added to download server"
+  },
+  "notification_create_error": {
+    "message": "Create Failed"
+  },
+  "notification_create_error_message": {
+    "message": "Task add failed, please check if download server is working properly"
   }
 }
