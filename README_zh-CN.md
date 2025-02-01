@@ -21,7 +21,7 @@
 
 ## 教程
 
-![tutorial_zhcn](/_docs/img/tutorial/tutorial_zhcn.mp4)
+![tutorial_zhcn](/_docs/img/tutorial/tutorial_zhcn.webp)
 
 ## 构建
 
