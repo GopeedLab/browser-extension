@@ -44,24 +44,24 @@ This extension is "**ready to use after download**" and usually requires no worr
 
 1. Open ext setting page and turn to _Basic Settings_ page.
 2. Open and edit the box of the option _File Type Filter_, for example:
-    - Note: NEVER IGNORE the `.` of the name ext.
+    - Note: `.tar.gz` would be matched by both `.gz` and `.tar.gz`
 
     ```text
-    .jpg
-    .jpeg
-    .png
-    .tif
-    .tiff
-    .webp
-    .avif
-    .gif
-    .pdf
-    .docx
-    .doc
-    .pptx
-    .ppt
-    .xlsx
-    .xls
+    jpg
+    jpeg
+    png
+    tif
+    tiff
+    webp
+    avif
+    gif
+    pdf
+    docx
+    doc
+    pptx
+    ppt
+    xlsx
+    xls
     ```
 
 ### How to set domains that do not need to be captured

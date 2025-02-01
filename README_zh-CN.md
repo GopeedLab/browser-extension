@@ -41,24 +41,24 @@
 
 1. 打开扩展设置
 2. 在“基础设置”页面的“文件类型过滤”栏依次填写您不需要捕获的文件类型名称，例如：
-    - 注：不要省略后缀名（扩展名）开头的 `.`
+    - 注：`.tar.gz` 会被 `.gz` 与 `.tar.gz` 匹配
 
     ```text
-    .jpg
-    .jpeg
-    .png
-    .tif
-    .tiff
-    .webp
-    .avif
-    .gif
-    .pdf
-    .docx
-    .doc
-    .pptx
-    .ppt
-    .xlsx
-    .xls
+    jpg
+    jpeg
+    png
+    tif
+    tiff
+    webp
+    avif
+    gif
+    pdf
+    docx
+    doc
+    pptx
+    ppt
+    xlsx
+    xls
     ```
 
 ### 如何屏蔽来自指定域名的文件
