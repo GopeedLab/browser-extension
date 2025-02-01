@@ -19,46 +19,61 @@
 - ⚙️ Support multiple downloader configurations
 - 📦 More..
 
-## Usage
+## Advanced Usage
 
-> 中文用户请参考[此处](/README_zh-CN.md#教程)的视频。
+> 扩展开箱即用，非特殊情况无须操心。
+> 中文用户请参考[此处](/README_zh-CN.md#进阶教程)的进阶教程。
 
-As the following pic shows.
+This extension is "**ready to use after download**" and usually requires no worries on your part.
 
-1. Install _Gopeed_ ext in the store.
+### Temp disable the extension
 
-    ![en_install_ext](/_docs/img/tutorial/en_install_ext.png)
+![en_temp_disabled](/_docs/img/tutorial/en_temp_disabled.png)
 
-2. Click the ext
+### How to customize API
 
-    ![en_click_ext](/_docs/img/tutorial/en_click_ext.png)
+1. Open ext settings
 
-3. Open _gopeed_ ext settings
+    ![en_settings](/_docs/img/tutorial/en_settings.png)
 
-    ![en_click_setting_btn](/_docs/img/tutorial/en_click_setting_btn.png)
+2. Edit the API settings (MUST BE SAME AS WHAT YOU'VE SET IN SOFTWARE)
 
-4. Set basic settings of ext
+    ![en_api](/_docs/img/tutorial/en_api.png)
 
-    - Enable **Download Capture** option.
-    - Enable **Auto Wake** option.
-    - Set Filter options only if you need them.
+### How to set file types that do not need to be captured
 
-    ![en_basic_settings](/_docs/img/tutorial/en_basic_settings.png)
+1. Open ext setting page and turn to _Basic Settings_ page.
+2. Open and edit the box of the option _File Type Filter_, for example:
+    - Note: NEVER IGNORE the `.` of the name ext.
 
-5. Set advanced settings
+    ```text
+    .jpg
+    .jpeg
+    .png
+    .tif
+    .tiff
+    .webp
+    .avif
+    .gif
+    .pdf
+    .docx
+    .doc
+    .pptx
+    .ppt
+    .xlsx
+    .xls
+    ```
 
-    - Enable **Enable Download with API** option.
-    - Click the **Add** button.
+### How to set domains that do not need to be captured
 
-    ![en_advanced_settings](/_docs/img/tutorial/en_advanced_settings.png)
+1. Open ext setting page and turn to _Basic Settings_ page.
+2. Open and edit the box of the option _Domain Filter_, for example:
+    - Note: The use of **regular expression** or **wildcard characters** is **not** supported.
 
-6. Set API
-
-    - Set **Address** box to what you've set in GOPEED software advanced settings.
-        - DEFAULT: `127.0.0.1:9999`
-    - Click **Test** button. If everythins looks good, click the **Save** button.
-
-    ![en_set_api](/_docs/img/tutorial/en_set_api.png)
+    ```text
+    changjiang.yuketang.cn
+    zhihu.com
+    ```
 
 ## Build
 

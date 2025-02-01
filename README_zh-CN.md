@@ -19,9 +19,58 @@
 - ⚙️ 支持多个下载器配置
 - 📦 More..
 
-## 教程
+## 进阶教程
 
-![tutorial_zhcn](/_docs/img/tutorial/zhcn_tutorial.webp)
+本扩展**开箱即用**，一般无须操心
+
+### 临时禁用扩展
+
+![zhcn_temp_disabled](/_docs/img/tutorial/zhcn_temp_disabled.png)
+
+### 如何自定义API接口
+
+1. 打开设置
+
+    ![zhcn_settings](/_docs/img/tutorial/zhcn_settings.png)
+
+2. 填写接口设置（必须与软件内设置相同）
+
+    ![zhcn_api](/_docs/img/tutorial/zhcn_api.png)
+
+### 如何屏蔽指定后缀名（扩展名）的文件
+
+1. 打开扩展设置
+2. 在“基础设置”页面的“文件类型过滤”栏依次填写您不需要捕获的文件类型名称，例如：
+    - 注：不要省略后缀名（扩展名）开头的 `.`
+
+    ```text
+    .jpg
+    .jpeg
+    .png
+    .tif
+    .tiff
+    .webp
+    .avif
+    .gif
+    .pdf
+    .docx
+    .doc
+    .pptx
+    .ppt
+    .xlsx
+    .xls
+    ```
+
+### 如何屏蔽来自指定域名的文件
+
+1. 打开扩展设置
+2. 在“基础设置”页面的“域名过滤”栏依次填写您不需要捕获的网址，例如：
+    - 注：**不支持通配符**
+
+    ```text
+    changjiang.yuketang.cn
+    zhihu.com
+    ```
 
 ## 构建
 
