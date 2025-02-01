@@ -8,7 +8,7 @@
 
 ## 安装
 
-[<img src="/_docs/img/store/chrome-web-store.png" title="Chrome Web Store" alt="Chrome Web Store" width="170" height="48" />](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd) [<img src="/_docs/img/store/microsoft-store.png" title="Edge Store" alt="Edge Store" height="48">](https://microsoftedge.microsoft.com/addons/detail/dkajnckekendchdleoaenoophcobooce) [<img src="/_docs/img/store/firefox-add-ons.png" title="Firefox Add-ons" alt="Firefox Add-ons" width="170" height="48" />](https://addons.mozilla.org/zh-CN/firefox/addon/gopeed-extension)
+[<img src="/_docs/img/store/chrome-web-store.svg" title="Chrome Web Store" alt="Chrome Web Store" width="170" height="48" />](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd) [<img src="/_docs/img/store/microsoft-store.svg" title="Edge Store" alt="Edge Store" height="48">](https://microsoftedge.microsoft.com/addons/detail/dkajnckekendchdleoaenoophcobooce) [<img src="/_docs/img/store/firefox-add-ons.svg" title="Firefox Add-ons" alt="Firefox Add-ons" width="170" height="48" />](https://addons.mozilla.org/zh-CN/firefox/addon/gopeed-extension)
 
 > **注意**: 请确保 gopeed 版本 >= 1.6.8
 

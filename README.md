@@ -21,9 +21,6 @@
 
 ## Advanced Usage
 
-> 扩展开箱即用，非特殊情况无须操心。
-> 中文用户请参考[此处](/README_zh-CN.md#进阶教程)的进阶教程。
-
 This extension is "**ready to use after download**" and usually requires no worries on your part.
 
 ### Temp disable the extension
