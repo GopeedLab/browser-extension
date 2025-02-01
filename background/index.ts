@@ -326,6 +326,9 @@ function handleNativeDownload(
   settings: Settings,
   isRunning: boolean
 ): Function | undefined {
+  if (!connectNativePort) {
+    return
+  }
   if (!settings.autoWakeup && !isRunning) {
     return
   }
