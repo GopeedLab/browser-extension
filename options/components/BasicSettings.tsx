@@ -192,6 +192,7 @@ const BasicSettings = () => {
                     })
                   }
                   InputProps={{
+                    inputProps: { min: 0 },
                     endAdornment: (
                       <InputAdornment position="end">MB</InputAdornment>
                     )
@@ -200,7 +201,6 @@ const BasicSettings = () => {
               )}
             </Box>
           </Box>
-          {/* 删除通知设置部分 */}
         </Stack>
       </Box>
 
