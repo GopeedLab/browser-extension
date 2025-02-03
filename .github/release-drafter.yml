@@ -14,7 +14,9 @@ categories:
   - title: "🧰 Maintenance"
     label: "chore"
   - title: "📖 Document"
-    label: "doc"
+    labels:
+      - "doc"
+      - "documentation"
   - title: "🚀 CI/CD"
     label: "ci"
 change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
