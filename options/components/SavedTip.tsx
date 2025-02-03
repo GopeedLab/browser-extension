@@ -33,11 +33,14 @@ const SavedTip = ({
       autoHideDuration={2000}
       onClose={onClose}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-      {message ? ( // 只在有消息时渲染 Alert
-        <Alert severity={message.type} sx={{ width: "100%" }}>
-          {message.text && chrome.i18n.getMessage(message.text)}
-        </Alert>
-      ) : null}
+      <Alert
+        severity={message?.type || "success"}
+        sx={{
+          width: "100%",
+          visibility: message ? "visible" : "hidden"
+        }}>
+        {message?.text ? chrome.i18n.getMessage(message.text) : ""}
+      </Alert>
     </Snackbar>
   )
 }

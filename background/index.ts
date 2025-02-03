@@ -140,7 +140,12 @@ function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
       return false
     }
   }
-  if (settings.minFileSize.enabled && info.filesize) {
+
+  if (
+    settings.minFileSize.enabled &&
+    settings.minFileSize.value > 0 &&
+    info.filesize > 0
+  ) {
     if (info.filesize < settings.minFileSize.value) {
       return false
     }
