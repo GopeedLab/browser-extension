@@ -1,7 +1,6 @@
 import createCache from "@emotion/cache"
 import { CacheProvider } from "@emotion/react"
 import { Alert, AlertTitle, Snackbar } from "@mui/material"
-import icon from "data-base64:~assets/icon.png"
 import { useEffect, useState } from "react"
 
 import { usePort } from "@plasmohq/messaging/hook"
@@ -45,7 +44,13 @@ function PlasmoOverlay() {
             <Alert
               onClose={handleClose}
               severity={notify.data.type || "success"}
-              icon={<img src={icon} alt="" style={{ width: 24, height: 24 }} />}
+              icon={
+                <img
+                  src={chrome.runtime.getURL("assets/icon.png")}
+                  alt=""
+                  style={{ width: 24, height: 24 }}
+                />
+              }
               sx={{ width: 320 }}>
               {notify.data.title && (
                 <AlertTitle>{notify.data.title}</AlertTitle>

@@ -1,7 +1,7 @@
 {
   "name": "gopeed-browser-extension",
   "displayName": "Gopeed",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Gopeed browser extension",
   "homepage": "https://gopeed.com",
   "author": "Levi",
@@ -46,6 +46,16 @@
     "host_permissions": [
       "http://*/*",
       "https://*/*"
+    ],
+    "web_accessible_resources": [
+      {
+        "matches": [
+          "<all_urls>"
+        ],
+        "resources": [
+          "assets/icon.png"
+        ]
+      }
     ],
     "permissions": [
       "downloads",
