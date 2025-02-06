@@ -69,6 +69,7 @@
           "cookies",
           "webRequest",
           "webRequestBlocking",
+          "*://*/*",
           "nativeMessaging"
         ],
         "browser_specific_settings": {
