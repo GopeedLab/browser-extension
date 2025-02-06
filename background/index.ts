@@ -146,7 +146,7 @@ function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
     settings.minFileSize.value > 0 &&
     info.filesize > 0
   ) {
-    if (info.filesize < settings.minFileSize.value) {
+    if (info.filesize < settings.minFileSize.value * 1024 * 1024) {
       return false
     }
   }
