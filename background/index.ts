@@ -225,8 +225,6 @@ function checkContentDisposition(
 if (isFirefox) {
   chrome.webRequest.onHeadersReceived.addListener(
     function (res) {
-      downloadEventSkip = false
-
       if (res.statusCode !== 200 || res.type == "xmlhttprequest") {
         return
       }
@@ -235,6 +233,9 @@ if (isFirefox) {
       if (!contentDispositionValue) {
         return
       }
+
+      // Skip the onCreated event to avoid duplicate processing of download tasks.
+      downloadEventSkip = true
 
       let filename = ""
       // Parse filename from content-disposition
@@ -252,8 +253,6 @@ if (isFirefox) {
       if (contentLength) {
         filesize = parseInt(contentLength)
       }
-
-      downloadEventSkip = true
 
       const info: DownloadInfo = {
         url: res.url,
