@@ -13,6 +13,7 @@ import {
 import { useStorage } from "@plasmohq/storage/hook"
 
 import { STORAGE_SETTINGS } from "~constants"
+import { getContrlKey } from "~util"
 
 import { defaultSettings, type Settings } from "../types"
 import SavedTip, { useTip } from "./SavedTip"
@@ -43,6 +44,11 @@ const BasicSettings = () => {
     </Stack>
   )
 
+  const getKeyDisplayText = () => {
+    const key = getContrlKey()
+    return key === "Meta" ? "Command" : "Ctrl"
+  }
+
   return (
     <Stack spacing={6}>
       <Box>
@@ -69,6 +75,21 @@ const BasicSettings = () => {
             <Switch
               checked={settings.autoWakeup}
               onChange={(e) => handleChange("autoWakeup", e.target.checked)}
+            />
+          </Box>
+
+          <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
+            {renderLabel(
+              chrome.i18n.getMessage("ctrl_disable_capture"),
+              chrome.i18n
+                .getMessage("ctrl_disable_capture_desc")
+                .replace("%key%", getKeyDisplayText())
+            )}
+            <Switch
+              checked={settings.ctrlDisableCapture}
+              onChange={(e) =>
+                handleChange("ctrlDisableCapture", e.target.checked)
+              }
             />
           </Box>
 

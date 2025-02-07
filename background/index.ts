@@ -118,14 +118,13 @@ interface DownloadInfo {
 }
 
 function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
-  if (pressToSkip) {
-    return false
-  }
-
   if (info.url.startsWith("blob:") || info.url.startsWith("data:")) {
     return false
   }
 
+  if (settings.ctrlDisableCapture && pressToSkip) {
+    return false
+  }
   if (settings.enabled === false) {
     return false
   }

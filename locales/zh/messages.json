@@ -151,5 +151,11 @@
   },
   "download_servers": {
     "message": "下载服务器"
+  },
+  "ctrl_disable_capture": {
+    "message": "按键禁用"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "按住 %key% 键时临时禁用下载捕获"
   }
 }
