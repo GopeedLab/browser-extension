@@ -42,6 +42,16 @@
     "prettier": "3.0.3",
     "typescript": "5.2.2"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild",
+      "lmdb",
+      "msgpackr-extract",
+      "sharp"
+    ]
+  },
   "manifest": {
     "host_permissions": [
       "http://*/*",
