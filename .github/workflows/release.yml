@@ -22,22 +22,18 @@ jobs:
     needs: [release]
     steps:
       - uses: actions/checkout@v3
-      - name: Cache pnpm modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
       - uses: pnpm/action-setup@v4
+        name: Install pnpm
         with:
-          version: latest
-          run_install: true
-      - name: Use Node.js
-        uses: actions/setup-node@v3.4.1
+          version: 10
+          run_install: false
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20
           cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
       - name: Build the extension
         run: |
           # Build Chrome version first
