@@ -146,7 +146,7 @@ function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
     settings.minFileSize.value > 0 &&
     info.filesize > 0
   ) {
-    if (info.filesize < settings.minFileSize.value) {
+    if (info.filesize < settings.minFileSize.value * 1024 * 1024) {
       return false
     }
   }
@@ -171,6 +171,9 @@ function downloadHandler(
 // chrome.downloads.onDeterminingFilename only available in Chrome
 const downloadEvent =
   chrome.downloads.onDeterminingFilename || chrome.downloads.onCreated
+// In Firefox, the download interception logic will be triggered twice, the order is onHeadersReceived -> onCreated, so a variable is needed to skip the onCreated event to avoid duplicate processing of download tasks.
+// PS: Why not use the onCreated event uniformly? Because the onCreated event cannot get the size of the downloaded file in Firefox.
+let downloadEventSkip = false
 
 downloadEvent.addListener(async function (item) {
   const info: DownloadInfo = {
@@ -180,6 +183,10 @@ downloadEvent.addListener(async function (item) {
     ua: navigator.userAgent,
     referrer: item.referrer,
     cookieStoreId: (item as any).cookieStoreId
+  }
+  if (isFirefox && downloadEventSkip) {
+    downloadEventSkip = false
+    return
   }
 
   if (!downloadFilter(info, settingsCache)) {
@@ -218,13 +225,17 @@ function checkContentDisposition(
 if (isFirefox) {
   chrome.webRequest.onHeadersReceived.addListener(
     function (res) {
-      if (res.statusCode !== 200) {
+      if (res.statusCode !== 200 || res.type == "xmlhttprequest") {
         return
       }
+
       const contentDispositionValue = checkContentDisposition(res)
       if (!contentDispositionValue) {
         return
       }
+
+      // Skip the onCreated event to avoid duplicate processing of download tasks.
+      downloadEventSkip = true
 
       let filename = ""
       // Parse filename from content-disposition
