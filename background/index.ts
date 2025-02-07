@@ -6,6 +6,7 @@ import contentDisposition from "content-disposition"
 import { getPort } from "@plasmohq/messaging/background"
 import { Storage } from "@plasmohq/storage"
 
+import { skip as pressToSkip } from "~background/messages/api/skip"
 import { STORAGE_SETTINGS } from "~constants"
 import { getFullUrl } from "~options/components/RemoteSettings"
 import { defaultSettings, type Settings } from "~options/types"
@@ -117,6 +118,10 @@ interface DownloadInfo {
 }
 
 function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
+  if (pressToSkip) {
+    return false
+  }
+
   if (info.url.startsWith("blob:") || info.url.startsWith("data:")) {
     return false
   }

@@ -3,3 +3,5 @@ interface Server {
   url: string
   token?: string
 }
+
+type PlatformOS = "mac" | "windows" | "linux"
