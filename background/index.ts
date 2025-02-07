@@ -6,6 +6,7 @@ import contentDisposition from "content-disposition"
 import { getPort } from "@plasmohq/messaging/background"
 import { Storage } from "@plasmohq/storage"
 
+import { skip as pressToSkip } from "~background/messages/api/skip"
 import { STORAGE_SETTINGS } from "~constants"
 import { getFullUrl } from "~options/components/RemoteSettings"
 import { defaultSettings, type Settings } from "~options/types"
@@ -121,6 +122,9 @@ function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
     return false
   }
 
+  if (settings.ctrlDisableCapture && pressToSkip) {
+    return false
+  }
   if (settings.enabled === false) {
     return false
   }

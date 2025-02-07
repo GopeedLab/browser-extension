@@ -151,5 +151,11 @@
   },
   "notification_create_error_message": {
     "message": "Task add failed, please check if download server is working properly"
+  },
+  "ctrl_disable_capture": {
+    "message": "Disable Capture with Key"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "Hold %key% key to temporarily disable download capture"
   }
 }

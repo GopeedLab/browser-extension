@@ -1,6 +1,7 @@
 export interface Settings {
   enabled: boolean
   autoWakeup: boolean
+  ctrlDisableCapture: boolean
   excludeDomains: {
     enabled: boolean
     list: string
@@ -25,6 +26,7 @@ export interface Settings {
 export const defaultSettings: Settings = {
   enabled: true,
   autoWakeup: true,
+  ctrlDisableCapture: true,
   excludeDomains: {
     enabled: false,
     list: ""
