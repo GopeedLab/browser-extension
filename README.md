@@ -8,7 +8,7 @@
 
 ## Install
 
-[<img src="/_docs/img/store/chrome-web-store.svg" title="Chrome Web Store" alt="Chrome Web Store"  height="50" />](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd) [<img src="/_docs/img/store/microsoft-store.svg" title="Edge Store" alt="Edge Store" height="50">](https://microsoftedge.microsoft.com/addons/detail/dkajnckekendchdleoaenoophcobooce) [<img src="/_docs/img/store/firefox-add-ons.svg" title="Firefox Add-ons" alt="Firefox Add-ons" height="50" />](https://addons.mozilla.org/zh-CN/firefox/addon/gopeed-extension)
+[<img src="/_docs/img/store/chrome-web-store.svg" title="Chrome Web Store" alt="Chrome Web Store"  height="50" />](https://chromewebstore.google.com/detail/gopeed/mijpgljlfcapndmchhjffkpckknofcnd) [<img src="/_docs/img/store/microsoft-store.svg" title="Edge Store" alt="Edge Store" height="50">](https://microsoftedge.microsoft.com/addons/detail/dkajnckekendchdleoaenoophcobooce) [<img src="/_docs/img/store/firefox-add-ons.svg" title="Firefox Add-ons" alt="Firefox Add-ons" height="50" />](https://addons.mozilla.org/firefox/addon/gopeed-extension)
 
 > **Note**: Please make sure gopeed version >= 1.6.8
 
@@ -31,46 +31,48 @@ This extension is "**ready to use after download**" and usually requires no worr
 
 1. Open ext settings
 
-    ![en_settings](/_docs/img/tutorial/en_settings.png)
+   ![en_settings](/_docs/img/tutorial/en_settings.png)
 
 2. Edit the API settings (MUST BE SAME AS WHAT YOU'VE SET IN SOFTWARE)
 
-    ![en_api](/_docs/img/tutorial/en_api.png)
+   ![en_api](/_docs/img/tutorial/en_api.png)
 
 ### How to set file types that do not need to be captured
 
 1. Open ext setting page and turn to _Basic Settings_ page.
 2. Open and edit the box of the option _File Type Filter_, for example:
-    - Note: `.tar.gz` would be matched by both `.gz` and `.tar.gz`
 
-    ```text
-    jpg
-    jpeg
-    png
-    tif
-    tiff
-    webp
-    avif
-    gif
-    pdf
-    docx
-    doc
-    pptx
-    ppt
-    xlsx
-    xls
-    ```
+   - Note: `.tar.gz` would be matched by both `.gz` and `.tar.gz`
+
+   ```text
+   jpg
+   jpeg
+   png
+   tif
+   tiff
+   webp
+   avif
+   gif
+   pdf
+   docx
+   doc
+   pptx
+   ppt
+   xlsx
+   xls
+   ```
 
 ### How to set domains that do not need to be captured
 
 1. Open ext setting page and turn to _Basic Settings_ page.
 2. Open and edit the box of the option _Domain Filter_, for example:
-    - Note: The use of **regular expression** or **wildcard characters** is **not** supported.
 
-    ```text
-    changjiang.yuketang.cn
-    zhihu.com
-    ```
+   - Note: The use of **regular expression** or **wildcard characters** is **not** supported.
+
+   ```text
+   changjiang.yuketang.cn
+   zhihu.com
+   ```
 
 ## Build
 
