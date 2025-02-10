@@ -21,20 +21,26 @@ function PlasmoOverlay() {
 
     const handleKeyUp = (e: KeyboardEvent) => {
       if (e.key === contrlKey) {
-        isPressed = false
-        sendToBackground<boolean, void>({
-          name: "api/skip",
-          body: false
-        })
+        handleBlur()
       }
     }
 
-    window.addEventListener("keydown", handleKeyDown)
-    window.addEventListener("keyup", handleKeyUp)
+    const handleBlur = () => {
+      isPressed = false
+      sendToBackground<boolean, void>({
+        name: "api/skip",
+        body: false
+      })
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+    document.addEventListener("keyup", handleKeyUp)
+    window.addEventListener("blur", handleBlur)
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown)
-      window.removeEventListener("keyup", handleKeyUp)
+      document.removeEventListener("keydown", handleKeyDown)
+      document.removeEventListener("keyup", handleKeyUp)
+      window.removeEventListener("blur", handleBlur)
     }
   }, [])
 
