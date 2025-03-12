@@ -45,21 +45,21 @@ This extension is "**ready to use after download**" and usually requires no worr
    - Note: `.tar.gz` would be matched by both `.gz` and `.tar.gz`
 
    ```text
-   jpg
-   jpeg
-   png
-   tif
-   tiff
-   webp
-   avif
-   gif
-   pdf
-   docx
-   doc
-   pptx
-   ppt
-   xlsx
-   xls
+   .jpg
+   .jpeg
+   .png
+   .tif
+   .tiff
+   .webp
+   .avif
+   .gif
+   .pdf
+   .docx
+   .doc
+   .pptx
+   .ppt
+   .xlsx
+   .xls
    ```
 
 ### How to set domains that do not need to be captured
