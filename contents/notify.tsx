@@ -20,13 +20,24 @@ export const getStyle = () => styleElement
 function PlasmoOverlay() {
   const notify = usePort("notify")
   const [open, setOpen] = useState(false)
+  const [rootFontSize, setRootFontSize] = useState("")
 
   const handleClose = () => {
     setOpen(false)
+    if (rootFontSize) {
+      setTimeout(() => {
+        document.documentElement.style.fontSize = rootFontSize
+      }, 500)
+    }
   }
 
   useEffect(() => {
     if (notify.data) {
+      const tempRootFontSize = document.documentElement.style.fontSize
+      if (tempRootFontSize && parseInt(tempRootFontSize) > 32) {
+        document.documentElement.style.fontSize = null
+        setRootFontSize(tempRootFontSize)
+      }
       setOpen(true)
     }
   }, [notify.data])
@@ -39,8 +50,7 @@ function PlasmoOverlay() {
             open={open}
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             autoHideDuration={6000}
-            onClose={handleClose}
-            message={notify.data.message}>
+            onClose={handleClose}>
             <Alert
               onClose={handleClose}
               severity={notify.data.type || "success"}

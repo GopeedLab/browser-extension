@@ -45,21 +45,21 @@
    - 注：`.tar.gz` 会被 `.gz` 与 `.tar.gz` 匹配
 
    ```text
-   jpg
-   jpeg
-   png
-   tif
-   tiff
-   webp
-   avif
-   gif
-   pdf
-   docx
-   doc
-   pptx
-   ppt
-   xlsx
-   xls
+   .jpg
+   .jpeg
+   .png
+   .tif
+   .tiff
+   .webp
+   .avif
+   .gif
+   .pdf
+   .docx
+   .doc
+   .pptx
+   .ppt
+   .xlsx
+   .xls
    ```
 
 ### 如何屏蔽来自指定域名的文件
