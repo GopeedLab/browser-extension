@@ -123,8 +123,9 @@ function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
   }
 
   if (settings.ctrlDisableCapture && pressToSkip) {
-    return false
+    return !settings.enabled
   }
+
   if (settings.enabled === false) {
     return false
   }

@@ -156,6 +156,6 @@
     "message": "Disable Capture with Key"
   },
   "ctrl_disable_capture_desc": {
-    "message": "Hold %key% key to temporarily disable download capture"
+    "message": "Hold %key% key to temporarily disable download capture when enabled is on and enabled download capture temporarily when disabled"
   }
 }
