@@ -293,8 +293,8 @@ function handleRemoteDownload(
   info: DownloadInfo,
   settings: Settings
 ): Function | undefined {
-  // If only one server or no servers, use existing logic
-  if (settings.remote.servers.length <= 1) {
+  // If only one server, no servers, or manual selection is disabled, use existing logic
+  if (settings.remote.servers.length <= 1 || !settings.remote.requireManualSelection) {
     const server = settings.remote.servers.find(
       (server) => getFullUrl(server) === settings.remote.selectedServer
     )
@@ -304,7 +304,7 @@ function handleRemoteDownload(
     return createDownloadTask(info, server, settings)
   }
 
-  // Multiple servers available - show server selector
+  // Multiple servers available and manual selection is enabled - show server selector
   return async () => {
     try {
       // Show server selector overlay

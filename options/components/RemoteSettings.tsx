@@ -242,6 +242,24 @@ export default function RemoteSettings() {
         />
       </Box>
 
+      <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
+        {renderLabel(
+          chrome.i18n.getMessage("require_manual_server_selection"),
+          chrome.i18n.getMessage("require_manual_server_selection_desc")
+        )}
+        <Switch
+          checked={settings.remote.requireManualSelection}
+          onChange={(e) => {
+            setSettings({
+              ...settings,
+              remote: { ...settings.remote, requireManualSelection: e.target.checked }
+            })
+            showTip()
+          }}
+          disabled={!settings.remote.enabled || settings.remote.servers.length <= 1}
+        />
+      </Box>
+
       <Box sx={{ display: "flex", alignItems: "center", px: 1 }}>
         <Typography sx={{ flex: 1 }}>
           {chrome.i18n.getMessage("download_servers")}

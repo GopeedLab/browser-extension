@@ -119,6 +119,12 @@
   "download_notification_desc": {
     "message": "在推送下载任务时显示浏览器通知"
   },
+  "require_manual_server_selection": {
+    "message": "需要手动选择服务器"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "当配置了多个服务器时，在开始下载前总是显示服务器选择对话框"
+  },
   "add": {
     "message": "添加"
   },
