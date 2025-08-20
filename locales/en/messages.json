@@ -157,5 +157,17 @@
   },
   "ctrl_disable_capture_desc": {
     "message": "Hold %key% key to temporarily disable download capture"
+  },
+  "select_server": {
+    "message": "Select Server"
+  },
+  "select_server_desc": {
+    "message": "Choose which server to use for this download"
+  },
+  "use_default_server": {
+    "message": "Use Default"
+  },
+  "proceed": {
+    "message": "Proceed"
   }
 }

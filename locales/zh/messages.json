@@ -157,5 +157,17 @@
   },
   "ctrl_disable_capture_desc": {
     "message": "按住 %key% 键时临时禁用下载捕获"
+  },
+  "select_server": {
+    "message": "选择服务器"
+  },
+  "select_server_desc": {
+    "message": "选择用于此次下载的服务器"
+  },
+  "use_default_server": {
+    "message": "使用默认"
+  },
+  "proceed": {
+    "message": "继续"
   }
 }

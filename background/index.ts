@@ -7,6 +7,11 @@ import { getPort } from "@plasmohq/messaging/background"
 import { Storage } from "@plasmohq/storage"
 
 import { skip as pressToSkip } from "~background/messages/api/skip"
+import { 
+  requestServerSelection,
+  type ServerSelectionRequest,
+  type ServerSelectionResponse
+} from "~background/messages/api/select-server"
 import { STORAGE_SETTINGS } from "~constants"
 import { getFullUrl } from "~options/components/RemoteSettings"
 import { defaultSettings, type Settings } from "~options/types"
@@ -288,13 +293,88 @@ function handleRemoteDownload(
   info: DownloadInfo,
   settings: Settings
 ): Function | undefined {
-  const server = settings.remote.servers.find(
-    (server) => getFullUrl(server) === settings.remote.selectedServer
-  )
-  if (!server) {
-    return
+  // If only one server or no servers, use existing logic
+  if (settings.remote.servers.length <= 1) {
+    const server = settings.remote.servers.find(
+      (server) => getFullUrl(server) === settings.remote.selectedServer
+    )
+    if (!server) {
+      return
+    }
+    return createDownloadTask(info, server, settings)
   }
 
+  // Multiple servers available - show server selector
+  return async () => {
+    try {
+      // Show server selector overlay
+      const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
+      if (tabs.length === 0) {
+        // Fallback to default server if no active tab
+        const defaultServer = settings.remote.servers.find(
+          (server) => getFullUrl(server) === settings.remote.selectedServer
+        )
+        if (defaultServer) {
+          await createDownloadTask(info, defaultServer, settings)()
+        }
+        return
+      }
+
+      const tabId = tabs[0].id!
+      const requestId = tabId.toString()
+
+      // Send message to content script to show server selector
+      await chrome.tabs.sendMessage(tabId, {
+        name: "show-server-selector",
+        body: {
+          servers: settings.remote.servers,
+          downloadInfo: {
+            url: info.url,
+            filename: info.filename
+          },
+          defaultServer: settings.remote.selectedServer
+        }
+      })
+
+      // Wait for server selection
+      const response = await requestServerSelection(requestId, {
+        servers: settings.remote.servers,
+        downloadInfo: {
+          url: info.url,
+          filename: info.filename
+        }
+      })
+
+      if (response.cancelled || !response.selectedServer) {
+        return
+      }
+
+      // Find selected server and create download task
+      const selectedServer = settings.remote.servers.find(
+        (server) => getFullUrl(server) === response.selectedServer
+      )
+
+      if (selectedServer) {
+        await createDownloadTask(info, selectedServer, settings)()
+      }
+    } catch (error) {
+      console.error("Server selection failed:", error)
+      // Fallback to default server
+      const defaultServer = settings.remote.servers.find(
+        (server) => getFullUrl(server) === settings.remote.selectedServer
+      )
+      if (defaultServer) {
+        await createDownloadTask(info, defaultServer, settings)()
+      }
+    }
+  }
+}
+
+function createDownloadTask(
+  info: DownloadInfo,
+  server: Server,
+  settings: Settings
+): Function {
   return async () => {
     const client = new Client({
       host: getFullUrl(server),
