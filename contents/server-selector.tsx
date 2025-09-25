@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -13,13 +14,13 @@ import {
   Radio,
   Typography
 } from "@mui/material"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { sendToBackground } from "@plasmohq/messaging"
 
+import type { ServerSelectionResponse } from "~background/messages/api/select-server"
 import Theme from "~components/theme"
 import { getFullUrl } from "~options/components/RemoteSettings"
-import type { ServerSelectionResponse } from "~background/messages/api/select-server"
 
 export interface ServerSelectorProps {
   servers: Server[]
@@ -28,24 +29,31 @@ export interface ServerSelectorProps {
     filename: string
   }
   defaultServer?: string
+  requestId?: string
   onSelection: (response: ServerSelectionResponse) => void
+  onDownloadResult?: (success: boolean) => void
 }
 
 function ServerSelector({
   servers,
   downloadInfo,
   defaultServer,
-  onSelection
+  requestId,
+  onSelection,
+  onDownloadResult
 }: ServerSelectorProps) {
   const [selectedServer, setSelectedServer] = useState<string>(
     defaultServer || (servers.length > 0 ? getFullUrl(servers[0]) : "")
   )
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const handleProceed = () => {
+  const handleProceed = async () => {
+    setIsLoading(true)
     onSelection({
       selectedServer,
       cancelled: false
     })
+    // Don't close dialog immediately, wait for download result
   }
 
   const handleCancel = () => {
@@ -54,6 +62,32 @@ function ServerSelector({
       cancelled: true
     })
   }
+
+  const handleDownloadResult = (success: boolean) => {
+    setIsLoading(false)
+    if (onDownloadResult) {
+      onDownloadResult(success)
+    }
+  }
+
+  // Listen for download results
+  useEffect(() => {
+    if (!requestId) return
+    
+    const messageListener = (
+      message: any,
+      sender: chrome.runtime.MessageSender,
+      sendResponse: (response: any) => void
+    ) => {
+      if (message.name === "download-result" && message.body.requestId === requestId) {
+        handleDownloadResult(message.body.success)
+        sendResponse({ success: true })
+      }
+    }
+
+    chrome.runtime.onMessage.addListener(messageListener)
+    return () => chrome.runtime.onMessage.removeListener(messageListener)
+  }, [requestId])
 
   return (
     <Theme>
@@ -76,9 +110,6 @@ function ServerSelector({
           <Typography variant="h6">
             {chrome.i18n.getMessage("select_server")}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-            {chrome.i18n.getMessage("select_server_desc")}
-          </Typography>
         </DialogTitle>
         <DialogContent sx={{ pb: 1 }}>
           <Box sx={{ mb: 2 }}>
@@ -87,7 +118,7 @@ function ServerSelector({
             </Typography>
           </Box>
           <List sx={{ bgcolor: "action.hover", borderRadius: 1 }}>
-            {servers.map((server, index) => {
+            {servers.map((server) => {
               const fullUrl = getFullUrl(server)
               return (
                 <ListItem key={fullUrl} disablePadding>
@@ -100,11 +131,6 @@ function ServerSelector({
                     </ListItemIcon>
                     <ListItemText
                       primary={fullUrl}
-                      secondary={
-                        defaultServer === fullUrl
-                          ? `(${chrome.i18n.getMessage("use_default_server")})`
-                          : undefined
-                      }
                     />
                   </ListItemButton>
                 </ListItem>
@@ -113,14 +139,20 @@ function ServerSelector({
           </List>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel} color="inherit">
+          <Button 
+            onClick={handleCancel} 
+            color="inherit" 
+            disabled={isLoading}
+          >
             {chrome.i18n.getMessage("cancel")}
           </Button>
           <Button
             onClick={handleProceed}
             variant="contained"
-            disabled={!selectedServer}>
-            {chrome.i18n.getMessage("proceed")}
+            disabled={!selectedServer || isLoading}
+            startIcon={isLoading ? <CircularProgress size={20} /> : null}
+          >
+            {chrome.i18n.getMessage("confirm")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -136,6 +168,7 @@ interface ServerSelectorState {
     filename: string
   }
   defaultServer?: string
+  requestId?: string
 }
 
 function PlasmoOverlay() {
@@ -156,7 +189,8 @@ function PlasmoOverlay() {
           show: true,
           servers: message.body.servers,
           downloadInfo: message.body.downloadInfo,
-          defaultServer: message.body.defaultServer
+          defaultServer: message.body.defaultServer,
+          requestId: message.body.requestId
         })
         sendResponse({ success: true })
       }
@@ -167,13 +201,24 @@ function PlasmoOverlay() {
   }, [])
 
   const handleSelection = async (response: ServerSelectionResponse) => {
-    setState((prev) => ({ ...prev, show: false }))
+    // Don't close dialog immediately if not cancelled, wait for download result
+    if (response.cancelled) {
+      setState((prev) => ({ ...prev, show: false }))
+    }
     
     // Send selection back to background script
     await sendToBackground<ServerSelectionResponse, void>({
       name: "api/select-server",
       body: response
     })
+  }
+
+  const handleDownloadResult = (success: boolean) => {
+    if (success) {
+      // Close dialog on success
+      setState((prev) => ({ ...prev, show: false }))
+    }
+    // On failure, keep dialog open (user can try again or cancel)
   }
 
   if (!state.show) {
@@ -185,7 +230,9 @@ function PlasmoOverlay() {
       servers={state.servers}
       downloadInfo={state.downloadInfo}
       defaultServer={state.defaultServer}
+      requestId={state.requestId}
       onSelection={handleSelection}
+      onDownloadResult={handleDownloadResult}
     />
   )
 }

@@ -123,7 +123,7 @@
     "message": "Show browser notification when sending download tasks"
   },
   "require_manual_server_selection": {
-    "message": "Require Manual Server Selection"
+    "message": "Manual Server Selection"
   },
   "require_manual_server_selection_desc": {
     "message": "Always show server selection dialog before starting downloads when multiple servers are configured"
@@ -166,14 +166,5 @@
   },
   "select_server": {
     "message": "Select Server"
-  },
-  "select_server_desc": {
-    "message": "Choose which server to use for this download"
-  },
-  "use_default_server": {
-    "message": "Use Default"
-  },
-  "proceed": {
-    "message": "Proceed"
   }
 }

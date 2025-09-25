@@ -120,7 +120,7 @@
     "message": "在推送下载任务时显示浏览器通知"
   },
   "require_manual_server_selection": {
-    "message": "需要手动选择服务器"
+    "message": "手动确认服务器"
   },
   "require_manual_server_selection_desc": {
     "message": "当配置了多个服务器时，在开始下载前总是显示服务器选择对话框"
@@ -166,14 +166,5 @@
   },
   "select_server": {
     "message": "选择服务器"
-  },
-  "select_server_desc": {
-    "message": "选择用于此次下载的服务器"
-  },
-  "use_default_server": {
-    "message": "使用默认"
-  },
-  "proceed": {
-    "message": "继续"
   }
 }

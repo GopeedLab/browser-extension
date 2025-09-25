@@ -1,22 +1,20 @@
-import path from "path"
 import Client from "@gopeed/rest"
 import { type Request } from "@gopeed/types"
 import contentDisposition from "content-disposition"
+import path from "path"
 
 import { getPort } from "@plasmohq/messaging/background"
 import { Storage } from "@plasmohq/storage"
 
-import { skip as pressToSkip } from "~background/messages/api/skip"
-import { 
-  requestServerSelection,
-  type ServerSelectionRequest,
-  type ServerSelectionResponse
+import {
+  requestServerSelection
 } from "~background/messages/api/select-server"
+import { skip as pressToSkip } from "~background/messages/api/skip"
 import { STORAGE_SETTINGS } from "~constants"
 import { getFullUrl } from "~options/components/RemoteSettings"
 import { defaultSettings, type Settings } from "~options/types"
 
-export {}
+export { }
 
 /* function initContextMenus() {
   chrome.contextMenus.create({
@@ -332,7 +330,8 @@ function handleRemoteDownload(
             url: info.url,
             filename: info.filename
           },
-          defaultServer: settings.remote.selectedServer
+          defaultServer: settings.remote.selectedServer,
+          requestId: requestId
         }
       })
 
@@ -355,7 +354,17 @@ function handleRemoteDownload(
       )
 
       if (selectedServer) {
-        await createDownloadTask(info, selectedServer, settings)()
+        // Execute download task and get result
+        const downloadSuccess = await executeDownloadTask(info, selectedServer, settings)
+        
+        // Send result back to content script to handle popup closure
+        await chrome.tabs.sendMessage(tabId, {
+          name: "download-result",
+          body: {
+            success: downloadSuccess,
+            requestId: requestId
+          }
+        })
       }
     } catch (error) {
       console.error("Server selection failed:", error)
@@ -370,6 +379,51 @@ function handleRemoteDownload(
   }
 }
 
+async function executeDownloadTask(
+  info: DownloadInfo,
+  server: Server,
+  settings: Settings
+): Promise<boolean> {
+  const client = new Client({
+    host: getFullUrl(server),
+    token: server.token
+  })
+  let notificationType: string = "success"
+  let notificationTitle: string
+  let notificationMessage: string
+  let success = false
+  
+  try {
+    await client.createTask({
+      req: await toCreateRequest(info)
+    })
+    notificationTitle = chrome.i18n.getMessage("notification_create_success")
+    notificationMessage = chrome.i18n.getMessage(
+      "notification_create_success_message"
+    )
+    success = true
+  } catch (e) {
+    console.error(e)
+    notificationType = "error"
+    notificationTitle = chrome.i18n.getMessage("notification_create_error")
+    notificationMessage = chrome.i18n.getMessage(
+      "notification_create_error_message"
+    )
+    success = false
+  }
+  
+  if (settings.remote.notification) {
+    const port = getPort("notify")
+    port.postMessage({
+      type: notificationType,
+      title: notificationTitle,
+      message: notificationMessage
+    })
+  }
+  
+  return success
+}
+
 function createDownloadTask(
   info: DownloadInfo,
   server: Server,
@@ -380,9 +434,10 @@ function createDownloadTask(
       host: getFullUrl(server),
       token: server.token
     })
-    let notificationType: string
+    let notificationType: string = "success"
     let notificationTitle: string
     let notificationMessage: string
+    let success = false
     try {
       await client.createTask({
         req: await toCreateRequest(info)
@@ -391,6 +446,7 @@ function createDownloadTask(
       notificationMessage = chrome.i18n.getMessage(
         "notification_create_success_message"
       )
+      success = true
     } catch (e) {
       console.error(e)
       notificationType = "error"
@@ -398,6 +454,7 @@ function createDownloadTask(
       notificationMessage = chrome.i18n.getMessage(
         "notification_create_error_message"
       )
+      success = false
     }
     if (settings.remote.notification) {
       const port = getPort("notify")
@@ -407,6 +464,7 @@ function createDownloadTask(
         message: notificationMessage
       })
     }
+    return success
   }
 }
 
