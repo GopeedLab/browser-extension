@@ -20,6 +20,7 @@ export interface Settings {
     selectedServer: string
     servers: Server[]
     notification: boolean
+    requireManualSelection: boolean
   }
 }
 
@@ -44,6 +45,7 @@ export const defaultSettings: Settings = {
     enabled: false,
     selectedServer: "",
     servers: [],
-    notification: true
+    notification: true,
+    requireManualSelection: false
   }
 }

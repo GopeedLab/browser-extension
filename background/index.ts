@@ -1,17 +1,20 @@
-import path from "path"
 import Client from "@gopeed/rest"
 import { type Request } from "@gopeed/types"
 import contentDisposition from "content-disposition"
+import path from "path"
 
 import { getPort } from "@plasmohq/messaging/background"
 import { Storage } from "@plasmohq/storage"
 
+import {
+  requestServerSelection
+} from "~background/messages/api/select-server"
 import { skip as pressToSkip } from "~background/messages/api/skip"
 import { STORAGE_SETTINGS } from "~constants"
 import { getFullUrl } from "~options/components/RemoteSettings"
 import { defaultSettings, type Settings } from "~options/types"
 
-export {}
+export { }
 
 /* function initContextMenus() {
   chrome.contextMenus.create({
@@ -288,21 +291,153 @@ function handleRemoteDownload(
   info: DownloadInfo,
   settings: Settings
 ): Function | undefined {
-  const server = settings.remote.servers.find(
-    (server) => getFullUrl(server) === settings.remote.selectedServer
-  )
-  if (!server) {
-    return
+  // If only one server, no servers, or manual selection is disabled, use existing logic
+  if (settings.remote.servers.length <= 1 || !settings.remote.requireManualSelection) {
+    const server = settings.remote.servers.find(
+      (server) => getFullUrl(server) === settings.remote.selectedServer
+    )
+    if (!server) {
+      return
+    }
+    return createDownloadTask(info, server, settings)
   }
 
+  // Multiple servers available and manual selection is enabled - show server selector
+  return async () => {
+    try {
+      // Show server selector overlay
+      const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
+      if (tabs.length === 0) {
+        // Fallback to default server if no active tab
+        const defaultServer = settings.remote.servers.find(
+          (server) => getFullUrl(server) === settings.remote.selectedServer
+        )
+        if (defaultServer) {
+          await createDownloadTask(info, defaultServer, settings)()
+        }
+        return
+      }
+
+      const tabId = tabs[0].id!
+      const requestId = tabId.toString()
+
+      // Send message to content script to show server selector
+      await chrome.tabs.sendMessage(tabId, {
+        name: "show-server-selector",
+        body: {
+          servers: settings.remote.servers,
+          downloadInfo: {
+            url: info.url,
+            filename: info.filename
+          },
+          defaultServer: settings.remote.selectedServer,
+          requestId: requestId
+        }
+      })
+
+      // Wait for server selection
+      const response = await requestServerSelection(requestId, {
+        servers: settings.remote.servers,
+        downloadInfo: {
+          url: info.url,
+          filename: info.filename
+        }
+      })
+
+      if (response.cancelled || !response.selectedServer) {
+        return
+      }
+
+      // Find selected server and create download task
+      const selectedServer = settings.remote.servers.find(
+        (server) => getFullUrl(server) === response.selectedServer
+      )
+
+      if (selectedServer) {
+        // Execute download task and get result
+        const downloadSuccess = await executeDownloadTask(info, selectedServer, settings)
+        
+        // Send result back to content script to handle popup closure
+        await chrome.tabs.sendMessage(tabId, {
+          name: "download-result",
+          body: {
+            success: downloadSuccess,
+            requestId: requestId
+          }
+        })
+      }
+    } catch (error) {
+      console.error("Server selection failed:", error)
+      // Fallback to default server
+      const defaultServer = settings.remote.servers.find(
+        (server) => getFullUrl(server) === settings.remote.selectedServer
+      )
+      if (defaultServer) {
+        await createDownloadTask(info, defaultServer, settings)()
+      }
+    }
+  }
+}
+
+async function executeDownloadTask(
+  info: DownloadInfo,
+  server: Server,
+  settings: Settings
+): Promise<boolean> {
+  const client = new Client({
+    host: getFullUrl(server),
+    token: server.token
+  })
+  let notificationType: string = "success"
+  let notificationTitle: string
+  let notificationMessage: string
+  let success = false
+  
+  try {
+    await client.createTask({
+      req: await toCreateRequest(info)
+    })
+    notificationTitle = chrome.i18n.getMessage("notification_create_success")
+    notificationMessage = chrome.i18n.getMessage(
+      "notification_create_success_message"
+    )
+    success = true
+  } catch (e) {
+    console.error(e)
+    notificationType = "error"
+    notificationTitle = chrome.i18n.getMessage("notification_create_error")
+    notificationMessage = chrome.i18n.getMessage(
+      "notification_create_error_message"
+    )
+    success = false
+  }
+  
+  if (settings.remote.notification) {
+    const port = getPort("notify")
+    port.postMessage({
+      type: notificationType,
+      title: notificationTitle,
+      message: notificationMessage
+    })
+  }
+  
+  return success
+}
+
+function createDownloadTask(
+  info: DownloadInfo,
+  server: Server,
+  settings: Settings
+): Function {
   return async () => {
     const client = new Client({
       host: getFullUrl(server),
       token: server.token
     })
-    let notificationType: string
+    let notificationType: string = "success"
     let notificationTitle: string
     let notificationMessage: string
+    let success = false
     try {
       await client.createTask({
         req: await toCreateRequest(info)
@@ -311,6 +446,7 @@ function handleRemoteDownload(
       notificationMessage = chrome.i18n.getMessage(
         "notification_create_success_message"
       )
+      success = true
     } catch (e) {
       console.error(e)
       notificationType = "error"
@@ -318,6 +454,7 @@ function handleRemoteDownload(
       notificationMessage = chrome.i18n.getMessage(
         "notification_create_error_message"
       )
+      success = false
     }
     if (settings.remote.notification) {
       const port = getPort("notify")
@@ -327,6 +464,7 @@ function handleRemoteDownload(
         message: notificationMessage
       })
     }
+    return success
   }
 }
 

@@ -122,6 +122,12 @@
   "download_notification_desc": {
     "message": "Show browser notification when sending download tasks"
   },
+  "require_manual_server_selection": {
+    "message": "Manual Server Selection"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "Always show server selection dialog before starting downloads when multiple servers are configured"
+  },
   "add": {
     "message": "Add"
   },
@@ -157,5 +163,8 @@
   },
   "ctrl_disable_capture_desc": {
     "message": "Hold %key% key to temporarily disable download capture"
+  },
+  "select_server": {
+    "message": "Select Server"
   }
 }
