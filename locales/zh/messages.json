@@ -166,5 +166,8 @@
   },
   "select_server": {
     "message": "选择服务器"
+  },
+  "go_to": {
+    "message": "前往"
   }
 }

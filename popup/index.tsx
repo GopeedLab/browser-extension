@@ -1,10 +1,14 @@
 import {
   Cancel,
   CheckCircle,
-  Info as InfoIcon, // 添加 Info 图标
+  Info as InfoIcon,
+  NorthEast as NorthEastIcon,
   Settings as SettingsIcon
 } from "@mui/icons-material"
 import {
+  Alert,
+  Collapse,
+  Link,
   List,
   ListItem,
   ListItemButton,
@@ -12,6 +16,7 @@ import {
   ListItemText,
   Stack
 } from "@mui/material"
+import { useState } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
@@ -24,14 +29,35 @@ function IndexPopup() {
     STORAGE_SETTINGS,
     defaultSettings
   )
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const manifest = chrome.runtime.getManifest()
 
   const handleEnableToggle = () => {
     setSettings((prev) => ({ ...prev, enabled: !prev.enabled }))
   }
 
+  const handleRemoteToggle = () => {
+    setErrorMessage(null) // Clear previous error message
+    
+    if (!settings.remote.enabled && settings.remote.servers.length === 0) {
+      // Show error message if no servers configured
+      setErrorMessage(chrome.i18n.getMessage("no_server_error"))
+      return
+    }
+    setSettings((prev) => ({
+      ...prev,
+      remote: { ...prev.remote, enabled: !prev.remote.enabled }
+    }))
+  }
+
   const handleSettingsClick = () => {
     chrome.runtime.openOptionsPage()
+  }
+
+  const handleRemoteSettingsClick = () => {
+    // Navigate to remote settings page
+    const optionsUrl = chrome.runtime.getURL('options.html#remote')
+    chrome.tabs.create({ url: optionsUrl })
   }
 
   const handleGitHubClick = () => {
@@ -43,6 +69,51 @@ function IndexPopup() {
   return (
     <Theme>
       <Stack width={220}>
+        <Collapse in={!!errorMessage}>
+          {errorMessage && (
+            <Alert 
+              severity="error" 
+              onClose={() => setErrorMessage(null)}
+              sx={{ 
+                m: 1, 
+                mb: 0,
+                '& .MuiAlert-action': {
+                  alignItems: 'flex-start',
+                  paddingTop: '2px'
+                }
+              }}
+              action={
+                <Link 
+                  component="button"
+                  variant="caption"
+                  sx={{ 
+                    color: 'inherit',
+                    cursor: 'pointer',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.3,
+                    fontSize: '0.7rem',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
+                    '&:hover': {
+                      textDecoration: 'none',
+                      opacity: 0.8
+                    }
+                  }}
+                  onClick={() => {
+                    setErrorMessage(null)
+                    handleRemoteSettingsClick()
+                  }}
+                >
+                  {chrome.i18n.getMessage("go_to")} <NorthEastIcon sx={{ fontSize: 11, color: 'text.secondary' }} />
+                </Link>
+              }
+            >
+              {errorMessage}
+            </Alert>
+          )}
+        </Collapse>
         <List>
           <ListItem disablePadding>
             <ListItemButton onClick={handleEnableToggle}>
@@ -57,6 +128,20 @@ function IndexPopup() {
                 primary={chrome.i18n.getMessage(
                   settings.enabled ? "enabled" : "disabled"
                 )}
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleRemoteToggle}>
+              <ListItemIcon>
+                {settings.remote.enabled ? (
+                  <CheckCircle color="success" />
+                ) : (
+                  <Cancel color="error" />
+                )}
+              </ListItemIcon>
+              <ListItemText
+                primary={chrome.i18n.getMessage("remote_download")}
               />
             </ListItemButton>
           </ListItem>
