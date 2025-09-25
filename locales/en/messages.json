@@ -166,5 +166,8 @@
   },
   "select_server": {
     "message": "Select Server"
+  },
+  "go_to": {
+    "message": "GO"
   }
 }

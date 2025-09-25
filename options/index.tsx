@@ -12,7 +12,7 @@ import {
   Typography
 } from "@mui/material"
 import icon from "data-base64:~assets/icon.png"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import Theme from "~components/theme"
 
@@ -22,6 +22,32 @@ import RemoteSettings from "./components/RemoteSettings"
 const Options = () => {
   const [activeMenu, setActiveMenu] = useState("basic")
   const manifest = chrome.runtime.getManifest()
+
+  // Hash路由支持
+  useEffect(() => {
+    // 初始化时检查URL hash
+    const hash = window.location.hash.slice(1) // 去掉 # 符号
+    if (hash && (hash === "basic" || hash === "remote")) {
+      setActiveMenu(hash)
+    }
+
+    // 监听hash变化
+    const handleHashChange = () => {
+      const newHash = window.location.hash.slice(1)
+      if (newHash && (newHash === "basic" || newHash === "remote")) {
+        setActiveMenu(newHash)
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  // 当activeMenu变化时更新URL hash
+  const handleMenuChange = (menuId: string) => {
+    setActiveMenu(menuId)
+    window.location.hash = menuId
+  }
 
   const menuItems = [
     {
@@ -140,7 +166,7 @@ const Options = () => {
                     key={item.id}
                     button
                     selected={activeMenu === item.id}
-                    onClick={() => setActiveMenu(item.id)}>
+                    onClick={() => handleMenuChange(item.id)}>
                     <ListItemIcon>{item.icon}</ListItemIcon>
                     <ListItemText primary={item.label} />
                   </ListItem>
