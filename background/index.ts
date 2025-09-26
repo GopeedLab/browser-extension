@@ -6,13 +6,13 @@ import path from "path"
 import { getPort } from "@plasmohq/messaging/background"
 import { Storage } from "@plasmohq/storage"
 
-import {
-  requestServerSelection
-} from "~background/messages/api/select-server"
+import { requestServerSelection } from "~background/messages/api/select-server"
 import { skip as pressToSkip } from "~background/messages/api/skip"
 import { STORAGE_SETTINGS } from "~constants"
 import { getFullUrl } from "~options/components/RemoteSettings"
 import { defaultSettings, type Settings } from "~options/types"
+import type { Server } from "~types"
+import { getMergedSettings } from "~util/settings"
 
 export { }
 
@@ -78,8 +78,8 @@ const storage = new Storage()
 let settingsCache = defaultSettings
 let isRunningCache = false
 async function refreshSettings(): Promise<Settings> {
-  const settings =
-    (await storage.get<Settings>(STORAGE_SETTINGS)) || defaultSettings
+  const storedSettings = await storage.get<Settings>(STORAGE_SETTINGS)
+  const settings = getMergedSettings(storedSettings)
   settingsCache = settings
   return settings
 }
@@ -292,7 +292,10 @@ function handleRemoteDownload(
   settings: Settings
 ): Function | undefined {
   // If only one server, no servers, or manual selection is disabled, use existing logic
-  if (settings.remote.servers.length <= 1 || !settings.remote.requireManualSelection) {
+  if (
+    settings.remote.servers.length <= 1 ||
+    !settings.remote.requireManualSelection
+  ) {
     const server = settings.remote.servers.find(
       (server) => getFullUrl(server) === settings.remote.selectedServer
     )
@@ -306,7 +309,10 @@ function handleRemoteDownload(
   return async () => {
     try {
       // Show server selector overlay
-      const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
+      const tabs = await chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      })
       if (tabs.length === 0) {
         // Fallback to default server if no active tab
         const defaultServer = settings.remote.servers.find(
@@ -355,8 +361,12 @@ function handleRemoteDownload(
 
       if (selectedServer) {
         // Execute download task and get result
-        const downloadSuccess = await executeDownloadTask(info, selectedServer, settings)
-        
+        const downloadSuccess = await executeDownloadTask(
+          info,
+          selectedServer,
+          settings
+        )
+
         // Send result back to content script to handle popup closure
         await chrome.tabs.sendMessage(tabId, {
           name: "download-result",
@@ -392,7 +402,7 @@ async function executeDownloadTask(
   let notificationTitle: string
   let notificationMessage: string
   let success = false
-  
+
   try {
     await client.createTask({
       req: await toCreateRequest(info)
@@ -411,8 +421,9 @@ async function executeDownloadTask(
     )
     success = false
   }
-  
-  if (settings.remote.notification) {
+
+  // Show notification based on confirmBeforeDownload setting
+  if (settings.confirmBeforeDownload || !success) {
     const port = getPort("notify")
     port.postMessage({
       type: notificationType,
@@ -420,7 +431,7 @@ async function executeDownloadTask(
       message: notificationMessage
     })
   }
-  
+
   return success
 }
 
@@ -456,7 +467,9 @@ function createDownloadTask(
       )
       success = false
     }
-    if (settings.remote.notification) {
+
+    // Show notification based on confirmBeforeDownload setting or if there's an error
+    if (settings.confirmBeforeDownload || !success) {
       const port = getPort("notify")
       port.postMessage({
         type: notificationType,
@@ -470,6 +483,7 @@ function createDownloadTask(
 
 interface HostRequest<T> {
   method: string
+  meta?: Record<string, any>
   params?: T
 }
 
@@ -496,14 +510,34 @@ function handleNativeDownload(
     try {
       await connectNativeAndPost<string>({
         method: "create",
+        meta: {
+          silent: !settings.confirmBeforeDownload
+        },
         params: btoa(
           JSON.stringify({
             req
           })
         )
       })
+
+      if (!settings.confirmBeforeDownload) {
+        const port = getPort("notify")
+        port.postMessage({
+          type: "success",
+          title: chrome.i18n.getMessage("notification_create_success"),
+          message: chrome.i18n.getMessage("notification_native_success_message")
+        })
+      }
     } catch (e) {
       console.error(e)
+      if (!settings.confirmBeforeDownload) {
+        const port = getPort("notify")
+        port.postMessage({
+          type: "error",
+          title: chrome.i18n.getMessage("notification_create_error"),
+          message: chrome.i18n.getMessage("notification_native_error_message")
+        })
+      }
     }
   }
 }

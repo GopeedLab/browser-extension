@@ -27,12 +27,11 @@ import {
 import { useState } from "react"
 
 import { sendToBackground } from "@plasmohq/messaging"
-import { useStorage } from "@plasmohq/storage/hook"
 
 import type { CheckResult } from "~background/messages/api/check"
-import { STORAGE_SETTINGS } from "~constants"
+import { useSettings } from "~hooks/useSettings"
+import type { Server } from "~types"
 
-import { defaultSettings, type Settings } from "../types"
 import SavedTip, { useTip } from "./SavedTip"
 
 interface ServerFormData extends Server {
@@ -44,10 +43,8 @@ export const getFullUrl = (server: Server) =>
   `${server.protocol}://${server.url}`
 
 export default function RemoteSettings() {
-  const [settings, setSettings] = useStorage<Settings>(
-    STORAGE_SETTINGS,
-    defaultSettings
-  )
+  const [settings, setStoredSettings] = useSettings()
+  
   const { showTip, message, setMessage } = useTip()
   const [open, setOpen] = useState(false)
   const [editingServerUrl, setEditingServerUrl] = useState<string | null>(null)
@@ -63,7 +60,7 @@ export default function RemoteSettings() {
       showTip("no_server_error", "error")
       return
     }
-    setSettings({
+    setStoredSettings({
       ...settings,
       remote: { ...settings.remote, enabled: checked }
     })
@@ -71,7 +68,7 @@ export default function RemoteSettings() {
   }
 
   const handleServerSelect = (fullUrl: string) => {
-    setSettings({
+    setStoredSettings({
       ...settings,
       remote: { ...settings.remote, selectedServer: fullUrl }
     })
@@ -107,7 +104,7 @@ export default function RemoteSettings() {
 
     // When deleting the last server, clear selection and disable remote download
     const isLastServer = newServers.length === 0
-    setSettings({
+    setStoredSettings({
       ...settings,
       remote: {
         ...settings.remote,
@@ -154,7 +151,7 @@ export default function RemoteSettings() {
 
     // When adding the first server, automatically select it but don't enable remote download
     const isFirstServer = settings.remote.servers.length === 0
-    setSettings({
+    setStoredSettings({
       ...settings,
       remote: {
         ...settings.remote,
@@ -232,7 +229,7 @@ export default function RemoteSettings() {
         <Switch
           checked={settings.remote.notification}
           onChange={(e) => {
-            setSettings({
+            setStoredSettings({
               ...settings,
               remote: { ...settings.remote, notification: e.target.checked }
             })
@@ -250,7 +247,7 @@ export default function RemoteSettings() {
         <Switch
           checked={settings.remote.requireManualSelection}
           onChange={(e) => {
-            setSettings({
+            setStoredSettings({
               ...settings,
               remote: { ...settings.remote, requireManualSelection: e.target.checked }
             })

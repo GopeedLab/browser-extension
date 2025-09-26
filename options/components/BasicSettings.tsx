@@ -10,23 +10,19 @@ import {
   Typography
 } from "@mui/material"
 
-import { useStorage } from "@plasmohq/storage/hook"
 
-import { STORAGE_SETTINGS } from "~constants"
+import { useSettings } from "~hooks/useSettings"
 import { getContrlKey } from "~util"
 
-import { defaultSettings, type Settings } from "../types"
 import SavedTip, { useTip } from "./SavedTip"
 
 const BasicSettings = () => {
-  const [settings, setSettings] = useStorage<Settings>(
-    STORAGE_SETTINGS,
-    defaultSettings
-  )
+  const [settings, setStoredSettings] = useSettings()
+  
   const { showTip, message, setMessage } = useTip()
 
   const handleChange = (field: string, value: any) => {
-    setSettings((prev) => ({ ...prev, [field]: value }))
+    setStoredSettings((prev) => ({ ...prev, [field]: value }))
     showTip()
   }
 
@@ -66,7 +62,20 @@ const BasicSettings = () => {
               onChange={(e) => handleChange("enabled", e.target.checked)}
             />
           </Box>
-
+          
+          <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
+            {renderLabel(
+              chrome.i18n.getMessage("confirm_before_download"),
+              chrome.i18n.getMessage("confirm_before_download_desc")
+            )}
+            <Switch
+              checked={settings.confirmBeforeDownload}
+              onChange={(e) =>
+                handleChange("confirmBeforeDownload", e.target.checked)
+              }
+            />
+          </Box>
+          
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
             {renderLabel(
               chrome.i18n.getMessage("auto_wakeup"),

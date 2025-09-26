@@ -152,6 +152,12 @@
   "notification_create_error_message": {
     "message": "任务添加失败，请检查下载服务器是否正常"
   },
+  "notification_native_success_message": {
+    "message": "任务已成功添加到下载器"
+  },
+  "notification_native_error_message": {
+    "message": "任务添加失败，请检查下载器是否正常"
+  },
   "no_servers_tip": {
     "message": "暂无服务器，点击上方按钮添加"
   },
@@ -163,6 +169,12 @@
   },
   "ctrl_disable_capture_desc": {
     "message": "按住 %key% 键时临时禁用下载捕获"
+  },
+  "confirm_before_download": {
+    "message": "下载前确认"
+  },
+  "confirm_before_download_desc": {
+    "message": "在开始下载前显示确认对话框"
   },
   "select_server": {
     "message": "选择服务器"

@@ -18,22 +18,17 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 
-import { useStorage } from "@plasmohq/storage/hook"
-
 import Theme from "~components/theme"
-import { STORAGE_SETTINGS } from "~constants"
-import { defaultSettings, type Settings } from "~options/types"
+import { useSettings } from "~hooks/useSettings"
 
 function IndexPopup() {
-  const [settings, setSettings] = useStorage<Settings>(
-    STORAGE_SETTINGS,
-    defaultSettings
-  )
+  const [settings, setStoredSettings] = useSettings()
+  
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const manifest = chrome.runtime.getManifest()
 
   const handleEnableToggle = () => {
-    setSettings((prev) => ({ ...prev, enabled: !prev.enabled }))
+    setStoredSettings((prev) => ({ ...prev, enabled: !prev.enabled }))
   }
 
   const handleRemoteToggle = () => {
@@ -44,7 +39,7 @@ function IndexPopup() {
       setErrorMessage(chrome.i18n.getMessage("no_server_error"))
       return
     }
-    setSettings((prev) => ({
+    setStoredSettings((prev) => ({
       ...prev,
       remote: { ...prev.remote, enabled: !prev.remote.enabled }
     }))
