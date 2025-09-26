@@ -1,7 +1,10 @@
+import type { Server } from "~types"
+
 export interface Settings {
   enabled: boolean
   autoWakeup: boolean
   ctrlDisableCapture: boolean
+  confirmBeforeDownload: boolean
   excludeDomains: {
     enabled: boolean
     list: string
@@ -28,6 +31,7 @@ export const defaultSettings: Settings = {
   enabled: true,
   autoWakeup: true,
   ctrlDisableCapture: true,
+  confirmBeforeDownload: true,
   excludeDomains: {
     enabled: false,
     list: ""

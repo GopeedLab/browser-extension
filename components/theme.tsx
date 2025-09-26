@@ -2,14 +2,11 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material"
 import type { PropsWithChildren } from "react"
 import { useMemo } from "react"
 
-import { useStorage } from "@plasmohq/storage/hook"
-
-import { STORAGE_SETTINGS } from "~constants"
-import { defaultSettings, type Settings } from "~options/types"
+import { useSettings } from "~hooks/useSettings"
 
 const Theme = ({ children }: PropsWithChildren) => {
-  const [settings] = useStorage<Settings>(STORAGE_SETTINGS, defaultSettings)
-
+  const [settings] = useSettings()
+  
   const theme = useMemo(() => {
     const prefersDarkMode =
       settings.theme === "system"

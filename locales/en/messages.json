@@ -164,6 +164,18 @@
   "ctrl_disable_capture_desc": {
     "message": "Hold %key% key to temporarily disable download capture"
   },
+  "confirm_before_download": {
+    "message": "Confirm Before Download"
+  },
+  "confirm_before_download_desc": {
+    "message": "Show confirmation dialog before starting download"
+  },
+  "notification_native_success_message": {
+    "message": "Task successfully added to downloader"
+  },
+  "notification_native_error_message": {
+    "message": "Task creation failed, please check if downloader is working properly"
+  },
   "select_server": {
     "message": "Select Server"
   },

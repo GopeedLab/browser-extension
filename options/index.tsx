@@ -2,14 +2,14 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload"
 import GitHubIcon from "@mui/icons-material/GitHub"
 import SettingsIcon from "@mui/icons-material/Settings"
 import {
-  Box,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography
+    Box,
+    Divider,
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Typography
 } from "@mui/material"
 import icon from "data-base64:~assets/icon.png"
 import { useEffect, useState } from "react"
@@ -23,15 +23,15 @@ const Options = () => {
   const [activeMenu, setActiveMenu] = useState("basic")
   const manifest = chrome.runtime.getManifest()
 
-  // Hash路由支持
+  // Hash routing support
   useEffect(() => {
-    // 初始化时检查URL hash
-    const hash = window.location.hash.slice(1) // 去掉 # 符号
+    // Check URL hash on initialization
+    const hash = window.location.hash.slice(1) // Remove # symbol
     if (hash && (hash === "basic" || hash === "remote")) {
       setActiveMenu(hash)
     }
 
-    // 监听hash变化
+    // Listen for hash changes
     const handleHashChange = () => {
       const newHash = window.location.hash.slice(1)
       if (newHash && (newHash === "basic" || newHash === "remote")) {
@@ -43,7 +43,7 @@ const Options = () => {
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
-  // 当activeMenu变化时更新URL hash
+  // Update URL hash when activeMenu changes
   const handleMenuChange = (menuId: string) => {
     setActiveMenu(menuId)
     window.location.hash = menuId
