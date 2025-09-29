@@ -70,7 +70,8 @@
     "permissions": [
       "downloads",
       "cookies",
-      "nativeMessaging"
+      "nativeMessaging",
+      "notifications"
     ],
     "overrides": {
       "firefox": {
@@ -80,7 +81,8 @@
           "webRequest",
           "webRequestBlocking",
           "*://*/*",
-          "nativeMessaging"
+          "nativeMessaging",
+          "notifications"
         ],
         "browser_specific_settings": {
           "gecko": {
