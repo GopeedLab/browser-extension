@@ -10,7 +10,6 @@ import { skip as pressToSkip } from "~background/messages/api/skip"
 import { STORAGE_SETTINGS } from "~constants"
 import { getFullUrl } from "~options/components/RemoteSettings"
 import { defaultSettings, type Settings } from "~options/types"
-import type { Server } from "~types"
 import { getMergedSettings } from "~util/settings"
 
 export { }
