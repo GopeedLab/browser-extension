@@ -30,7 +30,7 @@ The extension supports pushing tasks to the `Gopeed server` for downloading. If 
 
 ![](/_docs//img/tutorial/en_api.png)
 
-> **Tip**: You can also [enable](https://docs.gopeed.com/zh/dev-api.html#%E5%90%AF%E7%94%A8%E6%8E%A5%E5%8F%A3) Gopeed's TCP protocol as a remote download server, which is suitable for cases where the browser extension does not automatically take over the download, such as the `Linux` version, which is unlikely to be automatically taken over for downloading.
+> **Tip**: You can also [enable](https://docs.gopeed.com/dev-api.html#enable-api) Gopeed's TCP protocol as a remote download server, which is suitable for cases where the browser extension does not automatically take over the download, such as the `Linux` version, which is unlikely to be automatically taken over for downloading.
 
 ## Build
 
