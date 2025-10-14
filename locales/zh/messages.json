@@ -181,5 +181,14 @@
   },
   "go_to": {
     "message": "前往"
+  },
+  "context_menu_download": {
+    "message": "使用 Gopeed 下载"
+  },
+  "notification_download_failed": {
+    "message": "下载失败"
+  },
+  "notification_no_handler": {
+    "message": "无法创建下载任务"
   }
 }

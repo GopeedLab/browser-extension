@@ -181,5 +181,14 @@
   },
   "go_to": {
     "message": "GO"
+  },
+  "context_menu_download": {
+    "message": "Download with Gopeed"
+  },
+  "notification_download_failed": {
+    "message": "Download Failed"
+  },
+  "notification_no_handler": {
+    "message": "Unable to create download task"
   }
 }

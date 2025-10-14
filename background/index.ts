@@ -36,22 +36,62 @@ async function showNativeNotification(type: "success" | "error" | "warning" | "i
   }
 }
 
-/* function initContextMenus() {
+function initContextMenus() {
+  // Create a single context menu for all supported contexts
   chrome.contextMenus.create({
-    id: "sniff",
-    title: "Download All Resource",
-    contexts: ["page", "selection", "link", "action"]
+    id: "gopeed-download",
+    title: chrome.i18n.getMessage("context_menu_download"),
+    contexts: ["link", "image", "video", "audio"]
   })
 
-  chrome.contextMenus.onClicked.addListener((info, tab) => {
-    console.log(info, tab)
-    const filePath = sniffer.split("/").pop().split("?")[0]
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: [filePath]
-    })
+  // Handle context menu clicks
+  chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    // Determine URL: linkUrl for links, srcUrl for images/videos/audio
+    const url =  info.srcUrl || info.linkUrl
+    
+    if (!url) {
+      console.error("No URL found for context menu download")
+      return
+    }
+
+    // Extract filename from URL
+    let filename: string
+    try {
+      const urlObj = new URL(url)
+      filename = path.basename(urlObj.pathname) || "unknown"
+    } catch (e) {
+      filename = "unknown"
+    }
+
+    // Get current settings
+    const settings = await refreshSettings()
+    const isRunning = await refreshIsRunning()
+
+    // Create download info object
+    const downloadInfo: DownloadInfo = {
+      url: url,
+      filename: filename,
+      filesize: 0, // Unknown file size for context menu downloads
+      ua: navigator.userAgent,
+      referrer: tab?.url || url,
+      cookieStoreId: (tab as any)?.cookieStoreId
+    }
+
+    // Get download handler and execute
+    const handler = downloadHandler(downloadInfo, settings, isRunning)
+    if (!handler) {
+      await showNativeNotification(
+        "error",
+        chrome.i18n.getMessage("notification_download_failed"),
+        chrome.i18n.getMessage("notification_no_handler")
+      )
+      return
+    }
+
+    // Execute the download
+    await handler()
   })
-} */
+}
 
 let connectNativePort: chrome.runtime.Port | null = null
 
@@ -129,6 +169,9 @@ chrome.runtime.onStartup &&
   }, 3000)
   await refreshSettings()
   await refreshIsRunning()
+  
+  // Initialize context menus
+  initContextMenus()
 })()
 
 interface DownloadInfo {
