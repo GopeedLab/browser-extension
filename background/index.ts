@@ -3,7 +3,6 @@ import { type Request } from "@gopeed/types"
 import contentDisposition from "content-disposition"
 import path from "path"
 
-import { getPort } from "@plasmohq/messaging/background"
 import { Storage } from "@plasmohq/storage"
 
 import { requestServerSelection } from "~background/messages/api/select-server"
@@ -11,10 +10,31 @@ import { skip as pressToSkip } from "~background/messages/api/skip"
 import { STORAGE_SETTINGS } from "~constants"
 import { getFullUrl } from "~options/components/RemoteSettings"
 import { defaultSettings, type Settings } from "~options/types"
-import type { Server } from "~types"
 import { getMergedSettings } from "~util/settings"
 
 export { }
+
+// Native notification utility function
+async function showNativeNotification(type: "success" | "error" | "warning" | "info" = "success", title: string, message: string) {
+  const notificationId = `gopeed-${Date.now()}`
+  
+  try {
+    await chrome.notifications.create(notificationId, {
+      type: "basic",
+      iconUrl: chrome.runtime.getURL("assets/icon.png"),
+      title: title,
+      message: message,
+      priority: type === "error" ? 2 : 1
+    })
+    
+    // Auto-clear notification after 6 seconds
+    setTimeout(() => {
+      chrome.notifications.clear(notificationId)
+    }, 6000)
+  } catch (error) {
+    console.error("Failed to create notification:", error)
+  }
+}
 
 /* function initContextMenus() {
   chrome.contextMenus.create({
@@ -424,12 +444,11 @@ async function executeDownloadTask(
 
   // Show notification based on confirmBeforeDownload setting
   if (settings.confirmBeforeDownload || !success) {
-    const port = getPort("notify")
-    port.postMessage({
-      type: notificationType,
-      title: notificationTitle,
-      message: notificationMessage
-    })
+    await showNativeNotification(
+      notificationType as "success" | "error",
+      notificationTitle,
+      notificationMessage
+    )
   }
 
   return success
@@ -470,12 +489,11 @@ function createDownloadTask(
 
     // Show notification based on confirmBeforeDownload setting or if there's an error
     if (settings.confirmBeforeDownload || !success) {
-      const port = getPort("notify")
-      port.postMessage({
-        type: notificationType,
-        title: notificationTitle,
-        message: notificationMessage
-      })
+      await showNativeNotification(
+        notificationType as "success" | "error",
+        notificationTitle,
+        notificationMessage
+      )
     }
     return success
   }
@@ -521,22 +539,20 @@ function handleNativeDownload(
       })
 
       if (!settings.confirmBeforeDownload) {
-        const port = getPort("notify")
-        port.postMessage({
-          type: "success",
-          title: chrome.i18n.getMessage("notification_create_success"),
-          message: chrome.i18n.getMessage("notification_native_success_message")
-        })
+        await showNativeNotification(
+          "success",
+          chrome.i18n.getMessage("notification_create_success"),
+          chrome.i18n.getMessage("notification_native_success_message")
+        )
       }
     } catch (e) {
       console.error(e)
       if (!settings.confirmBeforeDownload) {
-        const port = getPort("notify")
-        port.postMessage({
-          type: "error",
-          title: chrome.i18n.getMessage("notification_create_error"),
-          message: chrome.i18n.getMessage("notification_native_error_message")
-        })
+        await showNativeNotification(
+          "error",
+          chrome.i18n.getMessage("notification_create_error"),
+          chrome.i18n.getMessage("notification_native_error_message")
+        )
       }
     }
   }
