@@ -15,64 +15,22 @@
 ## Features
 
 - 🔽 Instead of browser download manager
+- 🖱️ Right-click menu download
 - 🔍 Sniff web resources
 - ⚙️ Support multiple downloader configurations
 - 📦 More..
 
-## Advanced Usage
+## Usage
 
-This extension is "**ready to use after download**" and usually requires no worries on your part.
+Basicly, this extension is **ready to use**, you don't need to do any settings, just make sure you have installed `Gopeed`.
 
-### Temp disable the extension
+### Remote Download
 
-![en_temp_disabled](/_docs/img/tutorial/en_temp_disabled.png)
+The extension supports pushing tasks to the `Gopeed server` for downloading. If you have deployed the `web` or `docker` version, you can configure the remote download server through the extension.
 
-### How to customize API
+![](/_docs//img/tutorial/en_api.png)
 
-1. Open ext settings
-
-   ![en_settings](/_docs/img/tutorial/en_settings.png)
-
-2. Edit the API settings (MUST BE SAME AS WHAT YOU'VE SET IN SOFTWARE)
-
-   ![en_api](/_docs/img/tutorial/en_api.png)
-
-### How to set file types that do not need to be captured
-
-1. Open ext setting page and turn to _Basic Settings_ page.
-2. Open and edit the box of the option _File Type Filter_, for example:
-
-   - Note: `.tar.gz` would be matched by both `.gz` and `.tar.gz`
-
-   ```text
-   .jpg
-   .jpeg
-   .png
-   .tif
-   .tiff
-   .webp
-   .avif
-   .gif
-   .pdf
-   .docx
-   .doc
-   .pptx
-   .ppt
-   .xlsx
-   .xls
-   ```
-
-### How to set domains that do not need to be captured
-
-1. Open ext setting page and turn to _Basic Settings_ page.
-2. Open and edit the box of the option _Domain Filter_, for example:
-
-   - Note: The use of **regular expression** or **wildcard characters** is **not** supported.
-
-   ```text
-   changjiang.yuketang.cn
-   zhihu.com
-   ```
+> **Tip**: You can also [enable](https://docs.gopeed.com/zh/dev-api.html#%E5%90%AF%E7%94%A8%E6%8E%A5%E5%8F%A3) Gopeed's TCP protocol as a remote download server, which is suitable for cases where the browser extension does not automatically take over the download, such as the `Linux` version, which is unlikely to be automatically taken over for downloading.
 
 ## Build
 

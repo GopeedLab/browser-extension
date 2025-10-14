@@ -15,64 +15,22 @@
 ## 功能
 
 - 🔽 接管浏览器下载
+- 🖱️ 右键菜单下载
 - 🔍 嗅探网页资源
 - ⚙️ 支持多个下载器配置
 - 📦 More..
 
-## 进阶教程
+## 教程
 
-本扩展**开箱即用**，一般无须操心
+本扩展**开箱即用**，通常不需要您进行任何设置，只要确保安装了`Gopeed`即可。
 
-### 临时禁用扩展
+### 远程下载
 
-![zhcn_temp_disabled](/_docs/img/tutorial/zhcn_temp_disabled.png)
+扩展支持把任务推送到`Gopeed服务端`进行下载，如果部署的`web`或者`docker`版本，可以通过扩展进行配置远程下载服务器进行下载。
 
-### 如何自定义API接口
+![](/_docs//img/tutorial/zhcn_api.png)
 
-1. 打开设置
-
-   ![zhcn_settings](/_docs/img/tutorial/zhcn_settings.png)
-
-2. 填写接口设置（必须与软件内设置相同）
-
-   ![zhcn_api](/_docs/img/tutorial/zhcn_api.png)
-
-### 如何屏蔽指定后缀名（扩展名）的文件
-
-1. 打开扩展设置
-2. 在“基础设置”页面的“文件类型过滤”栏依次填写您不需要捕获的文件类型名称，例如：
-
-   - 注：`.tar.gz` 会被 `.gz` 与 `.tar.gz` 匹配
-
-   ```text
-   .jpg
-   .jpeg
-   .png
-   .tif
-   .tiff
-   .webp
-   .avif
-   .gif
-   .pdf
-   .docx
-   .doc
-   .pptx
-   .ppt
-   .xlsx
-   .xls
-   ```
-
-### 如何屏蔽来自指定域名的文件
-
-1. 打开扩展设置
-2. 在“基础设置”页面的“域名过滤”栏依次填写您不需要捕获的网址，例如：
-
-   - 注：**不支持通配符**
-
-   ```text
-   changjiang.yuketang.cn
-   zhihu.com
-   ```
+> **Tip**: 也可以[开启](https://docs.gopeed.com/zh/dev-api.html#%E5%90%AF%E7%94%A8%E6%8E%A5%E5%8F%A3)Gopeed的TCP协议作为远程下载服务器，适用于浏览器扩展不自动接管的情况，比如`Linux`版本大概率无法被自动接管下载。
 
 ## 构建
 
