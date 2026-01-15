@@ -1,6 +1,7 @@
 import {
   Cancel,
   CheckCircle,
+  Dns as DnsIcon,
   Info as InfoIcon,
   NorthEast as NorthEastIcon,
   Settings as SettingsIcon
@@ -53,6 +54,32 @@ function IndexPopup() {
     // Navigate to remote settings page
     const optionsUrl = chrome.runtime.getURL('options.html#remote')
     chrome.tabs.create({ url: optionsUrl })
+  }
+
+  const handleRemoteServerClick = () => {
+    setErrorMessage(null)
+    const { servers, selectedServer } = settings.remote
+    if (servers.length > 0) {
+      // Check if the selected server exists in the server list
+      const activeServer = servers.find(
+        (s) => `${s.protocol}://${s.url}` === selectedServer
+      )
+
+      let targetUrl = ""
+      if (activeServer) {
+        targetUrl = selectedServer
+      } else {
+        // Fallback to the first server if no server is selected or the selected server is not found
+        const first = servers[0]
+        targetUrl = `${first.protocol}://${first.url}`
+      }
+
+      if (targetUrl) {
+        chrome.tabs.create({ url: targetUrl })
+      }
+    } else {
+      setErrorMessage(chrome.i18n.getMessage("no_server_error"))
+    }
   }
 
   const handleGitHubClick = () => {
@@ -137,6 +164,16 @@ function IndexPopup() {
               </ListItemIcon>
               <ListItemText
                 primary={chrome.i18n.getMessage("remote_download")}
+              />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton onClick={handleRemoteServerClick}>
+              <ListItemIcon>
+                <DnsIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={chrome.i18n.getMessage("remote_server")}
               />
             </ListItemButton>
           </ListItem>

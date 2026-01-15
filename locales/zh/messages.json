@@ -86,6 +86,9 @@
   "remote_download": {
     "message": "远程下载"
   },
+  "remote_server": {
+    "message": "远程服务器"
+  },
   "enable_remote_download": {
     "message": "启用远程下载"
   },
