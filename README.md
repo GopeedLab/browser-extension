@@ -17,6 +17,7 @@
 - 🔽 Instead of browser download manager
 - 🖱️ Right-click menu download
 - 🔍 Sniff web resources
+- 🚀 Quick access to remote servers
 - ⚙️ Support multiple downloader configurations
 - 📦 More..
 
