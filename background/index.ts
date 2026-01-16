@@ -196,9 +196,13 @@ function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
   }
   if (settings.excludeDomains.enabled) {
     const excludes = settings.excludeDomains.list.split("\n")
+      .map(ex => ex.trim())
+      .filter(ex => ex.length > 0)
     const host = new URL(info.url).host
-    if (excludes.includes(host)) {
-      return false
+    for (const exclude of excludes) {
+      if (isDomainMatch(host, exclude)) {
+        return false
+      }
     }
   }
   if (settings.excludeFileTypes.enabled && info.filename) {
@@ -623,4 +627,42 @@ async function toCreateRequest(info: DownloadInfo): Promise<Request> {
       }
     }
   }
+}
+
+function isDomainMatch(host: string, pattern: string): boolean {
+  const patternLen = pattern.length;
+
+  // Handle different pattern types based on leading/trailing characters
+  if (patternLen > 2 && pattern[0] === '*' && pattern[patternLen - 1] === '*') {
+    // Contains match: *example.com* matches any domain containing example.com
+    const middlePattern = pattern.substring(1, patternLen - 1);
+    return host.includes(middlePattern);
+  }
+
+  if (patternLen > 1 && pattern[0] === '*') {
+    if (pattern[1] === '.') {
+      // Subdomain match: *.example.com matches subdomains but not the domain itself
+      const parentDomain = pattern.substring(2); // example.com
+      return host !== parentDomain && host.endsWith('.' + parentDomain);
+    } else {
+      // All match: *example.com matches domain and all subdomains
+      const parentDomain = pattern.substring(1); // example.com
+      return host === parentDomain || host.endsWith('.' + parentDomain);
+    }
+  }
+
+  if (patternLen > 1 && pattern[0] === '/' && pattern[patternLen - 1] === '/') {
+    // Regex match: /pattern/ matches using regular expression
+    try {
+      const regexPattern = pattern.substring(1, patternLen - 1);
+      const regex = new RegExp(regexPattern);
+      return regex.test(host);
+    } catch (e) {
+      console.warn(`Invalid regex pattern: ${pattern}`);
+      return false;
+    }
+  }
+
+  // Exact match: example.com only matches example.com
+  return pattern === host;
 }

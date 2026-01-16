@@ -42,7 +42,7 @@
     "message": "设置不需要捕获的域名"
   },
   "domain_filter_placeholder": {
-    "message": "每行输入一个域名，例如：example.com"
+    "message": "每行输入一个域名，支持精确匹配 (example.com)、子域名匹配 (*.example.com)、全匹配 (*example.com) 和包含匹配 (*example.com*)"
   },
   "file_type_filter": {
     "message": "文件类型过滤"
