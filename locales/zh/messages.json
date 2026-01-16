@@ -39,7 +39,7 @@
     "message": "域名过滤"
   },
   "domain_filter_desc": {
-    "message": "设置不需要捕获的域名，使用 * 进行子域名匹配，开头使用 * 进行全匹配，开头和结尾使用 * 进行包含匹配"
+    "message": "设置不需要捕获的域名"
   },
   "domain_filter_placeholder": {
     "message": "每行输入一个域名，支持精确匹配 (example.com)、子域名匹配 (*.example.com)、全匹配 (*example.com) 和包含匹配 (*example.com*)"

@@ -39,7 +39,7 @@
     "message": "Domain Filter"
   },
   "domain_filter_desc": {
-    "message": "Set domains that do not need to be captured. Use * for subdomain match, * at start for all match, and * at start and end for contains match"
+    "message": "Set domains that do not need to be captured"
   },
   "domain_filter_placeholder": {
     "message": "Enter one domain per line. Supports exact match (example.com), subdomain match (*.example.com), all match (*example.com), and contains match (*example.com*)"
