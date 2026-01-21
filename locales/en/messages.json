@@ -89,6 +89,9 @@
   "remote_download": {
     "message": "Remote Download"
   },
+  "remote_server": {
+    "message": "Remote Server"
+  },
   "enable_remote_download": {
     "message": "Enable Remote Download"
   },
