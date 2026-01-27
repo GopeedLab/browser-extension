@@ -169,9 +169,20 @@ chrome.runtime.onStartup &&
   }, 3000)
   await refreshSettings()
   await refreshIsRunning()
-  
+
   // Initialize context menus
   initContextMenus()
+
+  // Cleanup old entries from downloadEventSkipMap every 30 seconds
+  // to prevent memory leaks in case onCreated never fires
+  setInterval(() => {
+    // Note: Since we're using URL as key and deleting immediately after use,
+    // this is just a safety net. In practice, entries should be deleted quickly.
+    if (downloadEventSkipMap.size > 100) {
+      // If map grows too large, clear it entirely as a safety measure
+      downloadEventSkipMap.clear()
+    }
+  }, 30000)
 })()
 
 interface DownloadInfo {
@@ -181,6 +192,7 @@ interface DownloadInfo {
   ua?: string
   referrer?: string
   cookieStoreId?: string
+  tabId?: number
 }
 
 function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
@@ -247,7 +259,8 @@ const downloadEvent =
   chrome.downloads.onDeterminingFilename || chrome.downloads.onCreated
 // In Firefox, the download interception logic will be triggered twice, the order is onHeadersReceived -> onCreated, so a variable is needed to skip the onCreated event to avoid duplicate processing of download tasks.
 // PS: Why not use the onCreated event uniformly? Because the onCreated event cannot get the size of the downloaded file in Firefox.
-let downloadEventSkip = false
+// Use a Map to track skip status per-download to avoid race conditions with multiple tabs
+const downloadEventSkipMap = new Map<string, boolean>()
 
 downloadEvent.addListener(async function (item) {
   const info: DownloadInfo = {
@@ -258,8 +271,9 @@ downloadEvent.addListener(async function (item) {
     referrer: item.referrer,
     cookieStoreId: (item as any).cookieStoreId
   }
-  if (isFirefox && downloadEventSkip) {
-    downloadEventSkip = false
+  const downloadUrl = item.finalUrl || item.url
+  if (isFirefox && downloadEventSkipMap.get(downloadUrl)) {
+    downloadEventSkipMap.delete(downloadUrl)
     return
   }
 
@@ -309,7 +323,7 @@ if (isFirefox) {
       }
 
       // Skip the onCreated event to avoid duplicate processing of download tasks.
-      downloadEventSkip = true
+      downloadEventSkipMap.set(res.url, true)
 
       let filename = ""
       // Parse filename from content-disposition
@@ -334,7 +348,8 @@ if (isFirefox) {
         filesize,
         ua: navigator.userAgent,
         referrer: (res as any).originUrl,
-        cookieStoreId: (res as any).cookieStoreId
+        cookieStoreId: (res as any).cookieStoreId,
+        tabId: res.tabId
       }
       if (!downloadFilter(info, settingsCache)) {
         return
@@ -375,23 +390,26 @@ function handleRemoteDownload(
   // Multiple servers available and manual selection is enabled - show server selector
   return async () => {
     try {
-      // Show server selector overlay
-      const tabs = await chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      })
-      if (tabs.length === 0) {
-        // Fallback to default server if no active tab
-        const defaultServer = settings.remote.servers.find(
-          (server) => getFullUrl(server) === settings.remote.selectedServer
-        )
-        if (defaultServer) {
-          await createDownloadTask(info, defaultServer, settings)()
+      // Use the tabId from the download info (for Firefox webRequest) or query for active tab
+      let tabId = info.tabId
+      if (tabId === undefined) {
+        const tabs = await chrome.tabs.query({
+          active: true,
+          currentWindow: true
+        })
+        if (tabs.length === 0) {
+          // Fallback to default server if no active tab
+          const defaultServer = settings.remote.servers.find(
+            (server) => getFullUrl(server) === settings.remote.selectedServer
+          )
+          if (defaultServer) {
+            await createDownloadTask(info, defaultServer, settings)()
+          }
+          return
         }
-        return
+        tabId = tabs[0].id!
       }
 
-      const tabId = tabs[0].id!
       const requestId = tabId.toString()
 
       // Send message to content script to show server selector
