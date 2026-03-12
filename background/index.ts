@@ -71,10 +71,7 @@ function initContextMenus() {
     const downloadInfo: DownloadInfo = {
       url: url,
       filename: filename,
-      filesize: 0, // Unknown file size for context menu downloads
-      ua: navigator.userAgent,
-      referrer: tab?.url || url,
-      cookieStoreId: (tab as any)?.cookieStoreId
+      filesize: 0 // Unknown file size for context menu downloads
     }
 
     // Get download handler and execute
@@ -182,6 +179,9 @@ chrome.runtime.onStartup &&
       // If map grows too large, clear it entirely as a safety measure
       downloadEventSkipMap.clear()
     }
+    if (requestHeaderMap.size > 100) {
+      requestHeaderMap.clear()
+    }
   }, 30000)
 })()
 
@@ -189,10 +189,37 @@ interface DownloadInfo {
   url: string
   filename: string
   filesize: number
-  ua?: string
-  referrer?: string
-  cookieStoreId?: string
   tabId?: number
+}
+
+const requestHeaderMap = new Map<string, Record<string, string>>()
+
+function storeRequestHeaders(details: chrome.webRequest.WebRequestHeadersDetails) {
+  if (!details.requestHeaders || details.requestHeaders.length === 0) {
+    return
+  }
+
+  const requestHeaders = details.requestHeaders.reduce<Record<string, string>>(
+    (acc, header) => {
+      if (header.name && header.value) {
+        acc[header.name] = header.value
+      }
+      return acc
+    },
+    {}
+  )
+
+  if (Object.keys(requestHeaders).length > 0) {
+    requestHeaderMap.set(details.url, requestHeaders)
+  }
+}
+
+function consumeRequestHeaders(url: string): Record<string, string> {
+  const headers = requestHeaderMap.get(url) || {}
+  if (requestHeaderMap.has(url)) {
+    requestHeaderMap.delete(url)
+  }
+  return headers
 }
 
 function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
@@ -262,14 +289,17 @@ const downloadEvent =
 // Use a Map to track skip status per-download to avoid race conditions with multiple tabs
 const downloadEventSkipMap = new Map<string, boolean>()
 
+chrome.webRequest.onBeforeSendHeaders.addListener(
+  storeRequestHeaders,
+  { urls: ["<all_urls>"], types: ["main_frame", "sub_frame"] },
+  isFirefox ? ["requestHeaders"] : ["requestHeaders", "extraHeaders"]
+)
+
 downloadEvent.addListener(async function (item) {
   const info: DownloadInfo = {
     url: item.finalUrl || item.url,
     filename: item.filename,
-    filesize: item.fileSize,
-    ua: navigator.userAgent,
-    referrer: item.referrer,
-    cookieStoreId: (item as any).cookieStoreId
+    filesize: item.fileSize
   }
   const downloadUrl = item.finalUrl || item.url
   if (isFirefox && downloadEventSkipMap.get(downloadUrl)) {
@@ -346,9 +376,6 @@ if (isFirefox) {
         url: res.url,
         filename,
         filesize,
-        ua: navigator.userAgent,
-        referrer: (res as any).originUrl,
-        cookieStoreId: (res as any).cookieStoreId,
         tabId: res.tabId
       }
       if (!downloadFilter(info, settingsCache)) {
@@ -623,25 +650,15 @@ function handleNativeDownload(
   }
 }
 
-function getCookie(url: string, storeId?: string) {
-  return new Promise<string>((resolve) => {
-    chrome.cookies.getAll({ url, storeId }, (cookies) => {
-      resolve(
-        cookies.map((cookie) => `${cookie.name}=${cookie.value}`).join("; ")
-      )
-    })
-  })
-}
-
 async function toCreateRequest(info: DownloadInfo): Promise<Request> {
-  const cookie = await getCookie(info.url, (info as any).cookieStoreId)
+  const capturedHeaders = consumeRequestHeaders(info.url)
+  // Force an identity response body to avoid encoded payloads that break multi-part downloading.
   return {
     url: info.url,
     extra: {
       header: {
-        "User-Agent": navigator.userAgent,
-        Cookie: cookie ? cookie : undefined,
-        Referer: info.referrer ? info.referrer : undefined
+        ...capturedHeaders,
+        "Accept-Encoding": "identity"
       }
     }
   }

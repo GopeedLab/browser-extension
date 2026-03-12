@@ -70,6 +70,7 @@
     "permissions": [
       "downloads",
       "cookies",
+      "webRequest",
       "nativeMessaging",
       "notifications",
       "contextMenus"
