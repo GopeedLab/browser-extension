@@ -1,0 +1,203 @@
+{
+  "settings": {
+    "message": "設定"
+  },
+  "download": {
+    "message": "ダウンロード"
+  },
+  "cancel": {
+    "message": "キャンセル"
+  },
+  "confirm": {
+    "message": "確認"
+  },
+  "deleteTip": {
+    "message": "この設定を削除してもよろしいですか？"
+  },
+  "delete": {
+    "message": "削除"
+  },
+  "enabled": {
+    "message": "有効"
+  },
+  "disabled": {
+    "message": "無効"
+  },
+  "download_capture_tip": {
+    "message": "有効時にブラウザーのダウンロードを横取りします"
+  },
+  "download_settings": {
+    "message": "ダウンロード設定"
+  },
+  "auto_wakeup": {
+    "message": "自動起動"
+  },
+  "auto_wakeup_desc": {
+    "message": "ダウンローダーが起動していない場合、自動で開いてダウンロードを開始します"
+  },
+  "domain_filter": {
+    "message": "ドメインフィルター"
+  },
+  "domain_filter_desc": {
+    "message": "キャプチャしないドメインを設定します"
+  },
+  "domain_filter_placeholder": {
+    "message": "1 行に 1 つのドメインを入力してください。完全一致 (example.com)、サブドメイン (*.example.com)、全体一致 (*example.com)、部分一致 (*example.com*) に対応しています"
+  },
+  "file_type_filter": {
+    "message": "ファイル種類フィルター"
+  },
+  "file_type_filter_desc": {
+    "message": "キャプチャしないファイル種類を設定します"
+  },
+  "file_type_filter_placeholder": {
+    "message": "1 行に 1 つの拡張子を入力してください。例: .jpg"
+  },
+  "min_file_size_filter": {
+    "message": "小さいファイルのフィルター"
+  },
+  "min_file_size_filter_desc": {
+    "message": "設定したサイズより小さいファイルはキャプチャされません"
+  },
+  "interface_settings": {
+    "message": "インターフェース設定"
+  },
+  "theme_settings": {
+    "message": "テーマ設定"
+  },
+  "follow_system": {
+    "message": "システムに合わせる"
+  },
+  "theme_settings_desc": {
+    "message": "インターフェースのテーマを選択します"
+  },
+  "light_theme": {
+    "message": "ライトテーマ"
+  },
+  "dark_theme": {
+    "message": "ダークテーマ"
+  },
+  "settings_saved": {
+    "message": "設定を保存しました"
+  },
+  "download_capture": {
+    "message": "ダウンロードキャプチャ"
+  },
+  "basic_settings": {
+    "message": "基本設定"
+  },
+  "remote_download": {
+    "message": "リモートダウンロード"
+  },
+  "remote_server": {
+    "message": "リモートサーバー"
+  },
+  "enable_remote_download": {
+    "message": "リモートダウンロードを有効にする"
+  },
+  "enable_remote_download_desc": {
+    "message": "ダウンロードタスクをリモートサーバーへ直接送信します"
+  },
+  "protocol": {
+    "message": "プロトコル"
+  },
+  "server_url": {
+    "message": "サーバー URL"
+  },
+  "token": {
+    "message": "トークン"
+  },
+  "save": {
+    "message": "保存"
+  },
+  "no_server_error": {
+    "message": "先にリモートサーバーを追加してください"
+  },
+  "server_url_required": {
+    "message": "サーバー URL は必須です"
+  },
+  "server_url_invalid": {
+    "message": "有効なサーバー URL を入力してください"
+  },
+  "download_notification": {
+    "message": "ダウンロード通知"
+  },
+  "download_notification_desc": {
+    "message": "ダウンロードタスク送信時にブラウザー通知を表示します"
+  },
+  "require_manual_server_selection": {
+    "message": "サーバーを手動で選択"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "複数のサーバーが設定されている場合、ダウンロード開始前に必ずサーバー選択ダイアログを表示します"
+  },
+  "add": {
+    "message": "追加"
+  },
+  "download_servers": {
+    "message": "ダウンロードサーバー"
+  },
+  "test_server": {
+    "message": "テスト"
+  },
+  "test_success": {
+    "message": "接続に成功しました"
+  },
+  "test_network_error": {
+    "message": "サーバーに接続できませんでした"
+  },
+  "test_token_error": {
+    "message": "API トークンが正しくないか、サーバーの設定が正しくありません"
+  },
+  "notification_create_success": {
+    "message": "作成成功"
+  },
+  "notification_create_success_message": {
+    "message": "タスクはダウンロードサーバーに正常に追加されました"
+  },
+  "notification_create_error": {
+    "message": "作成失敗"
+  },
+  "notification_create_error_message": {
+    "message": "タスクの追加に失敗しました。ダウンロードサーバーが正しく動作しているか確認してください"
+  },
+  "ctrl_disable_capture": {
+    "message": "キーでキャプチャを無効化"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "%key% キーを押している間、一時的にダウンロードキャプチャを無効化します"
+  },
+  "confirm_before_download": {
+    "message": "ダウンロード前に確認"
+  },
+  "confirm_before_download_desc": {
+    "message": "ダウンロード開始前に確認ダイアログを表示します"
+  },
+  "notification_native_success_message": {
+    "message": "タスクはダウンローダーに正常に追加されました"
+  },
+  "notification_native_error_message": {
+    "message": "タスクの作成に失敗しました。ダウンローダーが正しく動作しているか確認してください"
+  },
+  "select_server": {
+    "message": "サーバーを選択"
+  },
+  "go_to": {
+    "message": "開く"
+  },
+  "context_menu_download": {
+    "message": "Gopeed でダウンロード"
+  },
+  "notification_download_failed": {
+    "message": "ダウンロード失敗"
+  },
+  "notification_no_handler": {
+    "message": "ダウンロードタスクを作成できませんでした"
+  },
+  "add_server": {
+    "message": "サーバーを追加"
+  },
+  "edit_server": {
+    "message": "サーバーを編集"
+  }
+}

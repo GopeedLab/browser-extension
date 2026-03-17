@@ -1,0 +1,203 @@
+{
+  "settings": {
+    "message": "Configurações"
+  },
+  "download": {
+    "message": "BAIXAR"
+  },
+  "cancel": {
+    "message": "CANCELAR"
+  },
+  "confirm": {
+    "message": "CONFIRMAR"
+  },
+  "deleteTip": {
+    "message": "Tem certeza de que deseja excluir esta configuração?"
+  },
+  "delete": {
+    "message": "EXCLUIR"
+  },
+  "enabled": {
+    "message": "Ativado"
+  },
+  "disabled": {
+    "message": "Desativado"
+  },
+  "download_capture_tip": {
+    "message": "Intercepte downloads do navegador quando esta opção estiver ativada"
+  },
+  "download_settings": {
+    "message": "Configurações de download"
+  },
+  "auto_wakeup": {
+    "message": "Abertura automática"
+  },
+  "auto_wakeup_desc": {
+    "message": "Abrir automaticamente o downloader e iniciar o download quando ele não estiver em execução"
+  },
+  "domain_filter": {
+    "message": "Filtro de domínio"
+  },
+  "domain_filter_desc": {
+    "message": "Defina os domínios que não precisam ser capturados"
+  },
+  "domain_filter_placeholder": {
+    "message": "Digite um domínio por linha. Aceita correspondência exata (example.com), subdomínio (*.example.com), correspondência geral (*example.com) e contém (*example.com*)"
+  },
+  "file_type_filter": {
+    "message": "Filtro de tipo de arquivo"
+  },
+  "file_type_filter_desc": {
+    "message": "Defina os tipos de arquivo que não precisam ser capturados"
+  },
+  "file_type_filter_placeholder": {
+    "message": "Digite uma extensão por linha, por exemplo: .jpg"
+  },
+  "min_file_size_filter": {
+    "message": "Filtro de arquivos pequenos"
+  },
+  "min_file_size_filter_desc": {
+    "message": "Arquivos menores que o tamanho definido não serão capturados"
+  },
+  "interface_settings": {
+    "message": "Configurações da interface"
+  },
+  "theme_settings": {
+    "message": "Configurações de tema"
+  },
+  "follow_system": {
+    "message": "Seguir o sistema"
+  },
+  "theme_settings_desc": {
+    "message": "Escolha o tema da interface"
+  },
+  "light_theme": {
+    "message": "Tema claro"
+  },
+  "dark_theme": {
+    "message": "Tema escuro"
+  },
+  "settings_saved": {
+    "message": "Configurações salvas"
+  },
+  "download_capture": {
+    "message": "Captura de downloads"
+  },
+  "basic_settings": {
+    "message": "Configurações básicas"
+  },
+  "remote_download": {
+    "message": "Download remoto"
+  },
+  "remote_server": {
+    "message": "Servidor remoto"
+  },
+  "enable_remote_download": {
+    "message": "Ativar download remoto"
+  },
+  "enable_remote_download_desc": {
+    "message": "Enviar tarefas de download diretamente para o servidor remoto"
+  },
+  "protocol": {
+    "message": "Protocolo"
+  },
+  "server_url": {
+    "message": "URL do servidor"
+  },
+  "token": {
+    "message": "Token"
+  },
+  "save": {
+    "message": "Salvar"
+  },
+  "no_server_error": {
+    "message": "Adicione primeiro um servidor remoto"
+  },
+  "server_url_required": {
+    "message": "A URL do servidor é obrigatória"
+  },
+  "server_url_invalid": {
+    "message": "Digite uma URL de servidor válida"
+  },
+  "download_notification": {
+    "message": "Notificação de download"
+  },
+  "download_notification_desc": {
+    "message": "Mostrar notificação do navegador ao enviar tarefas de download"
+  },
+  "require_manual_server_selection": {
+    "message": "Seleção manual de servidor"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "Sempre mostrar a caixa de seleção de servidor antes de iniciar downloads quando vários servidores estiverem configurados"
+  },
+  "add": {
+    "message": "Adicionar"
+  },
+  "download_servers": {
+    "message": "Servidores de download"
+  },
+  "test_server": {
+    "message": "Testar"
+  },
+  "test_success": {
+    "message": "Conexão bem-sucedida"
+  },
+  "test_network_error": {
+    "message": "Falha na conexão com o servidor"
+  },
+  "test_token_error": {
+    "message": "Token da API incorreto ou servidor configurado incorretamente"
+  },
+  "notification_create_success": {
+    "message": "Criação concluída"
+  },
+  "notification_create_success_message": {
+    "message": "A tarefa foi adicionada com sucesso ao servidor de download"
+  },
+  "notification_create_error": {
+    "message": "Falha na criação"
+  },
+  "notification_create_error_message": {
+    "message": "Falha ao adicionar a tarefa; verifique se o servidor de download está funcionando corretamente"
+  },
+  "ctrl_disable_capture": {
+    "message": "Desativar captura com tecla"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "Mantenha a tecla %key% pressionada para desativar temporariamente a captura de downloads"
+  },
+  "confirm_before_download": {
+    "message": "Confirmar antes de baixar"
+  },
+  "confirm_before_download_desc": {
+    "message": "Mostrar caixa de confirmação antes de iniciar o download"
+  },
+  "notification_native_success_message": {
+    "message": "A tarefa foi adicionada com sucesso ao downloader"
+  },
+  "notification_native_error_message": {
+    "message": "Falha ao criar a tarefa; verifique se o downloader está funcionando corretamente"
+  },
+  "select_server": {
+    "message": "Selecionar servidor"
+  },
+  "go_to": {
+    "message": "IR"
+  },
+  "context_menu_download": {
+    "message": "Baixar com Gopeed"
+  },
+  "notification_download_failed": {
+    "message": "Falha no download"
+  },
+  "notification_no_handler": {
+    "message": "Não foi possível criar a tarefa de download"
+  },
+  "add_server": {
+    "message": "Adicionar servidor"
+  },
+  "edit_server": {
+    "message": "Editar servidor"
+  }
+}

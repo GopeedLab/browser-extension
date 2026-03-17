@@ -1,0 +1,203 @@
+{
+  "settings": {
+    "message": "Настройки"
+  },
+  "download": {
+    "message": "СКАЧАТЬ"
+  },
+  "cancel": {
+    "message": "ОТМЕНА"
+  },
+  "confirm": {
+    "message": "ПОДТВЕРДИТЬ"
+  },
+  "deleteTip": {
+    "message": "Вы уверены, что хотите удалить эту конфигурацию?"
+  },
+  "delete": {
+    "message": "УДАЛИТЬ"
+  },
+  "enabled": {
+    "message": "Включено"
+  },
+  "disabled": {
+    "message": "Выключено"
+  },
+  "download_capture_tip": {
+    "message": "Перехватывать загрузки браузера, когда опция включена"
+  },
+  "download_settings": {
+    "message": "Настройки загрузки"
+  },
+  "auto_wakeup": {
+    "message": "Автозапуск"
+  },
+  "auto_wakeup_desc": {
+    "message": "Автоматически открывать загрузчик и начинать загрузку, если он не запущен"
+  },
+  "domain_filter": {
+    "message": "Фильтр доменов"
+  },
+  "domain_filter_desc": {
+    "message": "Укажите домены, которые не нужно перехватывать"
+  },
+  "domain_filter_placeholder": {
+    "message": "Введите по одному домену на строку. Поддерживаются точное совпадение (example.com), поддомены (*.example.com), все совпадения (*example.com) и вхождение (*example.com*)"
+  },
+  "file_type_filter": {
+    "message": "Фильтр типов файлов"
+  },
+  "file_type_filter_desc": {
+    "message": "Укажите типы файлов, которые не нужно перехватывать"
+  },
+  "file_type_filter_placeholder": {
+    "message": "Введите по одному расширению файла на строку, например: .jpg"
+  },
+  "min_file_size_filter": {
+    "message": "Фильтр маленьких файлов"
+  },
+  "min_file_size_filter_desc": {
+    "message": "Файлы меньше указанного размера не будут перехватываться"
+  },
+  "interface_settings": {
+    "message": "Настройки интерфейса"
+  },
+  "theme_settings": {
+    "message": "Настройки темы"
+  },
+  "follow_system": {
+    "message": "Следовать системе"
+  },
+  "theme_settings_desc": {
+    "message": "Выберите тему интерфейса"
+  },
+  "light_theme": {
+    "message": "Светлая тема"
+  },
+  "dark_theme": {
+    "message": "Тёмная тема"
+  },
+  "settings_saved": {
+    "message": "Настройки сохранены"
+  },
+  "download_capture": {
+    "message": "Перехват загрузок"
+  },
+  "basic_settings": {
+    "message": "Основные настройки"
+  },
+  "remote_download": {
+    "message": "Удалённая загрузка"
+  },
+  "remote_server": {
+    "message": "Удалённый сервер"
+  },
+  "enable_remote_download": {
+    "message": "Включить удалённую загрузку"
+  },
+  "enable_remote_download_desc": {
+    "message": "Отправлять задачи загрузки напрямую на удалённый сервер"
+  },
+  "protocol": {
+    "message": "Протокол"
+  },
+  "server_url": {
+    "message": "URL сервера"
+  },
+  "token": {
+    "message": "Токен"
+  },
+  "save": {
+    "message": "Сохранить"
+  },
+  "no_server_error": {
+    "message": "Сначала добавьте удалённый сервер"
+  },
+  "server_url_required": {
+    "message": "Требуется URL сервера"
+  },
+  "server_url_invalid": {
+    "message": "Введите корректный URL сервера"
+  },
+  "download_notification": {
+    "message": "Уведомление о загрузке"
+  },
+  "download_notification_desc": {
+    "message": "Показывать уведомление браузера при отправке задач загрузки"
+  },
+  "require_manual_server_selection": {
+    "message": "Ручной выбор сервера"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "Всегда показывать диалог выбора сервера перед началом загрузки, если настроено несколько серверов"
+  },
+  "add": {
+    "message": "Добавить"
+  },
+  "download_servers": {
+    "message": "Серверы загрузки"
+  },
+  "test_server": {
+    "message": "Проверить"
+  },
+  "test_success": {
+    "message": "Подключение успешно"
+  },
+  "test_network_error": {
+    "message": "Не удалось подключиться к серверу"
+  },
+  "test_token_error": {
+    "message": "Неверный API-токен или сервер настроен неправильно"
+  },
+  "notification_create_success": {
+    "message": "Успешно создано"
+  },
+  "notification_create_success_message": {
+    "message": "Задача успешно добавлена на сервер загрузки"
+  },
+  "notification_create_error": {
+    "message": "Ошибка создания"
+  },
+  "notification_create_error_message": {
+    "message": "Не удалось добавить задачу, проверьте, что сервер загрузки работает корректно"
+  },
+  "ctrl_disable_capture": {
+    "message": "Отключение перехвата клавишей"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "Удерживайте клавишу %key%, чтобы временно отключить перехват загрузок"
+  },
+  "confirm_before_download": {
+    "message": "Подтверждать перед загрузкой"
+  },
+  "confirm_before_download_desc": {
+    "message": "Показывать диалог подтверждения перед началом загрузки"
+  },
+  "notification_native_success_message": {
+    "message": "Задача успешно добавлена в загрузчик"
+  },
+  "notification_native_error_message": {
+    "message": "Не удалось создать задачу, проверьте, что загрузчик работает корректно"
+  },
+  "select_server": {
+    "message": "Выберите сервер"
+  },
+  "go_to": {
+    "message": "ПЕРЕЙТИ"
+  },
+  "context_menu_download": {
+    "message": "Скачать через Gopeed"
+  },
+  "notification_download_failed": {
+    "message": "Ошибка загрузки"
+  },
+  "notification_no_handler": {
+    "message": "Не удалось создать задачу загрузки"
+  },
+  "add_server": {
+    "message": "Добавить сервер"
+  },
+  "edit_server": {
+    "message": "Редактировать сервер"
+  }
+}

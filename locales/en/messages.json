@@ -193,5 +193,11 @@
   },
   "notification_no_handler": {
     "message": "Unable to create download task"
+  },
+  "add_server": {
+    "message": "Add Server"
+  },
+  "edit_server": {
+    "message": "Edit Server"
   }
 }

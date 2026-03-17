@@ -1,0 +1,203 @@
+{
+  "settings": {
+    "message": "Ayarlar"
+  },
+  "download": {
+    "message": "İNDİR"
+  },
+  "cancel": {
+    "message": "İPTAL"
+  },
+  "confirm": {
+    "message": "ONAYLA"
+  },
+  "deleteTip": {
+    "message": "Bu yapılandırmayı silmek istediğinizden emin misiniz?"
+  },
+  "delete": {
+    "message": "SİL"
+  },
+  "enabled": {
+    "message": "Etkin"
+  },
+  "disabled": {
+    "message": "Devre dışı"
+  },
+  "download_capture_tip": {
+    "message": "Etkin olduğunda tarayıcı indirmelerini yakala"
+  },
+  "download_settings": {
+    "message": "İndirme ayarları"
+  },
+  "auto_wakeup": {
+    "message": "Otomatik başlatma"
+  },
+  "auto_wakeup_desc": {
+    "message": "İndirici çalışmıyorsa otomatik olarak aç ve indirmeyi başlat"
+  },
+  "domain_filter": {
+    "message": "Alan adı filtresi"
+  },
+  "domain_filter_desc": {
+    "message": "Yakalanması gerekmeyen alan adlarını ayarlayın"
+  },
+  "domain_filter_placeholder": {
+    "message": "Her satıra bir alan adı girin. Tam eşleşme (example.com), alt alan adı (*.example.com), genel eşleşme (*example.com) ve içerir (*example.com*) desteklenir"
+  },
+  "file_type_filter": {
+    "message": "Dosya türü filtresi"
+  },
+  "file_type_filter_desc": {
+    "message": "Yakalanması gerekmeyen dosya türlerini ayarlayın"
+  },
+  "file_type_filter_placeholder": {
+    "message": "Her satıra bir dosya uzantısı girin, örn.: .jpg"
+  },
+  "min_file_size_filter": {
+    "message": "Küçük dosya filtresi"
+  },
+  "min_file_size_filter_desc": {
+    "message": "Belirlenen boyuttan küçük dosyalar yakalanmaz"
+  },
+  "interface_settings": {
+    "message": "Arayüz ayarları"
+  },
+  "theme_settings": {
+    "message": "Tema ayarları"
+  },
+  "follow_system": {
+    "message": "Sistemi takip et"
+  },
+  "theme_settings_desc": {
+    "message": "Arayüz temasını seçin"
+  },
+  "light_theme": {
+    "message": "Açık tema"
+  },
+  "dark_theme": {
+    "message": "Koyu tema"
+  },
+  "settings_saved": {
+    "message": "Ayarlar kaydedildi"
+  },
+  "download_capture": {
+    "message": "İndirme yakalama"
+  },
+  "basic_settings": {
+    "message": "Temel ayarlar"
+  },
+  "remote_download": {
+    "message": "Uzak indirme"
+  },
+  "remote_server": {
+    "message": "Uzak sunucu"
+  },
+  "enable_remote_download": {
+    "message": "Uzak indirmeyi etkinleştir"
+  },
+  "enable_remote_download_desc": {
+    "message": "İndirme görevlerini doğrudan uzak sunucuya gönder"
+  },
+  "protocol": {
+    "message": "Protokol"
+  },
+  "server_url": {
+    "message": "Sunucu URL’si"
+  },
+  "token": {
+    "message": "Belirteç"
+  },
+  "save": {
+    "message": "Kaydet"
+  },
+  "no_server_error": {
+    "message": "Lütfen önce bir uzak sunucu ekleyin"
+  },
+  "server_url_required": {
+    "message": "Sunucu URL’si gereklidir"
+  },
+  "server_url_invalid": {
+    "message": "Lütfen geçerli bir sunucu URL’si girin"
+  },
+  "download_notification": {
+    "message": "İndirme bildirimi"
+  },
+  "download_notification_desc": {
+    "message": "İndirme görevleri gönderilirken tarayıcı bildirimi göster"
+  },
+  "require_manual_server_selection": {
+    "message": "Manuel sunucu seçimi"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "Birden fazla sunucu yapılandırıldığında indirmeyi başlatmadan önce her zaman sunucu seçim iletişim kutusunu göster"
+  },
+  "add": {
+    "message": "Ekle"
+  },
+  "download_servers": {
+    "message": "İndirme sunucuları"
+  },
+  "test_server": {
+    "message": "Test et"
+  },
+  "test_success": {
+    "message": "Bağlantı başarılı"
+  },
+  "test_network_error": {
+    "message": "Sunucu bağlantısı başarısız oldu"
+  },
+  "test_token_error": {
+    "message": "API belirteci hatalı veya sunucu doğru yapılandırılmamış"
+  },
+  "notification_create_success": {
+    "message": "Oluşturma başarılı"
+  },
+  "notification_create_success_message": {
+    "message": "Görev indirme sunucusuna başarıyla eklendi"
+  },
+  "notification_create_error": {
+    "message": "Oluşturma başarısız"
+  },
+  "notification_create_error_message": {
+    "message": "Görev eklenemedi; lütfen indirme sunucusunun düzgün çalıştığını kontrol edin"
+  },
+  "ctrl_disable_capture": {
+    "message": "Tuşla yakalamayı devre dışı bırak"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "İndirme yakalamayı geçici olarak devre dışı bırakmak için %key% tuşunu basılı tutun"
+  },
+  "confirm_before_download": {
+    "message": "İndirmeden önce onayla"
+  },
+  "confirm_before_download_desc": {
+    "message": "İndirmeyi başlatmadan önce onay iletişim kutusunu göster"
+  },
+  "notification_native_success_message": {
+    "message": "Görev indiriciye başarıyla eklendi"
+  },
+  "notification_native_error_message": {
+    "message": "Görev oluşturulamadı; lütfen indiricinin düzgün çalıştığını kontrol edin"
+  },
+  "select_server": {
+    "message": "Sunucu seç"
+  },
+  "go_to": {
+    "message": "GİT"
+  },
+  "context_menu_download": {
+    "message": "Gopeed ile indir"
+  },
+  "notification_download_failed": {
+    "message": "İndirme başarısız"
+  },
+  "notification_no_handler": {
+    "message": "İndirme görevi oluşturulamadı"
+  },
+  "add_server": {
+    "message": "Sunucu ekle"
+  },
+  "edit_server": {
+    "message": "Sunucuyu düzenle"
+  }
+}

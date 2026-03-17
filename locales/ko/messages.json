@@ -1,0 +1,203 @@
+{
+  "settings": {
+    "message": "설정"
+  },
+  "download": {
+    "message": "다운로드"
+  },
+  "cancel": {
+    "message": "취소"
+  },
+  "confirm": {
+    "message": "확인"
+  },
+  "deleteTip": {
+    "message": "이 구성을 삭제하시겠습니까?"
+  },
+  "delete": {
+    "message": "삭제"
+  },
+  "enabled": {
+    "message": "사용"
+  },
+  "disabled": {
+    "message": "사용 안 함"
+  },
+  "download_capture_tip": {
+    "message": "활성화되면 브라우저 다운로드를 가로챕니다"
+  },
+  "download_settings": {
+    "message": "다운로드 설정"
+  },
+  "auto_wakeup": {
+    "message": "자동 실행"
+  },
+  "auto_wakeup_desc": {
+    "message": "다운로더가 실행 중이 아니면 자동으로 열고 다운로드를 시작합니다"
+  },
+  "domain_filter": {
+    "message": "도메인 필터"
+  },
+  "domain_filter_desc": {
+    "message": "캡처하지 않을 도메인을 설정합니다"
+  },
+  "domain_filter_placeholder": {
+    "message": "한 줄에 하나의 도메인을 입력하세요. 정확히 일치(example.com), 하위 도메인 (*.example.com), 전체 일치(*example.com), 포함(*example.com*)을 지원합니다"
+  },
+  "file_type_filter": {
+    "message": "파일 형식 필터"
+  },
+  "file_type_filter_desc": {
+    "message": "캡처하지 않을 파일 형식을 설정합니다"
+  },
+  "file_type_filter_placeholder": {
+    "message": "한 줄에 하나의 파일 확장자를 입력하세요. 예: .jpg"
+  },
+  "min_file_size_filter": {
+    "message": "작은 파일 필터"
+  },
+  "min_file_size_filter_desc": {
+    "message": "설정된 크기보다 작은 파일은 캡처되지 않습니다"
+  },
+  "interface_settings": {
+    "message": "인터페이스 설정"
+  },
+  "theme_settings": {
+    "message": "테마 설정"
+  },
+  "follow_system": {
+    "message": "시스템 설정 따르기"
+  },
+  "theme_settings_desc": {
+    "message": "인터페이스 테마를 선택하세요"
+  },
+  "light_theme": {
+    "message": "라이트 테마"
+  },
+  "dark_theme": {
+    "message": "다크 테마"
+  },
+  "settings_saved": {
+    "message": "설정이 저장되었습니다"
+  },
+  "download_capture": {
+    "message": "다운로드 캡처"
+  },
+  "basic_settings": {
+    "message": "기본 설정"
+  },
+  "remote_download": {
+    "message": "원격 다운로드"
+  },
+  "remote_server": {
+    "message": "원격 서버"
+  },
+  "enable_remote_download": {
+    "message": "원격 다운로드 사용"
+  },
+  "enable_remote_download_desc": {
+    "message": "다운로드 작업을 원격 서버로 직접 전송합니다"
+  },
+  "protocol": {
+    "message": "프로토콜"
+  },
+  "server_url": {
+    "message": "서버 URL"
+  },
+  "token": {
+    "message": "토큰"
+  },
+  "save": {
+    "message": "저장"
+  },
+  "no_server_error": {
+    "message": "먼저 원격 서버를 추가하세요"
+  },
+  "server_url_required": {
+    "message": "서버 URL은 필수입니다"
+  },
+  "server_url_invalid": {
+    "message": "올바른 서버 URL을 입력하세요"
+  },
+  "download_notification": {
+    "message": "다운로드 알림"
+  },
+  "download_notification_desc": {
+    "message": "다운로드 작업을 보낼 때 브라우저 알림을 표시합니다"
+  },
+  "require_manual_server_selection": {
+    "message": "수동 서버 선택"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "여러 서버가 구성된 경우 다운로드를 시작하기 전에 항상 서버 선택 대화상자를 표시합니다"
+  },
+  "add": {
+    "message": "추가"
+  },
+  "download_servers": {
+    "message": "다운로드 서버"
+  },
+  "test_server": {
+    "message": "테스트"
+  },
+  "test_success": {
+    "message": "연결 성공"
+  },
+  "test_network_error": {
+    "message": "서버 연결에 실패했습니다"
+  },
+  "test_token_error": {
+    "message": "API 토큰이 잘못되었거나 서버가 올바르게 구성되지 않았습니다"
+  },
+  "notification_create_success": {
+    "message": "생성 성공"
+  },
+  "notification_create_success_message": {
+    "message": "작업이 다운로드 서버에 성공적으로 추가되었습니다"
+  },
+  "notification_create_error": {
+    "message": "생성 실패"
+  },
+  "notification_create_error_message": {
+    "message": "작업 추가에 실패했습니다. 다운로드 서버가 정상적으로 작동하는지 확인하세요"
+  },
+  "ctrl_disable_capture": {
+    "message": "키로 캡처 비활성화"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "%key% 키를 누르고 있는 동안 다운로드 캡처를 일시적으로 비활성화합니다"
+  },
+  "confirm_before_download": {
+    "message": "다운로드 전 확인"
+  },
+  "confirm_before_download_desc": {
+    "message": "다운로드를 시작하기 전에 확인 대화상자를 표시합니다"
+  },
+  "notification_native_success_message": {
+    "message": "작업이 다운로더에 성공적으로 추가되었습니다"
+  },
+  "notification_native_error_message": {
+    "message": "작업 생성에 실패했습니다. 다운로더가 정상적으로 작동하는지 확인하세요"
+  },
+  "select_server": {
+    "message": "서버 선택"
+  },
+  "go_to": {
+    "message": "이동"
+  },
+  "context_menu_download": {
+    "message": "Gopeed로 다운로드"
+  },
+  "notification_download_failed": {
+    "message": "다운로드 실패"
+  },
+  "notification_no_handler": {
+    "message": "다운로드 작업을 만들 수 없습니다"
+  },
+  "add_server": {
+    "message": "서버 추가"
+  },
+  "edit_server": {
+    "message": "서버 편집"
+  }
+}
