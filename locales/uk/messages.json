@@ -1,0 +1,203 @@
+{
+  "settings": {
+    "message": "Налаштування"
+  },
+  "download": {
+    "message": "ЗАВАНТАЖИТИ"
+  },
+  "cancel": {
+    "message": "СКАСУВАТИ"
+  },
+  "confirm": {
+    "message": "ПІДТВЕРДИТИ"
+  },
+  "deleteTip": {
+    "message": "Ви впевнені, що хочете видалити цю конфігурацію?"
+  },
+  "delete": {
+    "message": "ВИДАЛИТИ"
+  },
+  "enabled": {
+    "message": "Увімкнено"
+  },
+  "disabled": {
+    "message": "Вимкнено"
+  },
+  "download_capture_tip": {
+    "message": "Перехоплювати завантаження браузера, коли опцію ввімкнено"
+  },
+  "download_settings": {
+    "message": "Налаштування завантаження"
+  },
+  "auto_wakeup": {
+    "message": "Автозапуск"
+  },
+  "auto_wakeup_desc": {
+    "message": "Автоматично відкривати завантажувач і починати завантаження, якщо його не запущено"
+  },
+  "domain_filter": {
+    "message": "Фільтр доменів"
+  },
+  "domain_filter_desc": {
+    "message": "Укажіть домени, які не потрібно перехоплювати"
+  },
+  "domain_filter_placeholder": {
+    "message": "Введіть по одному домену на рядок. Підтримуються точний збіг (example.com), піддомени (*.example.com), загальний збіг (*example.com) та містить (*example.com*)"
+  },
+  "file_type_filter": {
+    "message": "Фільтр типів файлів"
+  },
+  "file_type_filter_desc": {
+    "message": "Укажіть типи файлів, які не потрібно перехоплювати"
+  },
+  "file_type_filter_placeholder": {
+    "message": "Введіть по одному розширенню файла на рядок, наприклад: .jpg"
+  },
+  "min_file_size_filter": {
+    "message": "Фільтр малих файлів"
+  },
+  "min_file_size_filter_desc": {
+    "message": "Файли менші за вказаний розмір не будуть перехоплюватися"
+  },
+  "interface_settings": {
+    "message": "Налаштування інтерфейсу"
+  },
+  "theme_settings": {
+    "message": "Налаштування теми"
+  },
+  "follow_system": {
+    "message": "Як у системі"
+  },
+  "theme_settings_desc": {
+    "message": "Виберіть тему інтерфейсу"
+  },
+  "light_theme": {
+    "message": "Світла тема"
+  },
+  "dark_theme": {
+    "message": "Темна тема"
+  },
+  "settings_saved": {
+    "message": "Налаштування збережено"
+  },
+  "download_capture": {
+    "message": "Перехоплення завантажень"
+  },
+  "basic_settings": {
+    "message": "Основні налаштування"
+  },
+  "remote_download": {
+    "message": "Віддалене завантаження"
+  },
+  "remote_server": {
+    "message": "Віддалений сервер"
+  },
+  "enable_remote_download": {
+    "message": "Увімкнути віддалене завантаження"
+  },
+  "enable_remote_download_desc": {
+    "message": "Надсилати завдання завантаження безпосередньо на віддалений сервер"
+  },
+  "protocol": {
+    "message": "Протокол"
+  },
+  "server_url": {
+    "message": "URL сервера"
+  },
+  "token": {
+    "message": "Токен"
+  },
+  "save": {
+    "message": "Зберегти"
+  },
+  "no_server_error": {
+    "message": "Спочатку додайте віддалений сервер"
+  },
+  "server_url_required": {
+    "message": "URL сервера є обов’язковим"
+  },
+  "server_url_invalid": {
+    "message": "Введіть дійсний URL сервера"
+  },
+  "download_notification": {
+    "message": "Сповіщення про завантаження"
+  },
+  "download_notification_desc": {
+    "message": "Показувати сповіщення браузера під час надсилання завдань завантаження"
+  },
+  "require_manual_server_selection": {
+    "message": "Ручний вибір сервера"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "Завжди показувати діалог вибору сервера перед початком завантаження, якщо налаштовано кілька серверів"
+  },
+  "add": {
+    "message": "Додати"
+  },
+  "download_servers": {
+    "message": "Сервери завантаження"
+  },
+  "test_server": {
+    "message": "Перевірити"
+  },
+  "test_success": {
+    "message": "Підключення успішне"
+  },
+  "test_network_error": {
+    "message": "Не вдалося підключитися до сервера"
+  },
+  "test_token_error": {
+    "message": "Неправильний токен API або сервер налаштовано некоректно"
+  },
+  "notification_create_success": {
+    "message": "Успішно створено"
+  },
+  "notification_create_success_message": {
+    "message": "Завдання успішно додано на сервер завантаження"
+  },
+  "notification_create_error": {
+    "message": "Помилка створення"
+  },
+  "notification_create_error_message": {
+    "message": "Не вдалося додати завдання; перевірте, чи сервер завантаження працює належним чином"
+  },
+  "ctrl_disable_capture": {
+    "message": "Вимкнути перехоплення клавішею"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "Утримуйте клавішу %key%, щоб тимчасово вимкнути перехоплення завантажень"
+  },
+  "confirm_before_download": {
+    "message": "Підтверджувати перед завантаженням"
+  },
+  "confirm_before_download_desc": {
+    "message": "Показувати діалог підтвердження перед початком завантаження"
+  },
+  "notification_native_success_message": {
+    "message": "Завдання успішно додано до завантажувача"
+  },
+  "notification_native_error_message": {
+    "message": "Не вдалося створити завдання; перевірте, чи завантажувач працює належним чином"
+  },
+  "select_server": {
+    "message": "Виберіть сервер"
+  },
+  "go_to": {
+    "message": "ПЕРЕЙТИ"
+  },
+  "context_menu_download": {
+    "message": "Завантажити через Gopeed"
+  },
+  "notification_download_failed": {
+    "message": "Помилка завантаження"
+  },
+  "notification_no_handler": {
+    "message": "Не вдалося створити завдання завантаження"
+  },
+  "add_server": {
+    "message": "Додати сервер"
+  },
+  "edit_server": {
+    "message": "Редагувати сервер"
+  }
+}

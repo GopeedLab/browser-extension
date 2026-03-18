@@ -68,6 +68,9 @@
   "follow_system": {
     "message": "跟随系统"
   },
+  "theme_settings_desc": {
+    "message": "选择界面主题"
+  },
   "light_theme": {
     "message": "明亮主题"
   },
@@ -131,6 +134,9 @@
   "add": {
     "message": "添加"
   },
+  "download_servers": {
+    "message": "下载服务器"
+  },
   "test_server": {
     "message": "测试"
   },
@@ -155,18 +161,6 @@
   "notification_create_error_message": {
     "message": "任务添加失败，请检查下载服务器是否正常"
   },
-  "notification_native_success_message": {
-    "message": "任务已成功添加到下载器"
-  },
-  "notification_native_error_message": {
-    "message": "任务添加失败，请检查下载器是否正常"
-  },
-  "no_servers_tip": {
-    "message": "暂无服务器，点击上方按钮添加"
-  },
-  "download_servers": {
-    "message": "下载服务器"
-  },
   "ctrl_disable_capture": {
     "message": "按键禁用"
   },
@@ -178,6 +172,12 @@
   },
   "confirm_before_download_desc": {
     "message": "在开始下载前显示确认对话框"
+  },
+  "notification_native_success_message": {
+    "message": "任务已成功添加到下载器"
+  },
+  "notification_native_error_message": {
+    "message": "任务添加失败，请检查下载器是否正常"
   },
   "select_server": {
     "message": "选择服务器"
@@ -193,5 +193,11 @@
   },
   "notification_no_handler": {
     "message": "无法创建下载任务"
+  },
+  "add_server": {
+    "message": "添加服务器"
+  },
+  "edit_server": {
+    "message": "编辑服务器"
   }
 }

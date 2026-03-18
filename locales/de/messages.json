@@ -1,0 +1,203 @@
+{
+  "settings": {
+    "message": "Einstellungen"
+  },
+  "download": {
+    "message": "HERUNTERLADEN"
+  },
+  "cancel": {
+    "message": "ABBRECHEN"
+  },
+  "confirm": {
+    "message": "BESTÄTIGEN"
+  },
+  "deleteTip": {
+    "message": "Möchten Sie diese Konfiguration wirklich löschen?"
+  },
+  "delete": {
+    "message": "LÖSCHEN"
+  },
+  "enabled": {
+    "message": "Aktiviert"
+  },
+  "disabled": {
+    "message": "Deaktiviert"
+  },
+  "download_capture_tip": {
+    "message": "Browser-Downloads abfangen, wenn diese Option aktiviert ist"
+  },
+  "download_settings": {
+    "message": "Download-Einstellungen"
+  },
+  "auto_wakeup": {
+    "message": "Automatisches Aktivieren"
+  },
+  "auto_wakeup_desc": {
+    "message": "Downloader automatisch öffnen und Download starten, wenn er nicht ausgeführt wird"
+  },
+  "domain_filter": {
+    "message": "Domain-Filter"
+  },
+  "domain_filter_desc": {
+    "message": "Legen Sie Domains fest, die nicht erfasst werden sollen"
+  },
+  "domain_filter_placeholder": {
+    "message": "Geben Sie eine Domain pro Zeile ein. Unterstützt exakte Übereinstimmung (example.com), Subdomains (*.example.com), globale Übereinstimmung (*example.com) und Enthält-Suche (*example.com*)"
+  },
+  "file_type_filter": {
+    "message": "Dateityp-Filter"
+  },
+  "file_type_filter_desc": {
+    "message": "Legen Sie Dateitypen fest, die nicht erfasst werden sollen"
+  },
+  "file_type_filter_placeholder": {
+    "message": "Geben Sie eine Dateiendung pro Zeile ein, z. B.: .jpg"
+  },
+  "min_file_size_filter": {
+    "message": "Filter für kleine Dateien"
+  },
+  "min_file_size_filter_desc": {
+    "message": "Dateien, die kleiner als die festgelegte Größe sind, werden nicht erfasst"
+  },
+  "interface_settings": {
+    "message": "Oberflächeneinstellungen"
+  },
+  "theme_settings": {
+    "message": "Theme-Einstellungen"
+  },
+  "follow_system": {
+    "message": "Systemeinstellung folgen"
+  },
+  "theme_settings_desc": {
+    "message": "Wählen Sie das Oberflächen-Theme"
+  },
+  "light_theme": {
+    "message": "Helles Theme"
+  },
+  "dark_theme": {
+    "message": "Dunkles Theme"
+  },
+  "settings_saved": {
+    "message": "Einstellungen gespeichert"
+  },
+  "download_capture": {
+    "message": "Download-Erfassung"
+  },
+  "basic_settings": {
+    "message": "Grundeinstellungen"
+  },
+  "remote_download": {
+    "message": "Remote-Download"
+  },
+  "remote_server": {
+    "message": "Remote-Server"
+  },
+  "enable_remote_download": {
+    "message": "Remote-Download aktivieren"
+  },
+  "enable_remote_download_desc": {
+    "message": "Download-Aufgaben direkt an den Remote-Server senden"
+  },
+  "protocol": {
+    "message": "Protokoll"
+  },
+  "server_url": {
+    "message": "Server-URL"
+  },
+  "token": {
+    "message": "Token"
+  },
+  "save": {
+    "message": "Speichern"
+  },
+  "no_server_error": {
+    "message": "Bitte fügen Sie zuerst einen Remote-Server hinzu"
+  },
+  "server_url_required": {
+    "message": "Server-URL ist erforderlich"
+  },
+  "server_url_invalid": {
+    "message": "Bitte geben Sie eine gültige Server-URL ein"
+  },
+  "download_notification": {
+    "message": "Download-Benachrichtigung"
+  },
+  "download_notification_desc": {
+    "message": "Browser-Benachrichtigung beim Senden von Download-Aufgaben anzeigen"
+  },
+  "require_manual_server_selection": {
+    "message": "Manuelle Serverauswahl"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "Vor dem Start des Downloads immer den Serverauswahldialog anzeigen, wenn mehrere Server konfiguriert sind"
+  },
+  "add": {
+    "message": "Hinzufügen"
+  },
+  "download_servers": {
+    "message": "Download-Server"
+  },
+  "test_server": {
+    "message": "Testen"
+  },
+  "test_success": {
+    "message": "Verbindung erfolgreich"
+  },
+  "test_network_error": {
+    "message": "Serververbindung fehlgeschlagen"
+  },
+  "test_token_error": {
+    "message": "API-Token fehlerhaft oder Server nicht korrekt konfiguriert"
+  },
+  "notification_create_success": {
+    "message": "Erfolgreich erstellt"
+  },
+  "notification_create_success_message": {
+    "message": "Aufgabe wurde erfolgreich zum Download-Server hinzugefügt"
+  },
+  "notification_create_error": {
+    "message": "Erstellung fehlgeschlagen"
+  },
+  "notification_create_error_message": {
+    "message": "Aufgabe konnte nicht hinzugefügt werden. Bitte prüfen Sie, ob der Download-Server ordnungsgemäß funktioniert"
+  },
+  "ctrl_disable_capture": {
+    "message": "Erfassung per Taste deaktivieren"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "Halten Sie die Taste %key% gedrückt, um die Download-Erfassung vorübergehend zu deaktivieren"
+  },
+  "confirm_before_download": {
+    "message": "Vor dem Download bestätigen"
+  },
+  "confirm_before_download_desc": {
+    "message": "Vor dem Start des Downloads einen Bestätigungsdialog anzeigen"
+  },
+  "notification_native_success_message": {
+    "message": "Aufgabe wurde erfolgreich zum Downloader hinzugefügt"
+  },
+  "notification_native_error_message": {
+    "message": "Aufgabe konnte nicht erstellt werden. Bitte prüfen Sie, ob der Downloader ordnungsgemäß funktioniert"
+  },
+  "select_server": {
+    "message": "Server auswählen"
+  },
+  "go_to": {
+    "message": "ÖFFNEN"
+  },
+  "context_menu_download": {
+    "message": "Mit Gopeed herunterladen"
+  },
+  "notification_download_failed": {
+    "message": "Download fehlgeschlagen"
+  },
+  "notification_no_handler": {
+    "message": "Download-Aufgabe konnte nicht erstellt werden"
+  },
+  "add_server": {
+    "message": "Server hinzufügen"
+  },
+  "edit_server": {
+    "message": "Server bearbeiten"
+  }
+}
