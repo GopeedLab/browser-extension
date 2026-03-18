@@ -69,7 +69,6 @@
     ],
     "permissions": [
       "downloads",
-      "cookies",
       "webRequest",
       "nativeMessaging",
       "notifications",
@@ -79,7 +78,6 @@
       "firefox": {
         "permissions": [
           "downloads",
-          "cookies",
           "webRequest",
           "webRequestBlocking",
           "*://*/*",
