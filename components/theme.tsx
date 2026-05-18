@@ -42,12 +42,21 @@ function createGetMessage(language: string): GetMessage {
   if (!messages) {
     return (key, substitutions) => chrome.i18n.getMessage(key, substitutions)
   }
-  return (key: string) => {
+  return (key: string, substitutions?: string | string[]) => {
     const entry = messages[key]
-    return entry ? entry.message : chrome.i18n.getMessage(key)
+    if (!entry) {
+      return chrome.i18n.getMessage(key, substitutions)
+    }
+    let msg = entry.message
+    if (substitutions) {
+      const subs = Array.isArray(substitutions) ? substitutions : [substitutions]
+      subs.forEach((sub, i) => {
+        msg = msg.replace(new RegExp(`\\$${i + 1}`, "g"), sub)
+      })
+    }
+    return msg
   }
 }
-
 const Theme = ({ children }: PropsWithChildren) => {
   const [settings] = useSettings()
 

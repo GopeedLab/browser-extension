@@ -18,7 +18,7 @@ import { getContrlKey } from "~util"
 import SavedTip, { useTip } from "./SavedTip"
 
 const SUPPORTED_LANGUAGES = [
-  { code: "", nativeName: "" },
+  { code: "", nativeName: "Auto" },
   { code: "de", nativeName: "Deutsch" },
   { code: "en", nativeName: "English" },
   { code: "es", nativeName: "Español" },
