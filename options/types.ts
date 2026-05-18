@@ -46,7 +46,7 @@ export const defaultSettings: Settings = {
     value: 0
   },
   theme: "system",
-  language: "",
+  language: "en",
   remote: {
     enabled: false,
     selectedServer: "",
