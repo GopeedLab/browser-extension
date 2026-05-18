@@ -18,6 +18,7 @@ export interface Settings {
     value: number
   }
   theme: "system" | "light" | "dark"
+  language: string
   remote: {
     enabled: boolean
     selectedServer: string
@@ -45,6 +46,7 @@ export const defaultSettings: Settings = {
     value: 0
   },
   theme: "system",
+  language: "",
   remote: {
     enabled: false,
     selectedServer: "",

@@ -199,5 +199,11 @@
   },
   "edit_server": {
     "message": "サーバーを編集"
+  },
+  "language_settings": {
+    "message": "言語設定"
+  },
+  "language_auto": {
+    "message": "自動（ブラウザに従う）"
   }
 }

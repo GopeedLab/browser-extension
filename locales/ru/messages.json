@@ -199,5 +199,11 @@
   },
   "edit_server": {
     "message": "Редактировать сервер"
+  },
+  "language_settings": {
+    "message": "Настройки языка"
+  },
+  "language_auto": {
+    "message": "Автоматически (следовать браузеру)"
   }
 }

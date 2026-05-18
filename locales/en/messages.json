@@ -199,5 +199,11 @@
   },
   "edit_server": {
     "message": "Edit Server"
+  },
+  "language_settings": {
+    "message": "Language Settings"
+  },
+  "language_auto": {
+    "message": "Auto (Follow Browser)"
   }
 }

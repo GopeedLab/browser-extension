@@ -20,6 +20,7 @@ import { sendToBackground } from "@plasmohq/messaging"
 
 import type { ServerSelectionResponse } from "~background/messages/api/select-server"
 import Theme from "~components/theme"
+import { useI18n } from "~hooks/useI18n"
 import { getFullUrl } from "~options/components/RemoteSettings"
 
 export interface ServerSelectorProps {
@@ -34,7 +35,7 @@ export interface ServerSelectorProps {
   onDownloadResult?: (success: boolean) => void
 }
 
-function ServerSelector({
+function ServerSelectorContent({
   servers,
   downloadInfo,
   defaultServer,
@@ -46,6 +47,7 @@ function ServerSelector({
     defaultServer || (servers.length > 0 ? getFullUrl(servers[0]) : "")
   )
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { getMessage } = useI18n()
 
   const handleProceed = async () => {
     setIsLoading(true)
@@ -90,72 +92,78 @@ function ServerSelector({
   }, [requestId])
 
   return (
-    <Theme>
-      <Dialog
-        open={true}
-        disableEscapeKeyDown
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: {
-            position: "fixed",
-            top: "20px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            m: 0,
-            minWidth: "400px"
-          }
-        }}>
-        <DialogTitle>
-          <Typography variant="h6">
-            {chrome.i18n.getMessage("select_server")}
+    <Dialog
+      open={true}
+      disableEscapeKeyDown
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          position: "fixed",
+          top: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          m: 0,
+          minWidth: "400px"
+        }
+      }}>
+      <DialogTitle>
+        <Typography variant="h6">
+          {getMessage("select_server")}
+        </Typography>
+      </DialogTitle>
+      <DialogContent sx={{ pb: 1 }}>
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body2" color="text.secondary">
+            {downloadInfo.filename || downloadInfo.url}
           </Typography>
-        </DialogTitle>
-        <DialogContent sx={{ pb: 1 }}>
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="body2" color="text.secondary">
-              {downloadInfo.filename || downloadInfo.url}
-            </Typography>
-          </Box>
-          <List sx={{ bgcolor: "action.hover", borderRadius: 1 }}>
-            {servers.map((server) => {
-              const fullUrl = getFullUrl(server)
-              return (
-                <ListItem key={fullUrl} disablePadding>
-                  <ListItemButton onClick={() => setSelectedServer(fullUrl)}>
-                    <ListItemIcon>
-                      <Radio
-                        checked={selectedServer === fullUrl}
-                        value={fullUrl}
-                      />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={fullUrl}
+        </Box>
+        <List sx={{ bgcolor: "action.hover", borderRadius: 1 }}>
+          {servers.map((server) => {
+            const fullUrl = getFullUrl(server)
+            return (
+              <ListItem key={fullUrl} disablePadding>
+                <ListItemButton onClick={() => setSelectedServer(fullUrl)}>
+                  <ListItemIcon>
+                    <Radio
+                      checked={selectedServer === fullUrl}
+                      value={fullUrl}
                     />
-                  </ListItemButton>
-                </ListItem>
-              )
-            })}
-          </List>
-        </DialogContent>
-        <DialogActions>
-          <Button 
-            onClick={handleCancel} 
-            color="inherit" 
-            disabled={isLoading}
-          >
-            {chrome.i18n.getMessage("cancel")}
-          </Button>
-          <Button
-            onClick={handleProceed}
-            variant="contained"
-            disabled={!selectedServer || isLoading}
-            startIcon={isLoading ? <CircularProgress size={20} /> : null}
-          >
-            {chrome.i18n.getMessage("confirm")}
-          </Button>
-        </DialogActions>
-      </Dialog>
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={fullUrl}
+                  />
+                </ListItemButton>
+              </ListItem>
+            )
+          })}
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button 
+          onClick={handleCancel} 
+          color="inherit" 
+          disabled={isLoading}
+        >
+          {getMessage("cancel")}
+        </Button>
+        <Button
+          onClick={handleProceed}
+          variant="contained"
+          disabled={!selectedServer || isLoading}
+          startIcon={isLoading ? <CircularProgress size={20} /> : null}
+        >
+          {getMessage("confirm")}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
+
+function ServerSelector(props: ServerSelectorProps) {
+  return (
+    <Theme>
+      <ServerSelectorContent {...props} />
     </Theme>
   )
 }

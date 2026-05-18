@@ -199,5 +199,11 @@
   },
   "edit_server": {
     "message": "Editar servidor"
+  },
+  "language_settings": {
+    "message": "Configurações de idioma"
+  },
+  "language_auto": {
+    "message": "Automático (seguir o navegador)"
   }
 }

@@ -1,6 +1,8 @@
 import { Alert, Snackbar } from "@mui/material"
 import { useState } from "react"
 
+import { useI18n } from "~hooks/useI18n"
+
 type MessageType = "success" | "error"
 interface Message {
   type: MessageType
@@ -27,6 +29,7 @@ const SavedTip = ({
   message: Message | null
   onClose: () => void
 }) => {
+  const { getMessage } = useI18n()
   return (
     <Snackbar
       open={Boolean(message)}
@@ -39,7 +42,7 @@ const SavedTip = ({
           width: "100%",
           visibility: message ? "visible" : "hidden"
         }}>
-        {message?.text ? chrome.i18n.getMessage(message.text) : ""}
+        {message?.text ? getMessage(message.text) : ""}
       </Alert>
     </Snackbar>
   )

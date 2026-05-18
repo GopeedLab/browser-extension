@@ -199,5 +199,11 @@
   },
   "edit_server": {
     "message": "Редагувати сервер"
+  },
+  "language_settings": {
+    "message": "Налаштування мови"
+  },
+  "language_auto": {
+    "message": "Автоматично (слідкувати за браузером)"
   }
 }
