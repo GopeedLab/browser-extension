@@ -53,6 +53,7 @@
     ]
   },
   "manifest": {
+    "default_locale": "en",
     "host_permissions": [
       "http://*/*",
       "https://*/*"

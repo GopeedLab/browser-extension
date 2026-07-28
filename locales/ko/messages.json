@@ -199,5 +199,11 @@
   },
   "edit_server": {
     "message": "서버 편집"
+  },
+  "language_settings": {
+    "message": "언어"
+  },
+  "language_auto": {
+    "message": "자동 (브라우저 언어)"
   }
 }

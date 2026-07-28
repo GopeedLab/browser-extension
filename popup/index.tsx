@@ -20,11 +20,13 @@ import {
 import { useState } from "react"
 
 import Theme from "~components/theme"
+import { useI18n } from "~hooks/useI18n"
 import { useSettings } from "~hooks/useSettings"
 
 function IndexPopup() {
   const [settings, setStoredSettings] = useSettings()
-  
+  const { t } = useI18n()
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const manifest = chrome.runtime.getManifest()
 
@@ -34,10 +36,10 @@ function IndexPopup() {
 
   const handleRemoteToggle = () => {
     setErrorMessage(null) // Clear previous error message
-    
+
     if (!settings.remote.enabled && settings.remote.servers.length === 0) {
       // Show error message if no servers configured
-      setErrorMessage(chrome.i18n.getMessage("no_server_error"))
+      setErrorMessage(t("no_server_error"))
       return
     }
     setStoredSettings((prev) => ({
@@ -52,7 +54,7 @@ function IndexPopup() {
 
   const handleRemoteSettingsClick = () => {
     // Navigate to remote settings page
-    const optionsUrl = chrome.runtime.getURL('options.html#remote')
+    const optionsUrl = chrome.runtime.getURL("options.html#remote")
     chrome.tabs.create({ url: optionsUrl })
   }
 
@@ -78,7 +80,7 @@ function IndexPopup() {
         chrome.tabs.create({ url: targetUrl })
       }
     } else {
-      setErrorMessage(chrome.i18n.getMessage("no_server_error"))
+      setErrorMessage(t("no_server_error"))
     }
   }
 
@@ -93,45 +95,46 @@ function IndexPopup() {
       <Stack width={220}>
         <Collapse in={!!errorMessage}>
           {errorMessage && (
-            <Alert 
-              severity="error" 
+            <Alert
+              severity="error"
               onClose={() => setErrorMessage(null)}
-              sx={{ 
-                m: 1, 
+              sx={{
+                m: 1,
                 mb: 0,
-                '& .MuiAlert-action': {
-                  alignItems: 'flex-start',
-                  paddingTop: '2px'
+                "& .MuiAlert-action": {
+                  alignItems: "flex-start",
+                  paddingTop: "2px"
                 }
               }}
               action={
-                <Link 
+                <Link
                   component="button"
                   variant="caption"
-                  sx={{ 
-                    color: 'inherit',
-                    cursor: 'pointer',
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
+                  sx={{
+                    color: "inherit",
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    display: "flex",
+                    alignItems: "center",
                     gap: 0.3,
-                    fontSize: '0.7rem',
-                    whiteSpace: 'nowrap',
+                    fontSize: "0.7rem",
+                    whiteSpace: "nowrap",
                     flexShrink: 0,
-                    '&:hover': {
-                      textDecoration: 'none',
+                    "&:hover": {
+                      textDecoration: "none",
                       opacity: 0.8
                     }
                   }}
                   onClick={() => {
                     setErrorMessage(null)
                     handleRemoteSettingsClick()
-                  }}
-                >
-                  {chrome.i18n.getMessage("go_to")} <NorthEastIcon sx={{ fontSize: 11, color: 'text.secondary' }} />
+                  }}>
+                  {t("go_to")}{" "}
+                  <NorthEastIcon
+                    sx={{ fontSize: 11, color: "text.secondary" }}
+                  />
                 </Link>
-              }
-            >
+              }>
               {errorMessage}
             </Alert>
           )}
@@ -147,9 +150,7 @@ function IndexPopup() {
                 )}
               </ListItemIcon>
               <ListItemText
-                primary={chrome.i18n.getMessage(
-                  settings.enabled ? "enabled" : "disabled"
-                )}
+                primary={t(settings.enabled ? "enabled" : "disabled")}
               />
             </ListItemButton>
           </ListItem>
@@ -162,9 +163,7 @@ function IndexPopup() {
                   <Cancel color="error" />
                 )}
               </ListItemIcon>
-              <ListItemText
-                primary={chrome.i18n.getMessage("remote_download")}
-              />
+              <ListItemText primary={t("remote_download")} />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -172,9 +171,7 @@ function IndexPopup() {
               <ListItemIcon>
                 <DnsIcon />
               </ListItemIcon>
-              <ListItemText
-                primary={chrome.i18n.getMessage("remote_server")}
-              />
+              <ListItemText primary={t("remote_server")} />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -182,7 +179,7 @@ function IndexPopup() {
               <ListItemIcon>
                 <SettingsIcon />
               </ListItemIcon>
-              <ListItemText primary={chrome.i18n.getMessage("settings")} />
+              <ListItemText primary={t("settings")} />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>

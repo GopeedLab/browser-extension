@@ -199,5 +199,11 @@
   },
   "edit_server": {
     "message": "Sunucuyu düzenle"
+  },
+  "language_settings": {
+    "message": "Dil"
+  },
+  "language_auto": {
+    "message": "Otomatik (tarayıcı dili)"
   }
 }

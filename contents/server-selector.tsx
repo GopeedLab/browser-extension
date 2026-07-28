@@ -20,6 +20,7 @@ import { sendToBackground } from "@plasmohq/messaging"
 
 import type { ServerSelectionResponse } from "~background/messages/api/select-server"
 import Theme from "~components/theme"
+import { useI18n } from "~hooks/useI18n"
 import { getFullUrl } from "~options/components/RemoteSettings"
 
 export interface ServerSelectorProps {
@@ -46,6 +47,7 @@ function ServerSelector({
     defaultServer || (servers.length > 0 ? getFullUrl(servers[0]) : "")
   )
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { t } = useI18n()
 
   const handleProceed = async () => {
     setIsLoading(true)
@@ -73,13 +75,16 @@ function ServerSelector({
   // Listen for download results
   useEffect(() => {
     if (!requestId) return
-    
+
     const messageListener = (
       message: any,
       sender: chrome.runtime.MessageSender,
       sendResponse: (response: any) => void
     ) => {
-      if (message.name === "download-result" && message.body.requestId === requestId) {
+      if (
+        message.name === "download-result" &&
+        message.body.requestId === requestId
+      ) {
         handleDownloadResult(message.body.success)
         sendResponse({ success: true })
       }
@@ -107,9 +112,7 @@ function ServerSelector({
           }
         }}>
         <DialogTitle>
-          <Typography variant="h6">
-            {chrome.i18n.getMessage("select_server")}
-          </Typography>
+          <Typography variant="h6">{t("select_server")}</Typography>
         </DialogTitle>
         <DialogContent sx={{ pb: 1 }}>
           <Box sx={{ mb: 2 }}>
@@ -129,9 +132,7 @@ function ServerSelector({
                         value={fullUrl}
                       />
                     </ListItemIcon>
-                    <ListItemText
-                      primary={fullUrl}
-                    />
+                    <ListItemText primary={fullUrl} />
                   </ListItemButton>
                 </ListItem>
               )
@@ -139,20 +140,15 @@ function ServerSelector({
           </List>
         </DialogContent>
         <DialogActions>
-          <Button 
-            onClick={handleCancel} 
-            color="inherit" 
-            disabled={isLoading}
-          >
-            {chrome.i18n.getMessage("cancel")}
+          <Button onClick={handleCancel} color="inherit" disabled={isLoading}>
+            {t("cancel")}
           </Button>
           <Button
             onClick={handleProceed}
             variant="contained"
             disabled={!selectedServer || isLoading}
-            startIcon={isLoading ? <CircularProgress size={20} /> : null}
-          >
-            {chrome.i18n.getMessage("confirm")}
+            startIcon={isLoading ? <CircularProgress size={20} /> : null}>
+            {t("confirm")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -205,7 +201,7 @@ function PlasmoOverlay() {
     if (response.cancelled) {
       setState((prev) => ({ ...prev, show: false }))
     }
-    
+
     // Send selection back to background script
     await sendToBackground<ServerSelectionResponse, void>({
       name: "api/select-server",

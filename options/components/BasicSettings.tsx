@@ -10,15 +10,17 @@ import {
   Typography
 } from "@mui/material"
 
-
+import { useI18n } from "~hooks/useI18n"
 import { useSettings } from "~hooks/useSettings"
+import { SUPPORTED_LANGUAGES } from "~i18n"
 import { getContrlKey } from "~util"
 
 import SavedTip, { useTip } from "./SavedTip"
 
 const BasicSettings = () => {
   const [settings, setStoredSettings] = useSettings()
-  
+  const { t } = useI18n()
+
   const { showTip, message, setMessage } = useTip()
 
   const handleChange = (field: string, value: any) => {
@@ -49,24 +51,21 @@ const BasicSettings = () => {
     <Stack spacing={6}>
       <Box>
         <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
-          {chrome.i18n.getMessage("download_settings")}
+          {t("download_settings")}
         </Typography>
         <Stack spacing={3}>
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
-            {renderLabel(
-              chrome.i18n.getMessage("download_capture"),
-              chrome.i18n.getMessage("download_capture_tip")
-            )}
+            {renderLabel(t("download_capture"), t("download_capture_tip"))}
             <Switch
               checked={settings.enabled}
               onChange={(e) => handleChange("enabled", e.target.checked)}
             />
           </Box>
-          
+
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
             {renderLabel(
-              chrome.i18n.getMessage("confirm_before_download"),
-              chrome.i18n.getMessage("confirm_before_download_desc")
+              t("confirm_before_download"),
+              t("confirm_before_download_desc")
             )}
             <Switch
               checked={settings.confirmBeforeDownload}
@@ -75,12 +74,9 @@ const BasicSettings = () => {
               }
             />
           </Box>
-          
+
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
-            {renderLabel(
-              chrome.i18n.getMessage("auto_wakeup"),
-              chrome.i18n.getMessage("auto_wakeup_desc")
-            )}
+            {renderLabel(t("auto_wakeup"), t("auto_wakeup_desc"))}
             <Switch
               checked={settings.autoWakeup}
               onChange={(e) => handleChange("autoWakeup", e.target.checked)}
@@ -89,10 +85,11 @@ const BasicSettings = () => {
 
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
             {renderLabel(
-              chrome.i18n.getMessage("ctrl_disable_capture"),
-              chrome.i18n
-                .getMessage("ctrl_disable_capture_desc")
-                .replace("%key%", getKeyDisplayText())
+              t("ctrl_disable_capture"),
+              t("ctrl_disable_capture_desc").replace(
+                "%key%",
+                getKeyDisplayText()
+              )
             )}
             <Switch
               checked={settings.ctrlDisableCapture}
@@ -103,10 +100,7 @@ const BasicSettings = () => {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
-            {renderLabel(
-              chrome.i18n.getMessage("domain_filter"),
-              chrome.i18n.getMessage("domain_filter_desc")
-            )}
+            {renderLabel(t("domain_filter"), t("domain_filter_desc"))}
             <Box
               sx={{
                 display: "flex",
@@ -130,9 +124,7 @@ const BasicSettings = () => {
                   rows={4}
                   size="small"
                   sx={{ mt: 1 }}
-                  placeholder={chrome.i18n.getMessage(
-                    "domain_filter_placeholder"
-                  )}
+                  placeholder={t("domain_filter_placeholder")}
                   value={settings.excludeDomains.list}
                   onChange={(e) =>
                     handleChange("excludeDomains", {
@@ -146,10 +138,7 @@ const BasicSettings = () => {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
-            {renderLabel(
-              chrome.i18n.getMessage("file_type_filter"),
-              chrome.i18n.getMessage("file_type_filter_desc")
-            )}
+            {renderLabel(t("file_type_filter"), t("file_type_filter_desc"))}
             <Box
               sx={{
                 display: "flex",
@@ -173,9 +162,7 @@ const BasicSettings = () => {
                   rows={4}
                   size="small"
                   sx={{ mt: 1 }}
-                  placeholder={chrome.i18n.getMessage(
-                    "file_type_filter_placeholder"
-                  )}
+                  placeholder={t("file_type_filter_placeholder")}
                   value={settings.excludeFileTypes.list}
                   onChange={(e) =>
                     handleChange("excludeFileTypes", {
@@ -190,8 +177,8 @@ const BasicSettings = () => {
 
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
             {renderLabel(
-              chrome.i18n.getMessage("min_file_size_filter"),
-              chrome.i18n.getMessage("min_file_size_filter_desc")
+              t("min_file_size_filter"),
+              t("min_file_size_filter_desc")
             )}
             <Box
               sx={{
@@ -238,25 +225,33 @@ const BasicSettings = () => {
 
       <Box>
         <Typography variant="h6" gutterBottom sx={{ mb: 2 }}>
-          {chrome.i18n.getMessage("interface_settings")}
+          {t("interface_settings")}
         </Typography>
         <Stack spacing={3}>
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
-            {renderLabel(chrome.i18n.getMessage("theme_settings"))}
+            {renderLabel(t("theme_settings"))}
             <Select
               size="small"
               sx={{ width: 200 }}
               value={settings.theme}
               onChange={(e) => handleChange("theme", e.target.value)}>
-              <MenuItem value="system">
-                {chrome.i18n.getMessage("follow_system")}
-              </MenuItem>
-              <MenuItem value="light">
-                {chrome.i18n.getMessage("light_theme")}
-              </MenuItem>
-              <MenuItem value="dark">
-                {chrome.i18n.getMessage("dark_theme")}
-              </MenuItem>
+              <MenuItem value="system">{t("follow_system")}</MenuItem>
+              <MenuItem value="light">{t("light_theme")}</MenuItem>
+              <MenuItem value="dark">{t("dark_theme")}</MenuItem>
+            </Select>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
+            {renderLabel(t("language_settings"))}
+            <Select
+              size="small"
+              sx={{ width: 200 }}
+              value={settings.language}
+              onChange={(e) => handleChange("language", e.target.value)}>
+              {SUPPORTED_LANGUAGES.map(({ code, nativeName }) => (
+                <MenuItem key={code} value={code}>
+                  {code === "auto" ? t("language_auto") : nativeName}
+                </MenuItem>
+              ))}
             </Select>
           </Box>
         </Stack>

@@ -29,6 +29,7 @@ import { useState } from "react"
 import { sendToBackground } from "@plasmohq/messaging"
 
 import type { CheckResult } from "~background/messages/api/check"
+import { useI18n } from "~hooks/useI18n"
 import { useSettings } from "~hooks/useSettings"
 import type { Server } from "~types"
 
@@ -44,7 +45,8 @@ export const getFullUrl = (server: Server) =>
 
 export default function RemoteSettings() {
   const [settings, setStoredSettings] = useSettings()
-  
+  const { t } = useI18n()
+
   const { showTip, message, setMessage } = useTip()
   const [open, setOpen] = useState(false)
   const [editingServerUrl, setEditingServerUrl] = useState<string | null>(null)
@@ -129,7 +131,7 @@ export default function RemoteSettings() {
     if (!formData.url.trim()) {
       setFormData({
         ...formData,
-        error: chrome.i18n.getMessage("server_url_required")
+        error: t("server_url_required")
       })
       return
     }
@@ -212,8 +214,8 @@ export default function RemoteSettings() {
     <Stack spacing={3}>
       <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
         {renderLabel(
-          chrome.i18n.getMessage("enable_remote_download"),
-          chrome.i18n.getMessage("enable_remote_download_desc")
+          t("enable_remote_download"),
+          t("enable_remote_download_desc")
         )}
         <Switch
           checked={settings.remote.enabled}
@@ -223,8 +225,8 @@ export default function RemoteSettings() {
 
       <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
         {renderLabel(
-          chrome.i18n.getMessage("download_notification"),
-          chrome.i18n.getMessage("download_notification_desc")
+          t("download_notification"),
+          t("download_notification_desc")
         )}
         <Switch
           checked={settings.remote.notification}
@@ -241,28 +243,31 @@ export default function RemoteSettings() {
 
       <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
         {renderLabel(
-          chrome.i18n.getMessage("require_manual_server_selection"),
-          chrome.i18n.getMessage("require_manual_server_selection_desc")
+          t("require_manual_server_selection"),
+          t("require_manual_server_selection_desc")
         )}
         <Switch
           checked={settings.remote.requireManualSelection}
           onChange={(e) => {
             setStoredSettings({
               ...settings,
-              remote: { ...settings.remote, requireManualSelection: e.target.checked }
+              remote: {
+                ...settings.remote,
+                requireManualSelection: e.target.checked
+              }
             })
             showTip()
           }}
-          disabled={!settings.remote.enabled || settings.remote.servers.length <= 1}
+          disabled={
+            !settings.remote.enabled || settings.remote.servers.length <= 1
+          }
         />
       </Box>
 
       <Box sx={{ display: "flex", alignItems: "center", px: 1 }}>
-        <Typography sx={{ flex: 1 }}>
-          {chrome.i18n.getMessage("download_servers")}
-        </Typography>
+        <Typography sx={{ flex: 1 }}>{t("download_servers")}</Typography>
         <Button variant="contained" size="small" onClick={handleAddServer}>
-          {chrome.i18n.getMessage("add")}
+          {t("add")}
         </Button>
       </Box>
 
@@ -314,15 +319,13 @@ export default function RemoteSettings() {
 
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>
-          {editingServerUrl
-            ? chrome.i18n.getMessage("edit_server")
-            : chrome.i18n.getMessage("add_server")}
+          {editingServerUrl ? t("edit_server") : t("add_server")}
         </DialogTitle>
         <DialogContent>
           <FormControl fullWidth margin="dense">
-            <InputLabel>{chrome.i18n.getMessage("protocol")}</InputLabel>
+            <InputLabel>{t("protocol")}</InputLabel>
             <Select
-              label={chrome.i18n.getMessage("protocol")}
+              label={t("protocol")}
               value={formData.protocol}
               onChange={(e) =>
                 setFormData({
@@ -337,7 +340,7 @@ export default function RemoteSettings() {
           <TextField
             margin="dense"
             placeholder="127.0.0.1:9999"
-            label={chrome.i18n.getMessage("server_url")}
+            label={t("server_url")}
             fullWidth
             value={formData.url}
             onChange={handleUrlChange}
@@ -347,7 +350,7 @@ export default function RemoteSettings() {
           <TextField
             margin="dense"
             type="password"
-            label={chrome.i18n.getMessage("token")}
+            label={t("token")}
             fullWidth
             value={formData.token}
             onChange={(e) =>
@@ -369,18 +372,16 @@ export default function RemoteSettings() {
               {formData.testing ? (
                 <CircularProgress size={16} />
               ) : (
-                chrome.i18n.getMessage("test_server")
+                t("test_server")
               )}
             </Button>
           </Box>
           <Box sx={{ flex: 1 }} />
-          <Button onClick={() => setOpen(false)}>
-            {chrome.i18n.getMessage("cancel")}
-          </Button>
+          <Button onClick={() => setOpen(false)}>{t("cancel")}</Button>
           <Button
             onClick={handleSubmitServer}
             disabled={!formData.url.trim() || formData.testing}>
-            {chrome.i18n.getMessage("save")}
+            {t("save")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -388,18 +389,14 @@ export default function RemoteSettings() {
       <Dialog
         open={Boolean(deleteConfirm)}
         onClose={() => setDeleteConfirm(null)}>
-        <DialogTitle>{chrome.i18n.getMessage("delete")}</DialogTitle>
+        <DialogTitle>{t("delete")}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {chrome.i18n.getMessage("deleteTip")}
-          </DialogContentText>
+          <DialogContentText>{t("deleteTip")}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDeleteConfirm(null)}>
-            {chrome.i18n.getMessage("cancel")}
-          </Button>
+          <Button onClick={() => setDeleteConfirm(null)}>{t("cancel")}</Button>
           <Button onClick={handleDeleteServer} color="error">
-            {chrome.i18n.getMessage("delete")}
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>
