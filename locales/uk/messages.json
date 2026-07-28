@@ -200,10 +200,10 @@
   "edit_server": {
     "message": "Редагувати сервер"
   },
+  "language_name": {
+    "message": "Українська"
+  },
   "language_settings": {
     "message": "Мова"
-  },
-  "language_auto": {
-    "message": "Автоматично (мова браузера)"
   }
 }

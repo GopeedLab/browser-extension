@@ -1,33 +1,16 @@
-import deMessages from "~locales/de/messages.json";
-import enMessages from "~locales/en/messages.json";
-import esMessages from "~locales/es/messages.json";
-import frMessages from "~locales/fr/messages.json";
-import itMessages from "~locales/it/messages.json";
-import jaMessages from "~locales/ja/messages.json";
-import koMessages from "~locales/ko/messages.json";
-import ptBrMessages from "~locales/pt_BR/messages.json";
-import ruMessages from "~locales/ru/messages.json";
-import trMessages from "~locales/tr/messages.json";
-import ukMessages from "~locales/uk/messages.json";
-import zhMessages from "~locales/zh/messages.json";
-
-export const SUPPORTED_LANGUAGES = [
-  { code: "auto", nativeName: "Auto" },
-  { code: "en", nativeName: "English" },
-  { code: "zh", nativeName: "中文" },
-  { code: "de", nativeName: "Deutsch" },
-  { code: "es", nativeName: "Español" },
-  { code: "fr", nativeName: "Français" },
-  { code: "it", nativeName: "Italiano" },
-  { code: "ja", nativeName: "日本語" },
-  { code: "ko", nativeName: "한국어" },
-  { code: "pt_BR", nativeName: "Português (Brasil)" },
-  { code: "ru", nativeName: "Русский" },
-  { code: "tr", nativeName: "Türkçe" },
-  { code: "uk", nativeName: "Українська" },
-] as const
-
-export type Language = (typeof SUPPORTED_LANGUAGES)[number]["code"]
+import deMessages from "~locales/de/messages.json"
+import enMessages from "~locales/en/messages.json"
+import esMessages from "~locales/es/messages.json"
+import frMessages from "~locales/fr/messages.json"
+import itMessages from "~locales/it/messages.json"
+import jaMessages from "~locales/ja/messages.json"
+import koMessages from "~locales/ko/messages.json"
+import ptBrMessages from "~locales/pt_BR/messages.json"
+import ruMessages from "~locales/ru/messages.json"
+import trMessages from "~locales/tr/messages.json"
+import ukMessages from "~locales/uk/messages.json"
+import zhTwMessages from "~locales/zh_TW/messages.json"
+import zhMessages from "~locales/zh/messages.json"
 
 interface MessageEntry {
   message: string
@@ -36,9 +19,11 @@ interface MessageEntry {
 
 type Messages = Record<string, MessageEntry>
 
-const localeMessages: Record<Exclude<Language, "auto">, Messages> = {
-  de: deMessages,
+const localeMessages = {
   en: enMessages,
+  zh: zhMessages,
+  zh_TW: zhTwMessages,
+  de: deMessages,
   es: esMessages,
   fr: frMessages,
   it: itMessages,
@@ -47,9 +32,24 @@ const localeMessages: Record<Exclude<Language, "auto">, Messages> = {
   pt_BR: ptBrMessages,
   ru: ruMessages,
   tr: trMessages,
-  uk: ukMessages,
-  zh: zhMessages
+  uk: ukMessages
+} satisfies Record<string, Messages>
+
+type LocaleCode = keyof typeof localeMessages
+export type Language = "auto" | LocaleCode
+
+interface SupportedLanguage {
+  code: Language
+  name: string
 }
+
+export const SUPPORTED_LANGUAGES: SupportedLanguage[] = [
+  { code: "auto", name: "Auto" },
+  ...Object.entries(localeMessages).map(([code, messages]) => ({
+    code: code as LocaleCode,
+    name: messages.language_name.message
+  }))
+]
 
 function replacePositionalPlaceholders(
   value: string,

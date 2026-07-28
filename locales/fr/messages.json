@@ -66,7 +66,7 @@
     "message": "Paramètres du thème"
   },
   "follow_system": {
-    "message": "Suivre le système"
+    "message": "Valeur par défaut du système"
   },
   "theme_settings_desc": {
     "message": "Choisissez le thème de l’interface"
@@ -200,10 +200,10 @@
   "edit_server": {
     "message": "Modifier le serveur"
   },
+  "language_name": {
+    "message": "Français"
+  },
   "language_settings": {
     "message": "Langue"
-  },
-  "language_auto": {
-    "message": "Automatique (langue du navigateur)"
   }
 }

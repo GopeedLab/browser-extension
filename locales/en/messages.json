@@ -66,7 +66,7 @@
     "message": "Theme Settings"
   },
   "follow_system": {
-    "message": "Follow System"
+    "message": "System default"
   },
   "theme_settings_desc": {
     "message": "Choose interface theme"
@@ -200,10 +200,10 @@
   "edit_server": {
     "message": "Edit Server"
   },
+  "language_name": {
+    "message": "English"
+  },
   "language_settings": {
     "message": "Language"
-  },
-  "language_auto": {
-    "message": "Auto (Browser language)"
   }
 }

@@ -66,7 +66,7 @@
     "message": "Theme-Einstellungen"
   },
   "follow_system": {
-    "message": "Systemeinstellung folgen"
+    "message": "Systemstandard"
   },
   "theme_settings_desc": {
     "message": "Wählen Sie das Oberflächen-Theme"
@@ -200,10 +200,10 @@
   "edit_server": {
     "message": "Server bearbeiten"
   },
+  "language_name": {
+    "message": "Deutsch"
+  },
   "language_settings": {
     "message": "Sprache"
-  },
-  "language_auto": {
-    "message": "Automatisch (Browsersprache)"
   }
 }

@@ -247,9 +247,9 @@ const BasicSettings = () => {
               sx={{ width: 200 }}
               value={settings.language}
               onChange={(e) => handleChange("language", e.target.value)}>
-              {SUPPORTED_LANGUAGES.map(({ code, nativeName }) => (
+              {SUPPORTED_LANGUAGES.map(({ code, name }) => (
                 <MenuItem key={code} value={code}>
-                  {code === "auto" ? t("language_auto") : nativeName}
+                  {code === "auto" ? t("follow_system") : name}
                 </MenuItem>
               ))}
             </Select>

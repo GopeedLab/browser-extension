@@ -200,10 +200,10 @@
   "edit_server": {
     "message": "编辑服务器"
   },
+  "language_name": {
+    "message": "中文"
+  },
   "language_settings": {
     "message": "语言"
-  },
-  "language_auto": {
-    "message": "自动（跟随浏览器）"
   }
 }

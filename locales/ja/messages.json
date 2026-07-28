@@ -66,7 +66,7 @@
     "message": "テーマ設定"
   },
   "follow_system": {
-    "message": "システムに合わせる"
+    "message": "システムのデフォルト"
   },
   "theme_settings_desc": {
     "message": "インターフェースのテーマを選択します"
@@ -200,10 +200,10 @@
   "edit_server": {
     "message": "サーバーを編集"
   },
+  "language_name": {
+    "message": "日本語"
+  },
   "language_settings": {
     "message": "言語"
-  },
-  "language_auto": {
-    "message": "自動（ブラウザーの言語）"
   }
 }
