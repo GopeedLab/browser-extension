@@ -1,19 +1,20 @@
-import deMessages from "~locales/de/messages.json"
-import enMessages from "~locales/en/messages.json"
-import esMessages from "~locales/es/messages.json"
-import frMessages from "~locales/fr/messages.json"
-import itMessages from "~locales/it/messages.json"
-import jaMessages from "~locales/ja/messages.json"
-import koMessages from "~locales/ko/messages.json"
-import ptBrMessages from "~locales/pt_BR/messages.json"
-import ruMessages from "~locales/ru/messages.json"
-import trMessages from "~locales/tr/messages.json"
-import ukMessages from "~locales/uk/messages.json"
-import zhMessages from "~locales/zh/messages.json"
+import deMessages from "~locales/de/messages.json";
+import enMessages from "~locales/en/messages.json";
+import esMessages from "~locales/es/messages.json";
+import frMessages from "~locales/fr/messages.json";
+import itMessages from "~locales/it/messages.json";
+import jaMessages from "~locales/ja/messages.json";
+import koMessages from "~locales/ko/messages.json";
+import ptBrMessages from "~locales/pt_BR/messages.json";
+import ruMessages from "~locales/ru/messages.json";
+import trMessages from "~locales/tr/messages.json";
+import ukMessages from "~locales/uk/messages.json";
+import zhMessages from "~locales/zh/messages.json";
 
 export const SUPPORTED_LANGUAGES = [
   { code: "auto", nativeName: "Auto" },
   { code: "en", nativeName: "English" },
+  { code: "zh", nativeName: "中文" },
   { code: "de", nativeName: "Deutsch" },
   { code: "es", nativeName: "Español" },
   { code: "fr", nativeName: "Français" },
@@ -24,7 +25,6 @@ export const SUPPORTED_LANGUAGES = [
   { code: "ru", nativeName: "Русский" },
   { code: "tr", nativeName: "Türkçe" },
   { code: "uk", nativeName: "Українська" },
-  { code: "zh", nativeName: "中文" }
 ] as const
 
 export type Language = (typeof SUPPORTED_LANGUAGES)[number]["code"]
