@@ -66,7 +66,7 @@
     "message": "Impostazioni tema"
   },
   "follow_system": {
-    "message": "Segui il sistema"
+    "message": "Predefinito di sistema"
   },
   "theme_settings_desc": {
     "message": "Scegli il tema dell’interfaccia"
@@ -199,5 +199,11 @@
   },
   "edit_server": {
     "message": "Modifica server"
+  },
+  "language_name": {
+    "message": "Italiano"
+  },
+  "language_settings": {
+    "message": "Lingua"
   }
 }

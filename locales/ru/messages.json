@@ -66,7 +66,7 @@
     "message": "Настройки темы"
   },
   "follow_system": {
-    "message": "Следовать системе"
+    "message": "Как в системе"
   },
   "theme_settings_desc": {
     "message": "Выберите тему интерфейса"
@@ -199,5 +199,11 @@
   },
   "edit_server": {
     "message": "Редактировать сервер"
+  },
+  "language_name": {
+    "message": "Русский"
+  },
+  "language_settings": {
+    "message": "Язык"
   }
 }

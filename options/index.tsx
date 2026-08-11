@@ -2,25 +2,27 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload"
 import GitHubIcon from "@mui/icons-material/GitHub"
 import SettingsIcon from "@mui/icons-material/Settings"
 import {
-    Box,
-    Divider,
-    IconButton,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography
+  Box,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography
 } from "@mui/material"
 import icon from "data-base64:~assets/icon.png"
 import { useEffect, useState } from "react"
 
 import Theme from "~components/theme"
+import { useI18n } from "~hooks/useI18n"
 
 import BasicSettings from "./components/BasicSettings"
 import RemoteSettings from "./components/RemoteSettings"
 
 const Options = () => {
   const [activeMenu, setActiveMenu] = useState("basic")
+  const { t } = useI18n()
   const manifest = chrome.runtime.getManifest()
 
   // Hash routing support
@@ -39,8 +41,8 @@ const Options = () => {
       }
     }
 
-    window.addEventListener('hashchange', handleHashChange)
-    return () => window.removeEventListener('hashchange', handleHashChange)
+    window.addEventListener("hashchange", handleHashChange)
+    return () => window.removeEventListener("hashchange", handleHashChange)
   }, [])
 
   // Update URL hash when activeMenu changes
@@ -52,12 +54,12 @@ const Options = () => {
   const menuItems = [
     {
       id: "basic",
-      label: chrome.i18n.getMessage("basic_settings"),
+      label: t("basic_settings"),
       icon: <SettingsIcon />
     },
     {
       id: "remote",
-      label: chrome.i18n.getMessage("remote_download"),
+      label: t("remote_download"),
       icon: <CloudDownloadIcon />
     }
   ]

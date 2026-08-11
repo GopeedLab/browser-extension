@@ -1,0 +1,209 @@
+{
+  "settings": {
+    "message": "設定"
+  },
+  "download": {
+    "message": "下載"
+  },
+  "cancel": {
+    "message": "取消"
+  },
+  "confirm": {
+    "message": "確認"
+  },
+  "deleteTip": {
+    "message": "確定要刪除此設定嗎？"
+  },
+  "delete": {
+    "message": "刪除"
+  },
+  "enabled": {
+    "message": "已開啟"
+  },
+  "disabled": {
+    "message": "已關閉"
+  },
+  "download_capture_tip": {
+    "message": "開啟後攔截瀏覽器下載"
+  },
+  "download_settings": {
+    "message": "下載設定"
+  },
+  "auto_wakeup": {
+    "message": "自動喚醒"
+  },
+  "auto_wakeup_desc": {
+    "message": "下載器未執行時自動開啟並下載"
+  },
+  "domain_filter": {
+    "message": "網域篩選"
+  },
+  "domain_filter_desc": {
+    "message": "設定不需要攔截的網域"
+  },
+  "domain_filter_placeholder": {
+    "message": "每行輸入一個網域，支援精確比對 (example.com)、子網域比對 (*.example.com)、完整比對 (*example.com) 和包含比對 (*example.com*)"
+  },
+  "file_type_filter": {
+    "message": "檔案類型篩選"
+  },
+  "file_type_filter_desc": {
+    "message": "設定不需要攔截的檔案類型"
+  },
+  "file_type_filter_placeholder": {
+    "message": "每行輸入一個副檔名，例如：.jpg"
+  },
+  "min_file_size_filter": {
+    "message": "小檔案篩選"
+  },
+  "min_file_size_filter_desc": {
+    "message": "小於設定大小的檔案將不會被攔截"
+  },
+  "interface_settings": {
+    "message": "介面設定"
+  },
+  "theme_settings": {
+    "message": "主題設定"
+  },
+  "follow_system": {
+    "message": "跟隨系統"
+  },
+  "theme_settings_desc": {
+    "message": "選擇介面主題"
+  },
+  "light_theme": {
+    "message": "淺色主題"
+  },
+  "dark_theme": {
+    "message": "深色主題"
+  },
+  "settings_saved": {
+    "message": "設定已儲存"
+  },
+  "download_capture": {
+    "message": "下載攔截"
+  },
+  "basic_settings": {
+    "message": "基本設定"
+  },
+  "remote_download": {
+    "message": "遠端下載"
+  },
+  "remote_server": {
+    "message": "遠端伺服器"
+  },
+  "enable_remote_download": {
+    "message": "啟用遠端下載"
+  },
+  "enable_remote_download_desc": {
+    "message": "開啟後，下載任務將直接傳送至遠端伺服器"
+  },
+  "protocol": {
+    "message": "通訊協定"
+  },
+  "server_url": {
+    "message": "伺服器位址"
+  },
+  "token": {
+    "message": "API 權杖"
+  },
+  "save": {
+    "message": "儲存"
+  },
+  "no_server_error": {
+    "message": "請先新增伺服器"
+  },
+  "server_url_required": {
+    "message": "請輸入伺服器位址"
+  },
+  "server_url_invalid": {
+    "message": "請輸入正確的伺服器位址"
+  },
+  "download_notification": {
+    "message": "下載通知"
+  },
+  "download_notification_desc": {
+    "message": "傳送下載任務時顯示瀏覽器通知"
+  },
+  "require_manual_server_selection": {
+    "message": "手動確認伺服器"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "設定多個伺服器時，在開始下載前一律顯示伺服器選擇對話方塊"
+  },
+  "add": {
+    "message": "新增"
+  },
+  "download_servers": {
+    "message": "下載伺服器"
+  },
+  "test_server": {
+    "message": "測試"
+  },
+  "test_success": {
+    "message": "連線成功"
+  },
+  "test_network_error": {
+    "message": "無法連線至伺服器"
+  },
+  "test_token_error": {
+    "message": "API 權杖不正確或伺服器設定有誤"
+  },
+  "notification_create_success": {
+    "message": "建立成功"
+  },
+  "notification_create_success_message": {
+    "message": "已成功將任務新增至下載伺服器"
+  },
+  "notification_create_error": {
+    "message": "建立失敗"
+  },
+  "notification_create_error_message": {
+    "message": "新增任務失敗，請檢查下載伺服器是否正常運作"
+  },
+  "ctrl_disable_capture": {
+    "message": "按鍵停用"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "按住 %key% 鍵時暫時停用下載攔截"
+  },
+  "confirm_before_download": {
+    "message": "下載前確認"
+  },
+  "confirm_before_download_desc": {
+    "message": "開始下載前顯示確認對話方塊"
+  },
+  "notification_native_success_message": {
+    "message": "已成功將任務新增至下載器"
+  },
+  "notification_native_error_message": {
+    "message": "新增任務失敗，請檢查下載器是否正常運作"
+  },
+  "select_server": {
+    "message": "選擇伺服器"
+  },
+  "go_to": {
+    "message": "前往"
+  },
+  "context_menu_download": {
+    "message": "使用 Gopeed 下載"
+  },
+  "notification_download_failed": {
+    "message": "下載失敗"
+  },
+  "notification_no_handler": {
+    "message": "無法建立下載任務"
+  },
+  "add_server": {
+    "message": "新增伺服器"
+  },
+  "edit_server": {
+    "message": "編輯伺服器"
+  },
+  "language_name": {
+    "message": "繁體中文"
+  },
+  "language_settings": {
+    "message": "語言"
+  }
+}

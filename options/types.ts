@@ -1,3 +1,4 @@
+import type { Language } from "~i18n"
 import type { Server } from "~types"
 
 export interface Settings {
@@ -18,6 +19,7 @@ export interface Settings {
     value: number
   }
   theme: "system" | "light" | "dark"
+  language: Language
   remote: {
     enabled: boolean
     selectedServer: string
@@ -45,6 +47,7 @@ export const defaultSettings: Settings = {
     value: 0
   },
   theme: "system",
+  language: "auto",
   remote: {
     enabled: false,
     selectedServer: "",

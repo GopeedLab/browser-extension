@@ -1,23 +1,28 @@
+import path from "path"
 import Client from "@gopeed/rest"
 import { type Request } from "@gopeed/types"
 import contentDisposition from "content-disposition"
-import path from "path"
 
 import { Storage } from "@plasmohq/storage"
 
 import { requestServerSelection } from "~background/messages/api/select-server"
 import { skip as pressToSkip } from "~background/messages/api/skip"
 import { STORAGE_SETTINGS } from "~constants"
+import { getMessage } from "~i18n"
 import { getFullUrl } from "~options/components/RemoteSettings"
 import { defaultSettings, type Settings } from "~options/types"
 import { getMergedSettings } from "~util/settings"
 
-export { }
+export {}
 
 // Native notification utility function
-async function showNativeNotification(type: "success" | "error" | "warning" | "info" = "success", title: string, message: string) {
+async function showNativeNotification(
+  type: "success" | "error" | "warning" | "info" = "success",
+  title: string,
+  message: string
+) {
   const notificationId = `gopeed-${Date.now()}`
-  
+
   try {
     await chrome.notifications.create(notificationId, {
       type: "basic",
@@ -26,7 +31,7 @@ async function showNativeNotification(type: "success" | "error" | "warning" | "i
       message: message,
       priority: type === "error" ? 2 : 1
     })
-    
+
     // Auto-clear notification after 6 seconds
     setTimeout(() => {
       chrome.notifications.clear(notificationId)
@@ -40,15 +45,15 @@ function initContextMenus() {
   // Create a single context menu for all supported contexts
   chrome.contextMenus.create({
     id: "gopeed-download",
-    title: chrome.i18n.getMessage("context_menu_download"),
+    title: t("context_menu_download"),
     contexts: ["link", "image", "video", "audio"]
   })
 
   // Handle context menu clicks
   chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     // Determine URL: linkUrl for links, srcUrl for images/videos/audio
-    const url =  info.srcUrl || info.linkUrl
-    
+    const url = info.srcUrl || info.linkUrl
+
     if (!url) {
       console.error("No URL found for context menu download")
       return
@@ -79,8 +84,8 @@ function initContextMenus() {
     if (!handler) {
       await showNativeNotification(
         "error",
-        chrome.i18n.getMessage("notification_download_failed"),
-        chrome.i18n.getMessage("notification_no_handler")
+        t("notification_download_failed"),
+        t("notification_no_handler")
       )
       return
     }
@@ -134,12 +139,42 @@ const storage = new Storage()
 
 let settingsCache = defaultSettings
 let isRunningCache = false
+const t = (key: string, substitutions?: string | string[]) =>
+  getMessage(settingsCache.language, key, substitutions)
+
 async function refreshSettings(): Promise<Settings> {
   const storedSettings = await storage.get<Settings>(STORAGE_SETTINGS)
   const settings = getMergedSettings(storedSettings)
   settingsCache = settings
   return settings
 }
+
+storage.watch({
+  [STORAGE_SETTINGS]: (settingsChange) => {
+    if (!settingsChange?.newValue) {
+      return
+    }
+
+    const previousLanguage = settingsCache.language
+    settingsCache = getMergedSettings(settingsChange.newValue)
+
+    if (previousLanguage !== settingsCache.language) {
+      chrome.contextMenus.update(
+        "gopeed-download",
+        { title: t("context_menu_download") },
+        () => {
+          if (chrome.runtime.lastError) {
+            console.warn(
+              "Failed to update context menu:",
+              chrome.runtime.lastError.message
+            )
+          }
+        }
+      )
+    }
+  }
+})
+
 async function refreshIsRunning(): Promise<boolean> {
   try {
     const resp = await connectNativeAndPost({
@@ -194,7 +229,9 @@ interface DownloadInfo {
 
 const requestHeaderMap = new Map<string, Record<string, string>>()
 
-function storeRequestHeaders(details: chrome.webRequest.WebRequestHeadersDetails) {
+function storeRequestHeaders(
+  details: chrome.webRequest.WebRequestHeadersDetails
+) {
   if (!details.requestHeaders || details.requestHeaders.length === 0) {
     return
   }
@@ -234,9 +271,10 @@ function downloadFilter(info: DownloadInfo, settings: Settings): boolean {
     return false
   }
   if (settings.excludeDomains.enabled) {
-    const excludes = settings.excludeDomains.list.split("\n")
-      .map(ex => ex.trim())
-      .filter(ex => ex.length > 0)
+    const excludes = settings.excludeDomains.list
+      .split("\n")
+      .map((ex) => ex.trim())
+      .filter((ex) => ex.length > 0)
     const host = new URL(info.url).host
     for (const exclude of excludes) {
       if (isDomainMatch(host, exclude)) {
@@ -519,18 +557,14 @@ async function executeDownloadTask(
     await client.createTask({
       req: await toCreateRequest(info)
     })
-    notificationTitle = chrome.i18n.getMessage("notification_create_success")
-    notificationMessage = chrome.i18n.getMessage(
-      "notification_create_success_message"
-    )
+    notificationTitle = t("notification_create_success")
+    notificationMessage = t("notification_create_success_message")
     success = true
   } catch (e) {
     console.error(e)
     notificationType = "error"
-    notificationTitle = chrome.i18n.getMessage("notification_create_error")
-    notificationMessage = chrome.i18n.getMessage(
-      "notification_create_error_message"
-    )
+    notificationTitle = t("notification_create_error")
+    notificationMessage = t("notification_create_error_message")
     success = false
   }
 
@@ -564,18 +598,14 @@ function createDownloadTask(
       await client.createTask({
         req: await toCreateRequest(info)
       })
-      notificationTitle = chrome.i18n.getMessage("notification_create_success")
-      notificationMessage = chrome.i18n.getMessage(
-        "notification_create_success_message"
-      )
+      notificationTitle = t("notification_create_success")
+      notificationMessage = t("notification_create_success_message")
       success = true
     } catch (e) {
       console.error(e)
       notificationType = "error"
-      notificationTitle = chrome.i18n.getMessage("notification_create_error")
-      notificationMessage = chrome.i18n.getMessage(
-        "notification_create_error_message"
-      )
+      notificationTitle = t("notification_create_error")
+      notificationMessage = t("notification_create_error_message")
       success = false
     }
 
@@ -633,8 +663,8 @@ function handleNativeDownload(
       if (!settings.confirmBeforeDownload) {
         await showNativeNotification(
           "success",
-          chrome.i18n.getMessage("notification_create_success"),
-          chrome.i18n.getMessage("notification_native_success_message")
+          t("notification_create_success"),
+          t("notification_native_success_message")
         )
       }
     } catch (e) {
@@ -642,8 +672,8 @@ function handleNativeDownload(
       if (!settings.confirmBeforeDownload) {
         await showNativeNotification(
           "error",
-          chrome.i18n.getMessage("notification_create_error"),
-          chrome.i18n.getMessage("notification_native_error_message")
+          t("notification_create_error"),
+          t("notification_native_error_message")
         )
       }
     }
@@ -665,39 +695,39 @@ async function toCreateRequest(info: DownloadInfo): Promise<Request> {
 }
 
 function isDomainMatch(host: string, pattern: string): boolean {
-  const patternLen = pattern.length;
+  const patternLen = pattern.length
 
   // Handle different pattern types based on leading/trailing characters
-  if (patternLen > 2 && pattern[0] === '*' && pattern[patternLen - 1] === '*') {
+  if (patternLen > 2 && pattern[0] === "*" && pattern[patternLen - 1] === "*") {
     // Contains match: *example.com* matches any domain containing example.com
-    const middlePattern = pattern.substring(1, patternLen - 1);
-    return host.includes(middlePattern);
+    const middlePattern = pattern.substring(1, patternLen - 1)
+    return host.includes(middlePattern)
   }
 
-  if (patternLen > 1 && pattern[0] === '*') {
-    if (pattern[1] === '.') {
+  if (patternLen > 1 && pattern[0] === "*") {
+    if (pattern[1] === ".") {
       // Subdomain match: *.example.com matches subdomains but not the domain itself
-      const parentDomain = pattern.substring(2); // example.com
-      return host !== parentDomain && host.endsWith('.' + parentDomain);
+      const parentDomain = pattern.substring(2) // example.com
+      return host !== parentDomain && host.endsWith("." + parentDomain)
     } else {
       // All match: *example.com matches domain and all subdomains
-      const parentDomain = pattern.substring(1); // example.com
-      return host === parentDomain || host.endsWith('.' + parentDomain);
+      const parentDomain = pattern.substring(1) // example.com
+      return host === parentDomain || host.endsWith("." + parentDomain)
     }
   }
 
-  if (patternLen > 1 && pattern[0] === '/' && pattern[patternLen - 1] === '/') {
+  if (patternLen > 1 && pattern[0] === "/" && pattern[patternLen - 1] === "/") {
     // Regex match: /pattern/ matches using regular expression
     try {
-      const regexPattern = pattern.substring(1, patternLen - 1);
-      const regex = new RegExp(regexPattern);
-      return regex.test(host);
+      const regexPattern = pattern.substring(1, patternLen - 1)
+      const regex = new RegExp(regexPattern)
+      return regex.test(host)
     } catch (e) {
-      console.warn(`Invalid regex pattern: ${pattern}`);
-      return false;
+      console.warn(`Invalid regex pattern: ${pattern}`)
+      return false
     }
   }
 
   // Exact match: example.com only matches example.com
-  return pattern === host;
+  return pattern === host
 }
