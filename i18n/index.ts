@@ -1,3 +1,4 @@
+import azMessages from "~locales/az/messages.json"
 import deMessages from "~locales/de/messages.json"
 import enMessages from "~locales/en/messages.json"
 import esMessages from "~locales/es/messages.json"
@@ -21,6 +22,7 @@ type Messages = Record<string, MessageEntry>
 
 const localeMessages = {
   en: enMessages,
+  az: azMessages,
   zh: zhMessages,
   zh_TW: zhTwMessages,
   de: deMessages,
