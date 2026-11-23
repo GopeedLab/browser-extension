@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "Налаштування завантаження"
   },
+  "notify_on_native_success": {
+    "message": "Сповіщення про додавання завдання"
+  },
+  "notify_on_native_success_desc": {
+    "message": "Показувати сповіщення про додавання завдання до локального менеджера завантажень"
+  },
   "auto_wakeup": {
     "message": "Автозапуск"
   },

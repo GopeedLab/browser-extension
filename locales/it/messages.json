@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "Impostazioni di download"
   },
+  "notify_on_native_success": {
+    "message": "Notifica di aggiunta attività"
+  },
+  "notify_on_native_success_desc": {
+    "message": "Mostra una notifica quando un’attività viene aggiunta al gestore dei download locale"
+  },
   "auto_wakeup": {
     "message": "Avvio automatico"
   },

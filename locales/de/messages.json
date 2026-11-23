@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "Download-Einstellungen"
   },
+  "notify_on_native_success": {
+    "message": "Benachrichtigung beim Hinzufügen"
+  },
+  "notify_on_native_success_desc": {
+    "message": "Benachrichtigen, wenn ein Auftrag zum lokalen Download-Manager hinzugefügt wurde"
+  },
   "auto_wakeup": {
     "message": "Automatisches Aktivieren"
   },

@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "Paramètres de téléchargement"
   },
+  "notify_on_native_success": {
+    "message": "Notification d’ajout de tâche"
+  },
+  "notify_on_native_success_desc": {
+    "message": "Afficher une notification à l’ajout d’une tâche au gestionnaire de téléchargements local"
+  },
   "auto_wakeup": {
     "message": "Réveil automatique"
   },

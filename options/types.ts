@@ -6,6 +6,7 @@ export interface Settings {
   autoWakeup: boolean
   ctrlDisableCapture: boolean
   confirmBeforeDownload: boolean
+  notifyOnNativeSuccess: boolean
   excludeDomains: {
     enabled: boolean
     list: string
@@ -34,6 +35,7 @@ export const defaultSettings: Settings = {
   autoWakeup: true,
   ctrlDisableCapture: true,
   confirmBeforeDownload: true,
+  notifyOnNativeSuccess: false,
   excludeDomains: {
     enabled: false,
     list: ""

@@ -660,7 +660,7 @@ function handleNativeDownload(
         )
       })
 
-      if (!settings.confirmBeforeDownload) {
+      if (!settings.confirmBeforeDownload && settings.notifyOnNativeSuccess) {
         await showNativeNotification(
           "success",
           t("notification_create_success"),
