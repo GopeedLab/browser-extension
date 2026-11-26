@@ -6,6 +6,7 @@
   "homepage": "https://gopeed.com",
   "author": "Levi",
   "scripts": {
+    "test": "node --test",
     "dev": "plasmo dev",
     "dev:firefox": "plasmo dev --target=firefox-mv2",
     "build": "plasmo build --zip",

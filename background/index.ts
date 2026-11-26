@@ -82,6 +82,10 @@ function initContextMenus() {
     // Get download handler and execute
     const handler = downloadHandler(downloadInfo, settings, isRunning)
     if (!handler) {
+      if (!settings.remote.enabled) {
+        await chrome.downloads.download({ url })
+        return
+      }
       await showNativeNotification(
         "error",
         t("notification_download_failed"),
@@ -91,11 +95,15 @@ function initContextMenus() {
     }
 
     // Execute the download
-    await handler()
+    const success = await handler()
+    if (!settings.remote.enabled && !success) {
+      await chrome.downloads.download({ url })
+    }
   })
 }
 
 let connectNativePort: chrome.runtime.Port | null = null
+let nativeRequestQueue: Promise<unknown> = Promise.resolve()
 
 function connectNative(): boolean {
   if (connectNativePort) {
@@ -113,23 +121,51 @@ function connectNative(): boolean {
   }
 }
 
-async function connectNativeAndPost<T>(
+function connectNativeAndPost<T>(
   message: HostRequest<any>
 ): Promise<HostResponse<T>> {
-  if (connectNative()) {
-    return new Promise((resolve, reject) => {
-      const cb = (response: any) => {
-        connectNativePort.onMessage.removeListener(cb)
+  // The native protocol has no request IDs, so only one request can be in flight.
+  const request = nativeRequestQueue.then(() => {
+    if (!connectNative()) {
+      throw new Error("Native host unavailable")
+    }
+    const port = connectNativePort
+    return new Promise<HostResponse<T>>((resolve, reject) => {
+      const cleanup = () => {
+        clearTimeout(timer)
+        port.onMessage.removeListener(onMessage)
+        port.onDisconnect.removeListener(onDisconnect)
+      }
+      const onMessage = (response: HostResponse<T>) => {
+        cleanup()
         resolve(response)
       }
+      const onDisconnect = () => {
+        cleanup()
+        reject(
+          new Error(
+            chrome.runtime.lastError?.message || "Native host disconnected"
+          )
+        )
+      }
+      const timer = setTimeout(() => {
+        cleanup()
+        connectNativePort = null
+        port.disconnect()
+        reject(new Error("Native host response timed out"))
+      }, 30000)
+      port.onMessage.addListener(onMessage)
+      port.onDisconnect.addListener(onDisconnect)
       try {
-        connectNativePort.onMessage.addListener(cb)
-        connectNativePort.postMessage(message)
+        port.postMessage(message)
       } catch (e) {
+        cleanup()
         reject(e)
       }
     })
-  }
+  })
+  nativeRequestQueue = request.catch(() => {})
+  return request
 }
 
 connectNative()
@@ -319,9 +355,6 @@ function downloadHandler(
   return handler
 }
 
-// chrome.downloads.onDeterminingFilename only available in Chrome
-const downloadEvent =
-  chrome.downloads.onDeterminingFilename || chrome.downloads.onCreated
 // In Firefox, the download interception logic will be triggered twice, the order is onHeadersReceived -> onCreated, so a variable is needed to skip the onCreated event to avoid duplicate processing of download tasks.
 // PS: Why not use the onCreated event uniformly? Because the onCreated event cannot get the size of the downloaded file in Firefox.
 // Use a Map to track skip status per-download to avoid race conditions with multiple tabs
@@ -333,40 +366,73 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
   isFirefox ? ["requestHeaders"] : ["requestHeaders", "extraHeaders"]
 )
 
-downloadEvent.addListener(async function (item) {
-  const info: DownloadInfo = {
-    url: item.finalUrl || item.url,
-    filename: item.filename,
-    filesize: item.fileSize
-  }
-  const downloadUrl = item.finalUrl || item.url
-  if (isFirefox && downloadEventSkipMap.get(downloadUrl)) {
-    downloadEventSkipMap.delete(downloadUrl)
-    return
-  }
+async function handleBrowserDownload(
+  item: chrome.downloads.DownloadItem,
+  suggest?: () => void
+) {
+  let paused = false
+  let cancelled = false
+  try {
+    if (item.byExtensionId === chrome.runtime.id) {
+      return
+    }
+    const info: DownloadInfo = {
+      url: item.finalUrl || item.url,
+      filename: item.filename,
+      filesize: item.fileSize
+    }
+    const downloadUrl = item.finalUrl || item.url
+    if (isFirefox && downloadEventSkipMap.get(downloadUrl)) {
+      downloadEventSkipMap.delete(downloadUrl)
+      return
+    }
 
-  if (!downloadFilter(info, settingsCache)) {
-    return
-  }
+    const settings = settingsCache
+    if (!downloadFilter(info, settings)) {
+      return
+    }
 
-  await chrome.downloads.pause(item.id)
+    const handler = downloadHandler(info, settings, isRunningCache)
+    if (!handler) {
+      return
+    }
 
-  const handler = downloadHandler(info, settingsCache, isRunningCache)
-  if (!handler) {
-    await chrome.downloads.resume(item.id)
-    return
-  }
+    if (!suggest) {
+      await chrome.downloads.pause(item.id)
+      paused = true
+    }
 
-  await chrome.downloads.cancel(item.id)
-  if (chrome.runtime.lastError) {
-    console.error(chrome.runtime.lastError.message)
-  }
-  if (isFirefox) {
+    if (!settings.remote.enabled && !(await handler())) {
+      return
+    }
+
+    await chrome.downloads.cancel(item.id)
+    cancelled = true
     await chrome.downloads.erase({ id: item.id })
-  }
 
-  handler()
-})
+    if (settings.remote.enabled) {
+      await handler()
+    }
+  } finally {
+    try {
+      if (paused && !cancelled) await chrome.downloads.resume(item.id)
+    } finally {
+      suggest?.()
+    }
+  }
+}
+
+if (chrome.downloads.onDeterminingFilename) {
+  chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+    // Hold filename selection until handoff, before the browser opens its download UI.
+    void handleBrowserDownload(item, suggest).catch(console.error)
+    return true
+  })
+} else {
+  chrome.downloads.onCreated.addListener((item) => {
+    void handleBrowserDownload(item).catch(console.error)
+  })
+}
 
 function checkContentDisposition(
   res: chrome.webRequest.WebResponseHeadersDetails
@@ -389,9 +455,6 @@ if (isFirefox) {
       if (!contentDispositionValue) {
         return
       }
-
-      // Skip the onCreated event to avoid duplicate processing of download tasks.
-      downloadEventSkipMap.set(res.url, true)
 
       let filename = ""
       // Parse filename from content-disposition
@@ -416,13 +479,20 @@ if (isFirefox) {
         filesize,
         tabId: res.tabId
       }
+      downloadEventSkipMap.set(res.url, true)
       if (!downloadFilter(info, settingsCache)) {
         return
       }
 
-      const handler = downloadHandler(info, settingsCache)
+      const settings = settingsCache
+      const handler = downloadHandler(info, settings)
       if (!handler) {
         return
+      }
+
+      if (!settings.remote.enabled) {
+        // Firefox can decide at the response, before creating a download or save dialog.
+        return handler().then((success: boolean) => ({ cancel: success }))
       }
 
       handler()
@@ -646,19 +716,24 @@ function handleNativeDownload(
   }
 
   return async () => {
-    const req = await toCreateRequest(info)
     try {
-      await connectNativeAndPost<string>({
+      const req = await toCreateRequest(info)
+      const response = await connectNativeAndPost<string>({
         method: "create",
         meta: {
           silent: !settings.confirmBeforeDownload
         },
         params: btoa(
-          JSON.stringify({
-            req
-          })
+          JSON.stringify({ req }).replace(
+            /[\u007f-\uffff]/g,
+            (character) =>
+              "\\u" + character.charCodeAt(0).toString(16).padStart(4, "0")
+          )
         )
       })
+      if (response?.code !== 0) {
+        throw new Error(response?.message || "Native download failed")
+      }
 
       if (!settings.confirmBeforeDownload && settings.notifyOnNativeSuccess) {
         await showNativeNotification(
@@ -667,15 +742,17 @@ function handleNativeDownload(
           t("notification_native_success_message")
         )
       }
+      return true
     } catch (e) {
       console.error(e)
-      if (!settings.confirmBeforeDownload) {
+      if (!settings.confirmBeforeDownload && settings.notifyOnNativeSuccess) {
         await showNativeNotification(
           "error",
           t("notification_create_error"),
           t("notification_native_error_message")
         )
       }
+      return false
     }
   }
 }
