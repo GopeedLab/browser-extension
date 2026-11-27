@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "Ajustes de descarga"
   },
+  "notify_on_native_success": {
+    "message": "Aviso de tarea añadida"
+  },
+  "notify_on_native_success_desc": {
+    "message": "Mostrar un aviso al añadir una tarea al gestor de descargas local"
+  },
   "auto_wakeup": {
     "message": "Activación automática"
   },

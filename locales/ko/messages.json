@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "다운로드 설정"
   },
+  "notify_on_native_success": {
+    "message": "작업 추가 알림"
+  },
+  "notify_on_native_success_desc": {
+    "message": "로컬 다운로더에 작업이 추가되면 알림 표시"
+  },
   "auto_wakeup": {
     "message": "자동 실행"
   },

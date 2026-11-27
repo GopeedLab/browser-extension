@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "Настройки загрузки"
   },
+  "notify_on_native_success": {
+    "message": "Уведомление о добавлении задачи"
+  },
+  "notify_on_native_success_desc": {
+    "message": "Показывать уведомление при добавлении задачи в локальный менеджер загрузок"
+  },
   "auto_wakeup": {
     "message": "Автозапуск"
   },

@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "Download Settings"
   },
+  "notify_on_native_success": {
+    "message": "Task Added Notification"
+  },
+  "notify_on_native_success_desc": {
+    "message": "Show a notification when a task is added to the local downloader"
+  },
   "auto_wakeup": {
     "message": "Auto Wakeup"
   },

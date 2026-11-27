@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "下载设置"
   },
+  "notify_on_native_success": {
+    "message": "任务添加通知"
+  },
+  "notify_on_native_success_desc": {
+    "message": "本地任务添加成功后显示通知"
+  },
   "auto_wakeup": {
     "message": "自动唤醒"
   },

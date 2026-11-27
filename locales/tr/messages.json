@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "İndirme ayarları"
   },
+  "notify_on_native_success": {
+    "message": "Görev ekleme bildirimi"
+  },
+  "notify_on_native_success_desc": {
+    "message": "Yerel indirme yöneticisine görev eklendiğinde bildirim göster"
+  },
   "auto_wakeup": {
     "message": "Otomatik başlatma"
   },

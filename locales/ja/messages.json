@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "ダウンロード設定"
   },
+  "notify_on_native_success": {
+    "message": "タスク追加通知"
+  },
+  "notify_on_native_success_desc": {
+    "message": "ローカルのダウンローダーにタスクが追加されたときに通知する"
+  },
   "auto_wakeup": {
     "message": "自動起動"
   },

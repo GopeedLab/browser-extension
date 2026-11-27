@@ -29,6 +29,12 @@
   "download_settings": {
     "message": "下載設定"
   },
+  "notify_on_native_success": {
+    "message": "任務新增通知"
+  },
+  "notify_on_native_success_desc": {
+    "message": "本機任務新增成功後顯示通知"
+  },
   "auto_wakeup": {
     "message": "自動喚醒"
   },

@@ -76,6 +76,20 @@ const BasicSettings = () => {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
+            {renderLabel(
+              t("notify_on_native_success"),
+              t("notify_on_native_success_desc")
+            )}
+            <Switch
+              inputProps={{ "aria-label": t("notify_on_native_success") }}
+              checked={settings.notifyOnNativeSuccess}
+              onChange={(e) =>
+                handleChange("notifyOnNativeSuccess", e.target.checked)
+              }
+            />
+          </Box>
+
+          <Box sx={{ display: "flex", alignItems: "flex-start", px: 1 }}>
             {renderLabel(t("auto_wakeup"), t("auto_wakeup_desc"))}
             <Switch
               checked={settings.autoWakeup}
