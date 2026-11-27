@@ -1,0 +1,209 @@
+{
+  "settings": {
+    "message": "Parametrlər"
+  },
+  "download": {
+    "message": "ENDİR"
+  },
+  "cancel": {
+    "message": "LƏĞV ET"
+  },
+  "confirm": {
+    "message": "TƏSDİQLƏ"
+  },
+  "deleteTip": {
+    "message": "Bu konfiqurasiyanı silmək istədiyinizə əminsiniz?"
+  },
+  "delete": {
+    "message": "SİL"
+  },
+  "enabled": {
+    "message": "Aktivdir"
+  },
+  "disabled": {
+    "message": "Deaktiv"
+  },
+  "download_capture_tip": {
+    "message": "Aktiv olduqda brauzer endirmələrini tut"
+  },
+  "download_settings": {
+    "message": "Endirmə parametrləri"
+  },
+  "auto_wakeup": {
+    "message": "Avtomatik işə salma"
+  },
+  "auto_wakeup_desc": {
+    "message": "Endirmə proqramı işləmədikdə onu avtomatik aç və endirməyə başla"
+  },
+  "domain_filter": {
+    "message": "Domen süzgəci"
+  },
+  "domain_filter_desc": {
+    "message": "Endirmələri tutulmamalı olan domenləri təyin et"
+  },
+  "domain_filter_placeholder": {
+    "message": "Hər sətirdə bir domen daxil et. Dəqiq uyğunluq (example.com), alt domen uyğunluğu (*.example.com), bütün uyğunluqlar (*example.com) və daxilində axtarış (*example.com*) dəstəklənir"
+  },
+  "file_type_filter": {
+    "message": "Fayl növü süzgəci"
+  },
+  "file_type_filter_desc": {
+    "message": "Tutulması lazım olmayan fayl növlərini təyin et"
+  },
+  "file_type_filter_placeholder": {
+    "message": "Hər sətirdə bir fayl uzantısı daxil et, məsələn: .jpg"
+  },
+  "min_file_size_filter": {
+    "message": "Kiçik fayl süzgəci"
+  },
+  "min_file_size_filter_desc": {
+    "message": "Təyin edilmiş ölçüdən kiçik fayllar tutulmayacaq"
+  },
+  "interface_settings": {
+    "message": "İnterfeys parametrləri"
+  },
+  "theme_settings": {
+    "message": "Tema parametrləri"
+  },
+  "follow_system": {
+    "message": "Sistemin standartı"
+  },
+  "theme_settings_desc": {
+    "message": "İnterfeys temasını seç"
+  },
+  "light_theme": {
+    "message": "Açıq tema"
+  },
+  "dark_theme": {
+    "message": "Tünd tema"
+  },
+  "settings_saved": {
+    "message": "Parametrlər yadda saxlanıldı"
+  },
+  "download_capture": {
+    "message": "Endirmələrin tutulması"
+  },
+  "basic_settings": {
+    "message": "Əsas parametrlər"
+  },
+  "remote_download": {
+    "message": "Uzaqdan endirmə"
+  },
+  "remote_server": {
+    "message": "Uzaq server"
+  },
+  "enable_remote_download": {
+    "message": "Uzaqdan endirməni aktivləşdir"
+  },
+  "enable_remote_download_desc": {
+    "message": "Endirmə tapşırıqlarını birbaşa uzaq serverə göndər"
+  },
+  "protocol": {
+    "message": "Protokol"
+  },
+  "server_url": {
+    "message": "Server URL-i"
+  },
+  "token": {
+    "message": "Token"
+  },
+  "save": {
+    "message": "Yadda saxla"
+  },
+  "no_server_error": {
+    "message": "Əvvəlcə uzaq server əlavə et"
+  },
+  "server_url_required": {
+    "message": "Server URL-i tələb olunur"
+  },
+  "server_url_invalid": {
+    "message": "Düzgün server URL-i daxil et"
+  },
+  "download_notification": {
+    "message": "Endirmə bildirişi"
+  },
+  "download_notification_desc": {
+    "message": "Endirmə tapşırıqları göndərilərkən brauzer bildirişi göstər"
+  },
+  "require_manual_server_selection": {
+    "message": "Əl ilə server seçimi"
+  },
+  "require_manual_server_selection_desc": {
+    "message": "Bir neçə server təyin edildikdə endirmələrə başlamazdan əvvəl həmişə server seçimi pəncərəsini göstər"
+  },
+  "add": {
+    "message": "Əlavə et"
+  },
+  "download_servers": {
+    "message": "Endirmə serverləri"
+  },
+  "test_server": {
+    "message": "Yoxla"
+  },
+  "test_success": {
+    "message": "Əlaqə uğurla quruldu"
+  },
+  "test_network_error": {
+    "message": "Serverlə əlaqə qurulmadı"
+  },
+  "test_token_error": {
+    "message": "API tokeni xətası və ya server düzgün tənzimlənməyib"
+  },
+  "notification_create_success": {
+    "message": "Uğurla yaradıldı"
+  },
+  "notification_create_success_message": {
+    "message": "Tapşırıq endirmə serverinə uğurla əlavə edildi"
+  },
+  "notification_create_error": {
+    "message": "Yaratmaq mümkün olmadı"
+  },
+  "notification_create_error_message": {
+    "message": "Tapşırığı əlavə etmək mümkün olmadı, endirmə serverinin düzgün işlədiyini yoxla"
+  },
+  "ctrl_disable_capture": {
+    "message": "Düymə ilə tutulmanı deaktiv et"
+  },
+  "ctrl_disable_capture_desc": {
+    "message": "Endirmələrin tutulmasını müvəqqəti deaktiv etmək üçün %key% düyməsini basılı saxla"
+  },
+  "confirm_before_download": {
+    "message": "Endirmədən əvvəl təsdiqlə"
+  },
+  "confirm_before_download_desc": {
+    "message": "Endirməyə başlamazdan əvvəl təsdiq pəncərəsini göstər"
+  },
+  "notification_native_success_message": {
+    "message": "Tapşırıq endirmə proqramına uğurla əlavə edildi"
+  },
+  "notification_native_error_message": {
+    "message": "Tapşırığı yaratmaq mümkün olmadı, endirmə proqramının düzgün işlədiyini yoxla"
+  },
+  "select_server": {
+    "message": "Server seç"
+  },
+  "go_to": {
+    "message": "Keç"
+  },
+  "context_menu_download": {
+    "message": "Gopeed ilə endir"
+  },
+  "notification_download_failed": {
+    "message": "Endirmə uğursuz oldu"
+  },
+  "notification_no_handler": {
+    "message": "Endirmə tapşırığını yaratmaq mümkün olmadı"
+  },
+  "add_server": {
+    "message": "Server əlavə et"
+  },
+  "edit_server": {
+    "message": "Serveri redaktə et"
+  },
+  "language_name": {
+    "message": "Azərbaycanca"
+  },
+  "language_settings": {
+    "message": "Dil"
+  }
+}
