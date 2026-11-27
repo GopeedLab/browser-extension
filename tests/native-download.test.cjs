@@ -278,6 +278,61 @@ test("an unresponsive host times out and returns the download to the browser", a
   assert.equal(h.port.onMessage.listeners.size, 0)
 })
 
+test("Chrome releases filename selection after 10 seconds and ignores late acknowledgements", async () => {
+  for (const code of [0, 1]) {
+    const h = setup({ response: "pending" })
+    const download = h.download()
+    const timeout = [...h.timers.values()].find(({ delay }) => delay === 10000)
+    assert.ok(timeout, "the deadline starts synchronously with the filename event")
+    await flush()
+    assert.deepEqual(h.suggestions, [])
+    assert.deepEqual(h.messages.map(({ method }) => method), ["create"])
+
+    timeout.callback()
+    await download
+    assert.deepEqual(h.suggestions, [1])
+    assert.deepEqual(h.calls, [])
+
+    h.port.onMessage.emit({ code })
+    await flush()
+    assert.deepEqual(h.calls, [])
+    assert.deepEqual(h.suggestions, [1])
+    assert.equal(h.timers.size, 0)
+  }
+})
+
+test("Chrome's 10-second deadline includes native host queue time", async () => {
+  for (const queuedAtTimeout of [false, true]) {
+    const h = setup({ response: "pending" })
+    const ping = h.api.connectNativeAndPost({ method: "ping" })
+    const download = h.download()
+    const timeout = [...h.timers.values()].find(({ delay }) => delay === 10000)
+    assert.ok(timeout)
+    await flush()
+    assert.deepEqual(h.messages.map(({ method }) => method), ["ping"])
+
+    const finishPing = async () => {
+      h.port.onMessage.emit({ code: 0, data: true })
+      await ping
+      await flush()
+      assert.deepEqual(h.messages.map(({ method }) => method), ["ping", "create"])
+    }
+    if (!queuedAtTimeout) await finishPing()
+    assert.ok([...h.timers.values()].includes(timeout), "queueing must not reset the deadline")
+    timeout.callback()
+    await download
+    assert.deepEqual(h.suggestions, [1])
+    assert.deepEqual(h.calls, [])
+
+    if (queuedAtTimeout) await finishPing()
+    h.port.onMessage.emit({ code: 0 })
+    await flush()
+    assert.deepEqual(h.calls, [])
+    assert.deepEqual(h.suggestions, [1])
+    assert.equal(h.timers.size, 0)
+  }
+})
+
 test("ping and create requests cannot consume each other's responses", async () => {
   const h = setup({ response: "pending" })
   const ping = h.api.connectNativeAndPost({ method: "ping" })

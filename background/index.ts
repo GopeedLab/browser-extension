@@ -372,6 +372,15 @@ async function handleBrowserDownload(
 ) {
   let paused = false
   let cancelled = false
+  const settings = settingsCache
+  let handoffTimer: ReturnType<typeof setTimeout> | undefined
+  // Include native host queue time in Chrome's filename-selection deadline.
+  const handoffTimeout =
+    suggest && !settings.remote.enabled
+      ? new Promise<boolean>((resolve) => {
+          handoffTimer = setTimeout(() => resolve(false), 10000)
+        })
+      : undefined
   try {
     if (item.byExtensionId === chrome.runtime.id) {
       return
@@ -387,7 +396,6 @@ async function handleBrowserDownload(
       return
     }
 
-    const settings = settingsCache
     if (!downloadFilter(info, settings)) {
       return
     }
@@ -402,8 +410,12 @@ async function handleBrowserDownload(
       paused = true
     }
 
-    if (!settings.remote.enabled && !(await handler())) {
-      return
+    if (!settings.remote.enabled) {
+      const handoff = handler()
+      const success = await (handoffTimeout
+        ? Promise.race([handoff, handoffTimeout])
+        : handoff)
+      if (!success) return
     }
 
     await chrome.downloads.cancel(item.id)
@@ -414,6 +426,7 @@ async function handleBrowserDownload(
       await handler()
     }
   } finally {
+    clearTimeout(handoffTimer)
     try {
       if (paused && !cancelled) await chrome.downloads.resume(item.id)
     } finally {
